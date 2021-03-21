@@ -43,6 +43,8 @@ void parser(char *line) {
     pop(&s);
     push(&s, 20);
 
+    dumpStack(&s);
+
     int status = stackStatus(&s);
     printf("Stack Status: %d\nStack pointer: %d\n",status, s.pointer);
 }

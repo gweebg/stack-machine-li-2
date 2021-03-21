@@ -75,3 +75,13 @@ int push(stack *s, int value) {
 
 }
 
+void dumpStack(stack *s) {
+
+    printf("Stack Dump: ");
+    for (int i = 0; i < s->pointer+1; i++) {
+
+        printf("%ld ", s->elems[i]);
+
+    }
+    printf("\n");
+}

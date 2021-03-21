@@ -11,3 +11,4 @@ stack create();
 int stackStatus(stack *s);
 int push(stack *s, int value);
 int pop(stack *s);
+void dumpStack(stack *s);
