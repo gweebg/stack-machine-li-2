@@ -20,132 +20,112 @@ void parser(char *line) {
 
     while (token != NULL) {
      
-     value = strtol(token, &endptr, 10);
+      value = strtol(token, &endptr, 10);
  
-     if (strlen(endptr) == 0) {
+      if (strlen(endptr) == 0) {
+   
+           //  printf("Pushed %ld (INT) to the stack.\n",value);
+           push(&s,value);
+   
+      }
+      else if (strcmp(token, "+") == 0) {
+   
+           //  printf("%s\n", token);
+           int x = pop(&s);
+           int y = pop(&s);
+           push(&s, x+y);
+           printf("%d + %d = %d\n", x, y, (x+y));
+   
+      }
+      else if (strcmp(token, "-") == 0) {
+
+           int x = pop(&s);
+           int y = pop(&s);
+           push(&s, y-x);
+           printf("%d - %d = %d\n", y, x, (y-x));
+
+      }
+      else if (strcmp(token, "*") == 0) {
+
+           int x = pop(&s);
+           int y = pop(&s);
+           push(&s, x*y);
+           printf("%d * %d = %d\n", x, y, (x*y));
+
+      }
+      else if (strcmp(token, "/") == 0) {
+
+           int x = pop(&s);
+           int y = pop(&s);
+           push(&s, y/x);
+           printf("%d / %d = %d\n", x, y, (y/x));
+
+      }
+      else if (strcmp(token, "(") == 0) {
+
+           int x = pop(&s);
+           push(&s, x-1);
+           printf("%d-- = %d\n", x, x-1);
+
+      }
+      else if (strcmp(token, ")") == 0) {
+   
+           int x = pop(&s);
+           push(&s, x+1);
+           printf("%d++ = %d\n", x, x+1);
+   
+      }
+      else if (strcmp(token, "%") == 0) {
+   
+           int x = pop(&s);
+           int y = pop(&s);
+           push(&s, y % x);
+           printf("%d mod %d = %d\n", y, x, (y%x)); 
+   
+      }
+      else if (strcmp(token, "#") == 0) {
+   
+            int x = pop(&s);
+            int y = pop(&s);
+            push(&s, pow(x,y));
+            printf("%d ^ %d = %f\n", y, x, pow(y,x));
+   
+      }
+      else if (strcmp(token, "&") == 0) {
+   
+            int x = pop(&s);
+            int y = pop(&s);
+            push(&s, y & x);
+            printf("%d & %d = %d\n", y, x, y&x);
+   
+      } 
+      else if (strcmp(token, "|") == 0) {
+      
+            int x = pop(&s);
+            int y = pop(&s);
+            push(&s, y | x);
+            printf("%d | %d = %d\n", y,x,y|x);
+      
+      }
+      else if (strcmp(token, "^") == 0) {
+      
+            int x = pop(&s);
+            int y = pop(&s);
+            push(&s, y ^ x);
+            printf("%d ^ %d = %d\n", y,x,y^x);
+      
+      }
+      else if (strcmp(token, "~") == 0) {
+      
+            int x = pop(&s);
+            push(&s, !x);
+            printf("not %d = %d\n",x,!x);
+      
+      }
  
-        //  printf("Pushed %ld (INT) to the stack.\n",value);
-         push(&s,value);
+      token = strtok(NULL,delim);
  
-     }
-     else if (strcmp(token, "+") == 0) {
- 
-        //  printf("%s\n", token);
-        int x = pop(&s);
-        int y = pop(&s);
-        push(&s, x+y);
-        printf("%d + %d = %d\n", x,y,x+y);
- 
-     }
-     else if (strcmp(token, "-") == 0) {
-
-        int x = pop(&s);
-        int y = pop(&s);
-        push(&s, y-x);
-        printf("%d - %d = %d\n", y,x,y-x);
-
-     }
-     else if (strcmp(token, "*") == 0) {
-
-        int x = pop(&s);
-        int y = pop(&s);
-<<<<<<< HEAD
-        push(&s, x*y);
-        printf("%d * %d = %d\n", x,y,x*y);
-
-     }
-=======
-        push(&s, y*x);
-        printf("%d * %d = %d\n", y,x,y*x);
-
-    }
->>>>>>> 639c018013ae9197e9cec580e225122cbec200b7
-     else if (strcmp(token, "/") == 0) {
-
-        int x = pop(&s);
-        int y = pop(&s);
-        push(&s, y/x);
-<<<<<<< HEAD
-        printf("%d / %d = %d\n", x,y,(y/x));
-
-     }
-=======
-        printf("%d / %d = %d\n", y,x,y/x);
-
-    }
->>>>>>> 639c018013ae9197e9cec580e225122cbec200b7
-     else if (strcmp(token, "(") == 0) {
-
-        int x = pop(&s);
-        push(&s, x-1);
-<<<<<<< HEAD
-        printf("%d-- = %d\n", x,x-1);
-
-     }
- 
-=======
-        printf("%d ( = %d\n", x,x-1);
-
-    }
-     else if (strcmp(token, ")") == 0) {
-
-        int x = pop(&s);
-        push(&s, x+1);
-		printf("%d ) = %d\n", x,x+1);
-
-    }
-     else if (strcmp(token, "%") == 0) {
-
-		int x = pop(&s);
-		int y = pop(&s);
-		push(&s, y % x);
-	 	printf("%d mod %d = %d\n", y,x,y%x); 
-
-    }
-     else if (strcmp(token, "#") == 0) {
-
-        int x = pop(&s);
-        int y = pop(&s);
-        push(&s, pow(x,y));
-        printf("%d # %d = %f\n", y,x,pow(x,y));
-
-    }
-     else if (strcmp(token, "&") == 0) {
-
-    	int x = pop(&s);
-		int y = pop(&s);
-		push(&s, y & x);
-		printf("%d & %d = %d\n", y,x,y&x);
-
-	}
-	 else if (strcmp(token, "|") == 0) {
-
-    	int x = pop(&s);
-		int y = pop(&s);
-		push(&s, y | x);
-		printf("%d | %d = %d\n", y,x,y|x);
-
-	}
-	 else if (strcmp(token, "^") == 0) {
-
-    	int x = pop(&s);
-		int y = pop(&s);
-		push(&s, y ^ x);
-		printf("%d ^ %d = %d\n", y,x,y^x);
-
-	}
-	 else if (strcmp(token, "~") == 0) {
-
-    	int x = pop(&s);
-		push(&s, ~x);
-		printf("~ %d = %d\n",x,~x);
-
-	}
-
->>>>>>> 639c018013ae9197e9cec580e225122cbec200b7
-     token = strtok(NULL,delim);
- 
-    }
+   }
     
     // Debug - podem apagar na boa são só testes
 
