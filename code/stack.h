@@ -1,3 +1,7 @@
+/************************************************
+ * @file Header file para o ficheiro \a stack.c \a .
+ ***********************************************/
+
 # define SIZE 10240
 
 typedef struct stack {

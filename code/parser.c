@@ -44,6 +44,30 @@ void parser(char *line) {
         printf("%d - %d = %d\n", x,y,y-x);
 
      }
+     else if (strcmp(token, "*") == 0) {
+
+        int x = pop(&s);
+        int y = pop(&s);
+        push(&s, x*y);
+        printf("%d * %d = %d\n", x,y,x*y);
+
+     }
+     else if (strcmp(token, "/") == 0) {
+
+        int x = pop(&s);
+        int y = pop(&s);
+        push(&s, y/x);
+        printf("%d / %d = %d\n", x,y,(y/x));
+
+     }
+     else if (strcmp(token, "(") == 0) {
+
+        int x = pop(&s);
+        push(&s, x-1);
+        printf("%d-- = %d\n", x,x-1);
+
+     }
+ 
      token = strtok(NULL,delim);
  
     }
