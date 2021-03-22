@@ -17,7 +17,7 @@ int stackStatus(stack *s) {
 
     int r;
 
-    if (s->pointer == -1) {
+    if (s->pointer == -1) { 
 
         r = 0; // Retorna 0 caso a stack esteja vazia
 
@@ -65,6 +65,7 @@ int push(stack *s, int value) {
 
         s->pointer++; // Incrementa 1 no stack pointer pois estamos a adicionar um elemento na stack
         s->elems[s->pointer] = value; // Adiciona o valor na stack
+        return 0;
 
     }
     else{
