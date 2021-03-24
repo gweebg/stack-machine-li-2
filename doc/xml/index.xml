@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygenindex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="index.xsd" version="1.9.1" xml:lang="en-US">
+  <compound refid="structstack" kind="struct"><name>stack</name>
+    <member refid="structstack_1a28a6f0ba23044df7ac626e8a4e2a3391" kind="variable"><name>elems</name></member>
+    <member refid="structstack_1a3f03bb7e120fad95c7a819c1cb088df9" kind="variable"><name>pointer</name></member>
+  </compound>
+  <compound refid="main_8c" kind="file"><name>main.c</name>
+    <member refid="main_8c_1ae66f6b31b5ad750f1fe042a706a4e3d4" kind="function"><name>main</name></member>
+  </compound>
+  <compound refid="parser_8c" kind="file"><name>parser.c</name>
+    <member refid="parser_8c_1ab116abcccaf4f52d6bb5f1235d1f7cbd" kind="function"><name>parser</name></member>
+  </compound>
+  <compound refid="parser_8h" kind="file"><name>parser.h</name>
+    <member refid="parser_8h_1ab116abcccaf4f52d6bb5f1235d1f7cbd" kind="function"><name>parser</name></member>
+  </compound>
+  <compound refid="stack_8c" kind="file"><name>stack.c</name>
+    <member refid="stack_8c_1a5e7b7130eb56c772f0148df408b8b992" kind="function"><name>create</name></member>
+    <member refid="stack_8c_1a99eb4a29f82cfac2504f83a6938f784c" kind="function"><name>stackStatus</name></member>
+    <member refid="stack_8c_1a7cb5df150af207eab70ab7c59c743ab6" kind="function"><name>pop</name></member>
+    <member refid="stack_8c_1ad0e7082c586047ccbba10e8c7553e432" kind="function"><name>push</name></member>
+    <member refid="stack_8c_1afa1a903aca7623889aff6a884d158bdb" kind="function"><name>dumpStack</name></member>
+  </compound>
+  <compound refid="stack_8h" kind="file"><name>stack.h</name>
+    <member refid="stack_8h_1a70ed59adcb4159ac551058053e649640" kind="define"><name>SIZE</name></member>
+    <member refid="stack_8h_1a4807e11fe59218c775d4c3e53a17f745" kind="typedef"><name>stack</name></member>
+    <member refid="stack_8h_1a5e7b7130eb56c772f0148df408b8b992" kind="function"><name>create</name></member>
+    <member refid="stack_8h_1a99eb4a29f82cfac2504f83a6938f784c" kind="function"><name>stackStatus</name></member>
+    <member refid="stack_8h_1ad0e7082c586047ccbba10e8c7553e432" kind="function"><name>push</name></member>
+    <member refid="stack_8h_1a7cb5df150af207eab70ab7c59c743ab6" kind="function"><name>pop</name></member>
+    <member refid="stack_8h_1afa1a903aca7623889aff6a884d158bdb" kind="function"><name>dumpStack</name></member>
+  </compound>
+</doxygenindex>

@@ -1,6 +1,6 @@
-/************************************************
- * @file Ficheiro que contém todas as funções relacionadas com a stack.
- ***********************************************/
+/**
+ * @file stack.c - Ficheiro que contém todas as funções relacionadas com a stack.
+ */
 
 # include <stdio.h>
 # include <stdlib.h>
@@ -9,11 +9,6 @@
 
 # include "stack.h"
 
-
-/************************************************
- * \brief Função que inicializa uma stack (structure definida em stack.h).
- * @returns Devolve a stack criada.
- ***********************************************/
 stack create() {
 
     stack myStack;
@@ -22,17 +17,6 @@ stack create() {
 
 }
 
-/************************************************
- * \brief Função que verifica o estado da stack.
- * 
- * Determina o estado verificando o valor do stack pointer.
- * @param s Stack a ser avaliada.
- * @returns 
- * Devolve :
- * * 0, se a stack estiver vazia;
- * * 1, se a stack estiver cheia;
- * * 2, se a stack não estiver cheia nem vazia.
- ***********************************************/
 int stackStatus(stack *s) {
 
     int r;
@@ -57,16 +41,6 @@ int stackStatus(stack *s) {
 
 }
 
-/************************************************
- * \brief Retira o elemento no topo da stack.
- * 
- * A stack rege-se por "last in, first out", daí termos de retirar o primeiro elemento e decrementar o stack pointer.
- * @param s Stack a ser avaliada.
- * @returns
- * Devolve :
- * * O elemento retirado se a stack não estiver vazia;
- * * 1, se a stack estiver vazia.
- ***********************************************/
 int pop(stack *s) {
 
     int r; 
@@ -87,15 +61,6 @@ int pop(stack *s) {
 
 }
 
-/************************************************
- * \brief Adiciona um elemento no topo da stack.
- * 
- * @param s Stack a ser avaliada.
- * @returns
- * Devolve :
- * * 0, se foi possivel adiconar o elemento;
- * * 1, se a stack estiver cheia.
- ***********************************************/
 int push(stack *s, int value) {
 
     int status = stackStatus(s);
@@ -115,13 +80,6 @@ int push(stack *s, int value) {
 
 }
 
-/************************************************
- * \brief Esta função despeja todos os elementos contidos na stack.
- * 
- * @param s Stack a ser avaliada.
- * @returns 
- * Escreve a stack no ecrã, porém não devolve nada, sendo que é do tipo void.
- ***********************************************/
 void dumpStack(stack *s) {
 
     // printf("Stack Dump: ");

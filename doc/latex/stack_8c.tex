@@ -1,0 +1,139 @@
+\hypertarget{stack_8c}{}\doxysection{stack.\+c File Reference}
+\label{stack_8c}\index{stack.c@{stack.c}}
+
+
+
+\begin{DoxyItemize}
+\item Ficheiro que contém todas as funções relacionadas com a stack. 
+\end{DoxyItemize} 
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$assert.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}stack.\+h\char`\"{}}\newline
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structstack}{stack}} \mbox{\hyperlink{stack_8c_a5e7b7130eb56c772f0148df408b8b992}{create}} ()
+\begin{DoxyCompactList}\small\item\em Função que inicializa uma stack (structure definida em \mbox{\hyperlink{stack_8h}{stack.\+h}}). \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{stack_8c_a99eb4a29f82cfac2504f83a6938f784c}{stack\+Status}} (\mbox{\hyperlink{structstack}{stack}} $\ast$s)
+\begin{DoxyCompactList}\small\item\em Função que verifica o estado da stack. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{stack_8c_a7cb5df150af207eab70ab7c59c743ab6}{pop}} (\mbox{\hyperlink{structstack}{stack}} $\ast$s)
+\begin{DoxyCompactList}\small\item\em Adiciona um elemento no topo da stack. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{stack_8c_ad0e7082c586047ccbba10e8c7553e432}{push}} (\mbox{\hyperlink{structstack}{stack}} $\ast$s, int value)
+\begin{DoxyCompactList}\small\item\em Retira o elemento no topo da stack. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{stack_8c_afa1a903aca7623889aff6a884d158bdb}{dump\+Stack}} (\mbox{\hyperlink{structstack}{stack}} $\ast$s)
+\begin{DoxyCompactList}\small\item\em Esta função despeja todos os elementos contidos na stack. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+
+\begin{DoxyItemize}
+\item Ficheiro que contém todas as funções relacionadas com a stack. 
+\end{DoxyItemize}
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{stack_8c_a5e7b7130eb56c772f0148df408b8b992}\label{stack_8c_a5e7b7130eb56c772f0148df408b8b992}} 
+\index{stack.c@{stack.c}!create@{create}}
+\index{create@{create}!stack.c@{stack.c}}
+\doxysubsubsection{\texorpdfstring{create()}{create()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structstack}{stack}} create (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Função que inicializa uma stack (structure definida em \mbox{\hyperlink{stack_8h}{stack.\+h}}). 
+
+\begin{DoxyReturn}{Returns}
+Devolve a stack criada. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{stack_8c_afa1a903aca7623889aff6a884d158bdb}\label{stack_8c_afa1a903aca7623889aff6a884d158bdb}} 
+\index{stack.c@{stack.c}!dumpStack@{dumpStack}}
+\index{dumpStack@{dumpStack}!stack.c@{stack.c}}
+\doxysubsubsection{\texorpdfstring{dumpStack()}{dumpStack()}}
+{\footnotesize\ttfamily void dump\+Stack (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structstack}{stack}} $\ast$}]{s }\end{DoxyParamCaption})}
+
+
+
+Esta função despeja todos os elementos contidos na stack. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & Stack a ser avaliada. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Escreve a stack no ecrã, porém não devolve nada, sendo que é do tipo void. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{stack_8c_a7cb5df150af207eab70ab7c59c743ab6}\label{stack_8c_a7cb5df150af207eab70ab7c59c743ab6}} 
+\index{stack.c@{stack.c}!pop@{pop}}
+\index{pop@{pop}!stack.c@{stack.c}}
+\doxysubsubsection{\texorpdfstring{pop()}{pop()}}
+{\footnotesize\ttfamily int pop (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structstack}{stack}} $\ast$}]{s }\end{DoxyParamCaption})}
+
+
+
+Adiciona um elemento no topo da stack. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & Stack a ser avaliada. \\
+\hline
+{\em value} & Valor a ser adicionado à stack. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Devolve \+:
+\begin{DoxyItemize}
+\item 0, se foi possivel adiconar o elemento;
+\item 1, se a stack estiver cheia. 
+\end{DoxyItemize}
+\end{DoxyReturn}
+\mbox{\Hypertarget{stack_8c_ad0e7082c586047ccbba10e8c7553e432}\label{stack_8c_ad0e7082c586047ccbba10e8c7553e432}} 
+\index{stack.c@{stack.c}!push@{push}}
+\index{push@{push}!stack.c@{stack.c}}
+\doxysubsubsection{\texorpdfstring{push()}{push()}}
+{\footnotesize\ttfamily int push (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structstack}{stack}} $\ast$}]{s,  }\item[{int}]{value }\end{DoxyParamCaption})}
+
+
+
+Retira o elemento no topo da stack. 
+
+A stack rege-\/se por \char`\"{}last in, first out\char`\"{}, daí termos de retirar o primeiro elemento e decrementar o stack pointer. 
+\begin{DoxyParams}{Parameters}
+{\em s} & Stack a ser avaliada. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Devolve \+:
+\begin{DoxyItemize}
+\item O elemento retirado se a stack não estiver vazia;
+\item 1, se a stack estiver vazia. 
+\end{DoxyItemize}
+\end{DoxyReturn}
+\mbox{\Hypertarget{stack_8c_a99eb4a29f82cfac2504f83a6938f784c}\label{stack_8c_a99eb4a29f82cfac2504f83a6938f784c}} 
+\index{stack.c@{stack.c}!stackStatus@{stackStatus}}
+\index{stackStatus@{stackStatus}!stack.c@{stack.c}}
+\doxysubsubsection{\texorpdfstring{stackStatus()}{stackStatus()}}
+{\footnotesize\ttfamily int stack\+Status (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structstack}{stack}} $\ast$}]{s }\end{DoxyParamCaption})}
+
+
+
+Função que verifica o estado da stack. 
+
+Determina o estado verificando o valor do stack pointer. 
+\begin{DoxyParams}{Parameters}
+{\em s} & Stack a ser avaliada. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Devolve \+:
+\begin{DoxyItemize}
+\item 0, se a stack estiver vazia;
+\item 1, se a stack estiver cheia;
+\item 2, se a stack não estiver cheia nem vazia. 
+\end{DoxyItemize}
+\end{DoxyReturn}

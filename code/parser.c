@@ -1,3 +1,8 @@
+/**
+ * @file parser.c - Módulo responsável por analisar e decompor o input do utilizador.
+ * @copyright Copyright (c) 2021
+ */
+
 # include <stdio.h>
 # include <stdlib.h>
 # include <assert.h>
@@ -34,7 +39,7 @@ void parser(char *line) {
            int x = pop(&s);
            int y = pop(&s);
            push(&s, x+y);
-           printf("%d + %d = %d\n", x, y, (x+y));
+         //   printf("%d + %d = %d\n", x, y, (x+y));
    
       }
       else if (strcmp(token, "-") == 0) {
@@ -42,7 +47,7 @@ void parser(char *line) {
            int x = pop(&s);
            int y = pop(&s);
            push(&s, y-x);
-           printf("%d - %d = %d\n", y, x, (y-x));
+         //   printf("%d - %d = %d\n", y, x, (y-x));
 
       }
       else if (strcmp(token, "*") == 0) {
@@ -50,7 +55,7 @@ void parser(char *line) {
            int x = pop(&s);
            int y = pop(&s);
            push(&s, x*y);
-           printf("%d * %d = %d\n", x, y, (x*y));
+         //   printf("%d * %d = %d\n", x, y, (x*y));
 
       }
       else if (strcmp(token, "/") == 0) {
@@ -58,21 +63,21 @@ void parser(char *line) {
            int x = pop(&s);
            int y = pop(&s);
            push(&s, y/x);
-           printf("%d / %d = %d\n", x, y, (y/x));
+         //   printf("%d / %d = %d\n", x, y, (y/x));
 
       }
       else if (strcmp(token, "(") == 0) {
 
            int x = pop(&s);
            push(&s, x-1);
-           printf("%d-- = %d\n", x, x-1);
+         //   printf("%d-- = %d\n", x, x-1);
 
       }
       else if (strcmp(token, ")") == 0) {
    
            int x = pop(&s);
            push(&s, x+1);
-           printf("%d++ = %d\n", x, x+1);
+         //   printf("%d++ = %d\n", x, x+1);
    
       }
       else if (strcmp(token, "%") == 0) {
@@ -80,15 +85,15 @@ void parser(char *line) {
            int x = pop(&s);
            int y = pop(&s);
            push(&s, y % x);
-           printf("%d mod %d = %d\n", y, x, (y%x)); 
+         //   printf("%d mod %d = %d\n", y, x, (y%x)); 
    
       }
       else if (strcmp(token, "#") == 0) {
    
             int x = pop(&s);
             int y = pop(&s);
-            push(&s, pow(x,y));
-            printf("%d ^ %d = %f\n", y, x, pow(y,x));
+            push(&s, pow(y,x));
+            // printf("%d ^ %d = %f\n", y, x, pow(y,x));
    
       }
       else if (strcmp(token, "&") == 0) {
@@ -96,7 +101,7 @@ void parser(char *line) {
             int x = pop(&s);
             int y = pop(&s);
             push(&s, y & x);
-            printf("%d & %d = %d\n", y, x, y&x);
+            // printf("%d & %d = %d\n", y, x, y&x);
    
       } 
       else if (strcmp(token, "|") == 0) {
@@ -104,7 +109,7 @@ void parser(char *line) {
             int x = pop(&s);
             int y = pop(&s);
             push(&s, y | x);
-            printf("%d | %d = %d\n", y,x,y|x);
+            // printf("%d | %d = %d\n", y,x,y|x);
       
       }
       else if (strcmp(token, "^") == 0) {
@@ -112,14 +117,14 @@ void parser(char *line) {
             int x = pop(&s);
             int y = pop(&s);
             push(&s, y ^ x);
-            printf("%d ^ %d = %d\n", y,x,y^x);
+            // printf("%d ^ %d = %d\n", y,x,y^x);
       
       }
       else if (strcmp(token, "~") == 0) {
       
             int x = pop(&s);
-            push(&s, !x);
-            printf("not %d = %d\n",x,!x);
+            push(&s, ~x);
+            // printf("not %d = %d\n",x,!x);
       
       }
  
@@ -134,7 +139,7 @@ void parser(char *line) {
     // push(&s, 20);
 
     dumpStack(&s);
-    printf("Resultado: %d\n", pop(&s));
+   //  printf("Resultado: %d\n", pop(&s));
 
     // int status = stackStatus(&s);
     // printf("Stack Status: %d\nStack pointer: %d\n",status, s.pointer);

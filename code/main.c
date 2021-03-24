@@ -1,3 +1,12 @@
+/**
+ * @file main.c - Ficheiro principal
+ * @author Grupo 3 PL4
+ * @date 2021-03-24
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
+
 # include <stdio.h>
 # include <stdlib.h>
 # include <assert.h>
@@ -6,6 +15,12 @@
 # include "parser.h"
 # include "stack.h"
 
+
+/**
+ * @brief Esta é a função principal, responsável por receber o input do utilizador.
+ * 
+ * @return 0, se o input foi lido e parsed com sucesso. 
+ */
 int main() {
 
     char input[10240]; // Tamanho máximo que a string pode tomar.
