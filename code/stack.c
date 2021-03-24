@@ -1,5 +1,6 @@
 /**
- * @file stack.c - Ficheiro que contém todas as funções relacionadas com a stack.
+ * @file stack.c - Ficheiro que contém todas as funções relacionadas com a stack
+ * @copyright Copyright (c) 2021
  */
 
 # include <stdio.h>
@@ -12,7 +13,7 @@
 stack create() {
 
     stack myStack;
-    myStack.pointer = -1;
+    myStack.pointer = -1; // O stack pointer é sempre inicializado com o valor -1 
     return myStack;
 
 }
@@ -21,7 +22,7 @@ int stackStatus(stack *s) {
 
     int r;
 
-    if (s->pointer == -1) { 
+    if (s->pointer == -1) { // s->pointer é equivalente a (*s).pointer
 
         r = 0; // Retorna 0 caso a stack esteja vazia
 
@@ -47,7 +48,7 @@ int pop(stack *s) {
     int status = stackStatus(s);
 
     if(status != 0) {
-
+        
         r = s->elems[s->pointer]; // Guarda o valor do topo no stack pointer (sp)
         s->pointer--; // Decrementa o sp, pois retiramos um elemento
         return r;

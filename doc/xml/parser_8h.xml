@@ -51,16 +51,23 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="parser.h" line="7" column="6" bodyfile="parser.c" bodystart="15" bodyend="146" declfile="parser.h" declline="7" declcolumn="6"/>
+        <location file="parser.h" line="12" column="6" bodyfile="parser.c" bodystart="15" bodyend="150" declfile="parser.h" declline="12" declcolumn="6"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
+<para><itemizedlist>
+<listitem><para>Contém os prótotipos do módulo <ref refid="parser_8c" kindref="compound">parser.c</ref> </para>
+</listitem></itemizedlist>
+</para>
     </briefdescription>
     <detaileddescription>
+<para><simplesect kind="copyright"><para>Copyright (c) 2021 </para>
+</simplesect>
+</para>
     </detaileddescription>
     <programlisting>
 <codeline lineno="1"><highlight class="normal"></highlight></codeline>
-<codeline lineno="7"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="parser_8h_1ab116abcccaf4f52d6bb5f1235d1f7cbd" kindref="member">parser</ref>(</highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*line);</highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="parser_8h_1ab116abcccaf4f52d6bb5f1235d1f7cbd" kindref="member">parser</ref>(</highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*line);</highlight></codeline>
     </programlisting>
     <location file="parser.h"/>
   </compounddef>

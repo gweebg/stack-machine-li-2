@@ -62,48 +62,46 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="main.c" line="24" column="5" bodyfile="main.c" bodystart="24" bodyend="36"/>
+        <location file="main.c" line="20" column="5" bodyfile="main.c" bodystart="20" bodyend="35"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
 <para><itemizedlist>
-<listitem><para>Ficheiro principal </para>
+<listitem><para>Módulo que lê o input do utilizador </para>
 </listitem></itemizedlist>
 </para>
     </briefdescription>
     <detaileddescription>
-<para><simplesect kind="author"><para>Grupo 3 PL4 </para>
-</simplesect>
-<simplesect kind="date"><para>2021-03-24</para>
-</simplesect>
-<simplesect kind="copyright"><para>Copyright (c) 2021 </para>
+<para><simplesect kind="copyright"><para>Copyright (c) 2021 </para>
 </simplesect>
 </para>
     </detaileddescription>
     <programlisting>
 <codeline lineno="1"><highlight class="normal"></highlight></codeline>
-<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/>include<sp/>&lt;stdio.h&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/>include<sp/>&lt;stdlib.h&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/>include<sp/>&lt;assert.h&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/>include<sp/>&lt;string.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/>include<sp/>&lt;stdio.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/>include<sp/>&lt;stdlib.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/>include<sp/>&lt;assert.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/>include<sp/>&lt;string.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/>include<sp/>&quot;<ref refid="parser_8h" kindref="compound">parser.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/>include<sp/>&quot;<ref refid="stack_8h" kindref="compound">stack.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="14"><highlight class="normal"></highlight></codeline>
-<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/>include<sp/>&quot;<ref refid="parser_8h" kindref="compound">parser.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="16"><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/>include<sp/>&quot;<ref refid="stack_8h" kindref="compound">stack.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="17"><highlight class="normal"></highlight></codeline>
-<codeline lineno="18"><highlight class="normal"></highlight></codeline>
-<codeline lineno="24"><highlight class="normal"></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="main_8c_1ae66f6b31b5ad750f1fe042a706a4e3d4" kindref="member">main</ref>()<sp/>{</highlight></codeline>
-<codeline lineno="25"><highlight class="normal"></highlight></codeline>
-<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>input[10240];<sp/></highlight><highlight class="comment">//<sp/>Tamanho<sp/>máximo<sp/>que<sp/>a<sp/>string<sp/>pode<sp/>tomar.</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="27"><highlight class="normal"></highlight></codeline>
-<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(<sp/>fgets(input,<sp/>10240,<sp/>stdin)<sp/>!=<sp/>NULL);<sp/></highlight><highlight class="comment">//<sp/>Usa<sp/>o<sp/>fgets<sp/>para<sp/>extrair<sp/>do<sp/>input<sp/>do<sp/>stdin<sp/>e<sp/>guarda<sp/>na<sp/>variavel<sp/>input<sp/>(usa<sp/>o<sp/>assert<sp/>para<sp/>garantir<sp/>que<sp/>algo<sp/>é<sp/>introduzido).</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(<sp/>input[strlen(input)<sp/>-<sp/>1]<sp/>==<sp/></highlight><highlight class="charliteral">&apos;\n&apos;</highlight><highlight class="normal"><sp/>);<sp/></highlight><highlight class="comment">//<sp/>Verifica<sp/>se<sp/>o<sp/>tamanho<sp/>da<sp/>string<sp/>não<sp/>ultrapassa<sp/>os<sp/>10k.</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="30"><highlight class="normal"></highlight></codeline>
-<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Chama<sp/>o<sp/>parser<sp/>para<sp/>fazer<sp/>o<sp/>parsing<sp/>da<sp/>string<sp/>(parser.c).</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="parser_8c_1ab116abcccaf4f52d6bb5f1235d1f7cbd" kindref="member">parser</ref>(input);<sp/></highlight></codeline>
-<codeline lineno="33"><highlight class="normal"></highlight></codeline>
-<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0;</highlight></codeline>
-<codeline lineno="35"><highlight class="normal"></highlight></codeline>
-<codeline lineno="36"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="main_8c_1ae66f6b31b5ad750f1fe042a706a4e3d4" kindref="member">main</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>input[10240];<sp/></highlight><highlight class="comment">//<sp/>Tamanho<sp/>máximo<sp/>que<sp/>a<sp/>string<sp/>pode<sp/>tomar.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Usa<sp/>o<sp/>fgets<sp/>para<sp/>extrair<sp/>do<sp/>input<sp/>do<sp/>stdin<sp/>e<sp/>guarda<sp/>na<sp/>variavel<sp/>input<sp/>(usa<sp/>o<sp/>assert<sp/>para<sp/>garantir<sp/>que<sp/>algo<sp/>é<sp/>introduzido).</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(<sp/>fgets(input,<sp/>10240,<sp/>stdin)<sp/>!=<sp/>NULL);</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Verifica<sp/>se<sp/>o<sp/>tamanho<sp/>da<sp/>string<sp/>não<sp/>ultrapassa<sp/>os<sp/>10k.<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(<sp/>input[strlen(input)<sp/>-<sp/>1]<sp/>==<sp/></highlight><highlight class="charliteral">&apos;\n&apos;</highlight><highlight class="normal"><sp/>);<sp/></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Chama<sp/>o<sp/>parser<sp/>para<sp/>fazer<sp/>o<sp/>parsing<sp/>da<sp/>string.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="parser_8c_1ab116abcccaf4f52d6bb5f1235d1f7cbd" kindref="member">parser</ref>(input);<sp/></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0;</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal">}</highlight></codeline>
     </programlisting>
     <location file="main.c"/>
   </compounddef>

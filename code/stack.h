@@ -1,5 +1,6 @@
 /**
- * @file Header file para o ficheiro \a stack.c \a .
+ * @file stack.h - Contém os prótotipos do módulo stack.c
+ * @copyright Copyright (c) 2021
  */
 
 /// SIZE é o valor do tamanho máximo da stack.
@@ -22,7 +23,7 @@ typedef struct stack {
 } stack;
 
 /**
- * \brief Função que inicializa uma stack (structure definida em stack.h).
+ * \brief Função que inicializa uma stack.
  * @returns Devolve a stack criada.
  */
 stack create();
