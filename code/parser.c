@@ -24,6 +24,7 @@ void parser(char *line) {
     long value;       
 
     // Queremos iterar sobre todos os tokens na string dada.
+    // Mudar isto para outro módulo / função, está feio assim.
     while (token != NULL) {
                  
         value = strtol(token, &endptr, 10);
@@ -36,7 +37,6 @@ void parser(char *line) {
         }
         else if (strcmp(token, "+") == 0) {
      
-             // printf("%s\n", token);
              int x = pop(&s);
              int y = pop(&s);
              push(&s, x+y);

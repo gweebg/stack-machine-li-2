@@ -1,7 +1,6 @@
 /**
- * @file main.c - Módulo que lê o input do utilizador
+ * @file main.c - Módulo mestre
  * @copyright Copyright (c) 2021
- * 
  */
 
 # include <stdio.h>
@@ -14,8 +13,9 @@
 
 /**
  * @brief Esta é a função principal, responsável por receber o input do utilizador.
- * 
+ * A função main é essencial para que o interpretador funcione, não só lê o input do utilizador como chama as funções contidas no módulo parser.c para analizar e realizar as operações necessárias de modo a fornecer um output válido.
  * @return 0, se o input foi lido e parsed com sucesso. 
+ * @see parser.c
  */
 int main() {
 
