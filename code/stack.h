@@ -4,20 +4,42 @@
  */
 
 /** SIZE é o valor do tamanho máximo da stack. */
-# define SIZE 10240
+#define SIZE 10240
 
-/**
- * @brief Estrutura da stack.
- * 
- * @var stack::elems
- * Array que contém os elementos da stack.
- * @var stack::pointer
- * Stack pointer, aponta sempre para o valor no topo da stack.
- */
-typedef struct stack {
+typedef enum stack_type
+{
 
-    long elems[SIZE];
+    STACK_CHAR,
+    STACK_INT,
+    STACK_LONG,
+    STACK_FLOAT,
+    STACK_DOUBLE,
+    STACK_POINTER
+
+}stack_type;
+
+typedef struct stack_elem
+{
+
+    enum stack_type type;
+    union
+    {
+
+        char char_value;
+        int int_value;
+        long long_value;
+        float float_value;
+        double double_value;
+        void *pointer_value;
+
+    } data;
+}stack_elem;
+
+typedef struct stack
+{
+
     int pointer;
+    stack_elem elems[SIZE];
 
 } stack;
 
@@ -54,7 +76,7 @@ int stackStatus(stack *s);
  * * 1, se a stack estiver vazia.
  * @see pop()
  */
-int push(stack *s, int value);
+void push(stack *s, const enum stack_type type, ...);
 
 /**
  * \brief Adiciona um elemento no topo da stack.
@@ -66,7 +88,7 @@ int push(stack *s, int value);
  * * 1, se a stack estiver cheia.
  * @see push()
  */
-int pop(stack *s);
+stack_type pop(stack *s, const enum stack_type type);
 
 /**
  * \brief Esta função despeja todos os elementos contidos na stack.
