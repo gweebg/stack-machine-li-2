@@ -30,7 +30,7 @@ typedef struct stack_elem
         long long_value;
         float float_value;
         double double_value;
-        void *pointer_value;
+        char *string_value;
 
     } data;
 }stack_elem;
@@ -88,7 +88,7 @@ void push(stack *s, const enum stack_type type, ...);
  * * 1, se a stack estiver cheia.
  * @see push()
  */
-stack_type pop(stack *s, const enum stack_type type);
+stack_elem pop(stack *s);
 
 /**
  * \brief Esta função despeja todos os elementos contidos na stack.

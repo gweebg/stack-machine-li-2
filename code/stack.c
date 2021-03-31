@@ -47,39 +47,45 @@ void push(stack *s, const enum stack_type type, ...)
 
         switch (type)
         {
-            case STACK_CHAR:
-                s->elems[s->pointer].data.char_value = (char)va_arg(ap, int);
-                s->elems[s->pointer].type = type;
-                break;
+        case STACK_CHAR:
+            s->pointer++;
+            s->elems[s->pointer].data.char_value = (char)va_arg(ap, int);
+            s->elems[s->pointer].type = type;
+            break;
 
-            case STACK_INT:
-                s->elems[s->pointer].data.int_value = (int)va_arg(ap, int);
-                s->elems[s->pointer].type = type;
-                break;
+        case STACK_INT:
+            s->pointer++;
+            s->elems[s->pointer].data.int_value = (int)va_arg(ap, int);
+            s->elems[s->pointer].type = type;
+            break;
 
-            case STACK_LONG:
-                s->elems[s->pointer].data.long_value = (float)va_arg(ap, long);
-                s->elems[s->pointer].type = type;
-                break;
+        case STACK_LONG:
+            s->pointer++;
+            s->elems[s->pointer].data.long_value = (float)va_arg(ap, long);
+            s->elems[s->pointer].type = type;
+            break;
 
-            case STACK_FLOAT:
-                s->elems[s->pointer].data.float_value = (float)va_arg(ap, double);
-                s->elems[s->pointer].type = type;
-                break;
+        case STACK_FLOAT:
+            s->pointer++;
+            s->elems[s->pointer].data.float_value = (float)va_arg(ap, double);
+            s->elems[s->pointer].type = type;
+            break;
 
-            case STACK_DOUBLE:
-                s->elems[s->pointer].data.double_value = va_arg(ap, double);
-                s->elems[s->pointer].type = type;
-                break;
+        case STACK_DOUBLE:
+            s->pointer++;
+            s->elems[s->pointer].data.double_value = va_arg(ap, double);
+            s->elems[s->pointer].type = type;
+            break;
 
-            case STACK_POINTER:
-                s->elems[s->pointer].data.pointer_value = va_arg(ap, void *);
-                s->elems[s->pointer].type = type;
-                break;
+        case STACK_POINTER:
+            s->pointer++;
+            s->elems[s->pointer].data.string_value = va_arg(ap, char *);
+            s->elems[s->pointer].type = type;
+            break;
 
-            default:
-                fprintf(stderr, "O tipo não existe!\n");
-                exit(EXIT_FAILURE);
+        default:
+            fprintf(stderr, "O tipo não existe!\n");
+            exit(EXIT_FAILURE);
         }
     }
     else
@@ -89,52 +95,16 @@ void push(stack *s, const enum stack_type type, ...)
     }
 }
 
-stack_type pop(stack *s, const enum stack_type type)
+stack_elem pop(stack *s)
 {
 
     int status = stackStatus(s);
 
-    if (status == 0)
+    if (status != 0)
     {
-
-        switch (type)
-        {
-            case STACK_CHAR: ;
-                char c = s->elems[s->pointer].data.char_value; 
-                s->pointer--;                                  
-                return c;
-
-            case STACK_INT: ;
-                int i = s->elems[s->pointer].data.int_value;
-                s->pointer--;
-                return i;
-
-            case STACK_LONG: ;
-                long l = s->elems[s->pointer].data.long_value;
-                s->pointer--;
-                return l;
-
-            case STACK_FLOAT: ;
-                float f = s->elems[s->pointer].data.float_value;
-                s->pointer--;
-                return f;
-
-            case STACK_DOUBLE: ;
-                double d = s->elems[s->pointer].data.double_value;
-                s->pointer--;
-                return d;
-
-            case STACK_POINTER: ;
-                void *p = s->elems[s->pointer].data.pointer_value;
-                s->pointer--;
-                return p; // FIXME:
-
-            default:
-                fprintf(stderr, "O tipo não existe!\n");
-                exit(EXIT_FAILURE);
-        }
+        s->pointer--;
+        return s->elems[s->pointer];
     }
-
     else
     {
         fprintf(stderr, "A stack está vazia!\n");
@@ -142,43 +112,45 @@ stack_type pop(stack *s, const enum stack_type type)
     }
 }
 
-// void dumpStack(stack *s)
-// {
+void dumpStack(stack *s)
+{
 
-//     // printf("Stack Dump: ");
-//     for (int i = 0; i < s->pointer + 1; i++)
-//     {
-//         switch(s->elems[i].type)
-//         {
-//             case STACK_CHAR: ;
-//                 char c = s->elems[s->pointer].data.char_value;                          
-//                 printf("%c ",c);
+    printf("Stack Dump: ");
+    for (int i = 0; i < s->pointer + 1; i++)
+    {
+        stack_elem elem = s->elems[i];
+        stack_type type = elem.type;
 
-//             case STACK_INT: ;
-//                 int i = s->elems[s->pointer].data.int_value;                          
-//                 printf("%d ",i);
+        switch (type)
+        {
+        case STACK_CHAR:
+            printf("%c ", elem.data.char_value);
+            break;
 
-//             case STACK_LONG: ;
-//                 long l = s->elems[s->pointer].data.long_value;                          
-//                 printf("%ld ",l);
+        case STACK_INT:
+            printf("%d ", elem.data.int_value);
+            break;
 
-//             case STACK_FLOAT: ;
-//                 float f = s->elems[s->pointer].data.float_value;                          
-//                 printf("%f ",f);
+        case STACK_LONG:
+            printf("%ld ", elem.data.long_value);
+            break;
 
-//             case STACK_DOUBLE: ;
-//                 double d = s->elems[s->pointer].data.double_value;                          
-//                 printf("%lf ", d);
+        case STACK_FLOAT:
+            printf("%f ", elem.data.float_value);
+            break;
 
-//             case STACK_POINTER: ;
-//                 void *p = s->elems[s->pointer].data.pointer_value;                          
-//                 printf("%p ",p);
+        case STACK_DOUBLE:
+            printf("%g ", elem.data.double_value);
+            break;
 
-//             default:
-//                 fprintf(stderr, "unknown");
-//                 exit(EXIT_FAILURE);
-//         }
+        case STACK_POINTER:
+            printf("%s ", elem.data.string_value);
+            break;
 
-//     }
-//     printf("\n");
-// }
+        default:
+            fprintf(stderr, "unknown");
+            exit(EXIT_FAILURE);
+        }
+    }
+    printf("\n");
+}
