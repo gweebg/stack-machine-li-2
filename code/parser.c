@@ -16,7 +16,7 @@
 bool check_reserved(char c)
 {
 
-     char *reserved = "ltpifcsw";
+     char *reserved = "ltpifcsw+-/&%#*";
      int i = 0;
 
      while (reserved[i] != '\0')
@@ -74,22 +74,133 @@ void parser(char *line)
                // Pushes double to stack
                push(&s, STACK_DOUBLE, double_value);
           }
-          else if (strlen(token) == 1)
-          {
+          // else if (strlen(token) == 1)
+          // {
 
-               char c = token[0]; // Como temos a certeza de que a string só tem um elemento, podemos aceder ao seu primeiro elemento para depois usar no push.
-               // Temos de verificar se o char não é um comando
-               if (!check_reserved(c))
-                    push(&s, STACK_CHAR, c); // Push do caratére c para a stack.
-          
-          }
+          //      char c = token[0]; // Como temos a certeza de que a string só tem um elemento, podemos aceder ao seu primeiro elemento para depois usar no push.
+          //      // Temos de verificar se o char não é um comando
+          //      if (!check_reserved(c))
+          //           push(&s, STACK_CHAR, c); // Push do caratére c para a stack.
+          // }
           else if (strlen(token) > 1)
           {
                // Push da string para a stack.
                push(&s, STACK_POINTER, token);
           }
+          else if (strcmp(token, "+") == 0)
+          {
+
+               // printf("%s\n", token);
+               int x = pop(&s).data.int_value;
+               int y = pop(&s).data.int_value;
+
+               push(&s, STACK_INT, x + y);
+               // printf("%d + %d = %d\n", x, y, (x+y));
+          }
+          else if (strcmp(token, "-") == 0)
+          {
+
+               // printf("%s\n", token);
+               int x = pop(&s).data.int_value;
+               int y = pop(&s).data.int_value;
+
+               push(&s, STACK_INT, y - x);
+               // printf("%d - %d = %d\n", x, y, (y-x));
+          }
+          else if (strcmp(token, "*") == 0)
+          {
+
+               // printf("%s\n", token);
+               int x = pop(&s).data.int_value;
+               int y = pop(&s).data.int_value;
+
+               push(&s, STACK_INT, x * y);
+               // printf("%d * %d = %d\n", x, y, (x*y));
+          }
+          else if (strcmp(token, "/") == 0)
+          {
+
+               // printf("%s\n", token);
+               int x = pop(&s).data.int_value;
+               int y = pop(&s).data.int_value;
+
+               push(&s, STACK_INT, y / x);
+               // printf("%d / %d = %d\n", y, x, (y/x));
+          }
+          else if (strcmp(token, "#") == 0)
+          {
+
+               // printf("%s\n", token);
+               int x = pop(&s).data.int_value;
+               int y = pop(&s).data.int_value;
+
+               push(&s, STACK_INT, (int)pow(y, x));
+               // printf("%d ^ %d = %f\n", y, x, (pow(y,x)));
+               
+          }
+          else if (strcmp(token, "%") == 0)
+          {
+
+               // printf("%s\n", token);
+               int x = pop(&s).data.int_value;
+               int y = pop(&s).data.int_value;
+
+               push(&s, STACK_INT, y % x);
+               // printf("%d + %d = %d\n", x, y, (x+y));
+          }
+          else if (strcmp(token, "(") == 0)
+          {
+
+               // printf("%s\n", token);
+               int x = pop(&s).data.int_value;
+               push(&s, STACK_INT, x - 1);
+               // printf("%d + %d = %d\n", x, y, (x+y));
+          }
+          else if (strcmp(token, ")") == 0)
+          {
+
+               // printf("%s\n", token);
+               int x = pop(&s).data.int_value;
+               push(&s, STACK_INT, x + 1);
+               // printf("%d + %d = %d\n", x, y, (x+y));
+          }
+          else if (strcmp(token, "&") == 0)
+          {
+
+               int x = pop(&s).data.int_value;
+               int y = pop(&s).data.int_value;
+
+               push(&s, STACK_INT, y & x);
+               // printf("%d & %d = %d\n", y, x, y&x);
+          }
+          else if (strcmp(token, "|") == 0)
+          {
+
+               int x = pop(&s).data.int_value;
+               int y = pop(&s).data.int_value;
+
+               push(&s, STACK_INT, y | x);
+          }
+          else if (strcmp(token, "^") == 0)
+          {
+
+               int x = pop(&s).data.int_value;
+               int y = pop(&s).data.int_value;
+
+               push(&s, STACK_INT, y ^ x);
+          }
+          else if (strcmp(token, "~") == 0)
+          {
+
+               int x = pop(&s).data.int_value;
+               push(&s, STACK_INT, ~x);
+          }
 
           token = strtok(NULL, delim);
+
+          // TODO: Fazer função para ver os tipos dos 2 primeiros elementos
+          // TODO: Usar esse tipo na conversão de dados e forçar a ser INT
+          // Como está, dá 100% guião 1.
      }
 
      // push(&s, STACK_CHAR, 'a');
@@ -107,10 +218,10 @@ void parser(char *line)
      // pop(&s);
 
      dumpStack(&s);
-     printf("\n");
+     // printf("\n");
 
      // pop(&s);
 
-     int status = stackStatus(&s);
-     printf("Stack Status: %d\nStack pointer: %d\n", status, s.pointer);
+     // int status = stackStatus(&s);
+     // printf("Stack Status: %d\nStack pointer: %d\n", status, s.pointer);
 }
