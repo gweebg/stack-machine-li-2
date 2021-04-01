@@ -102,8 +102,9 @@ stack_elem pop(stack *s)
 
     if (status != 0)
     {
-        return s->elems[s->pointer];
+        stack_elem elem = s->elems[s->pointer];
         s->pointer--;
+        return elem;
     }
     else
     {
