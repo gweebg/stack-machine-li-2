@@ -22,7 +22,7 @@ typedef struct stack_elem
 {
 
     enum stack_type type;
-    union
+    union data
     {
 
         char char_value;

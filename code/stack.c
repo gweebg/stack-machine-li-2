@@ -55,13 +55,13 @@ void push(stack *s, const enum stack_type type, ...)
 
         case STACK_INT:
             s->pointer++;
-            s->elems[s->pointer].data.int_value = (int)va_arg(ap, int);
+            s->elems[s->pointer].data.int_value = va_arg(ap, int);
             s->elems[s->pointer].type = type;
             break;
 
         case STACK_LONG:
             s->pointer++;
-            s->elems[s->pointer].data.long_value = (float)va_arg(ap, long);
+            s->elems[s->pointer].data.long_value = va_arg(ap, long);
             s->elems[s->pointer].type = type;
             break;
 
@@ -102,8 +102,8 @@ stack_elem pop(stack *s)
 
     if (status != 0)
     {
-        s->pointer--;
         return s->elems[s->pointer];
+        s->pointer--;
     }
     else
     {
