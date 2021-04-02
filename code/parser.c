@@ -40,7 +40,9 @@ void parser(char *line)
      // printf("Stack criada com sucesso!\n");
 
      char *delim = " \t\n";
-     char *token = strtok(line, delim); // Divide a string tendo em conta delimitadores (definidos em delim).
+
+     // Divide a string tendo em conta delimitadores (definidos em delim).
+     char *token = strtok(line, delim);
 
      char *endptr_int;
      char *endptr_float;
@@ -50,8 +52,6 @@ void parser(char *line)
      float float_value;
      double double_value;
 
-     // Queremos iterar sobre todos os tokens na string dada.
-     // Mudar isto para outro módulo / função, está feio assim.
      while (token != NULL)
      {
 
@@ -212,7 +212,28 @@ void parser(char *line)
                push(&s, x.type, x.data);
                push(&s, y.type, y.data);
           }
+          else if (strcmp(token, "$") == 0)
+          {
+               int val = pop(&s).data.int_value;
+               int index = s.pointer - val;
+
+               stack_elem new_val = s.elems[index];
+               push(&s, new_val.type, new_val.data);
+          }
+          else if (strcmp(token, "@") == 0)
+          {
+
+               stack_elem a = pop(&s);
+               stack_elem b = pop(&s);
+               stack_elem c = pop(&s);
+
+               // a b c --> b c a
+
+               push(&s, b.type, b.data);
+               push(&s, a.type, a.data);
+               push(&s, c.type, c.data);     
           
+          }
 
           token = strtok(NULL, delim);
 
@@ -221,24 +242,7 @@ void parser(char *line)
           // Como está, dá 100% guião 1.
      }
 
-     // push(&s, STACK_CHAR, 'a');
-     // printf("Pushed 'a' to the stack.\n");
-
-     // push(&s, STACK_INT, 20);
-     // printf("Pushed 20 to the stack.\n");
-
-     // push(&s, STACK_POINTER, "ola");
-     // printf("Pushed 'ola' to the stack.\n");
-
-     // push(&s, STACK_FLOAT, 10.10);
-     // printf("Pushed 10.10 to the stack.\n\n");
-
-     // pop(&s);
-
      dumpStack(&s);
-     // printf("\n");
-
-     // pop(&s);
 
      // int status = stackStatus(&s);
      // printf("Stack Status: %d\nStack pointer: %d\n", status, s.pointer);
