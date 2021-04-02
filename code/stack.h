@@ -98,3 +98,13 @@ stack_elem pop(stack *s);
  * @see pop() push()
  */
 void dumpStack(stack *s);
+
+/**
+ * \brief Esta função é usada para ver quais elementos estão no topo da stack.
+ * 
+ * @param[in] s Stack a ser avaliada.
+ * @param[in] level Level : 1 | 0, 1 vê os primeiros dois elementos, 0 vê apenas o primeiro elemento.
+ * @returns Devolve uma stack_elem array contendo os elementos.
+ * @note No máximo só são vistos 2 elementos da stack.
+ */
+stack_elem peek(stack *s);

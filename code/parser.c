@@ -16,7 +16,7 @@
 bool check_reserved(char c)
 {
 
-     char *reserved = "ltpifcsw+-/&%#*";
+     char *reserved = "ltpifcsw+-/&%#*_;\\@$";
      int i = 0;
 
      while (reserved[i] != '\0')
@@ -74,14 +74,11 @@ void parser(char *line)
                // Pushes double to stack
                push(&s, STACK_DOUBLE, double_value);
           }
-          // else if (strlen(token) == 1)
-          // {
-
-          //      char c = token[0]; // Como temos a certeza de que a string só tem um elemento, podemos aceder ao seu primeiro elemento para depois usar no push.
-          //      // Temos de verificar se o char não é um comando
-          //      if (!check_reserved(c))
-          //           push(&s, STACK_CHAR, c); // Push do caratére c para a stack.
-          // }
+          else if (strlen(token) == 1 && !check_reserved(token[0]))
+          {
+               // Push do caratére c para a stack só depois de confirmar que não é um char reservado.
+               push(&s, STACK_CHAR, token[0]);
+          }
           else if (strlen(token) > 1)
           {
                // Push da string para a stack.
@@ -136,7 +133,6 @@ void parser(char *line)
 
                push(&s, STACK_INT, (int)pow(y, x));
                // printf("%d ^ %d = %f\n", y, x, (pow(y,x)));
-               
           }
           else if (strcmp(token, "%") == 0)
           {
@@ -195,6 +191,28 @@ void parser(char *line)
                int x = pop(&s).data.int_value;
                push(&s, STACK_INT, ~x);
           }
+          else if (strcmp(token, "_") == 0)
+          {
+               // Duplicar o que está no topo
+               // printf("Entrou no certo!\n");
+               stack_elem top = peek(&s);
+               stack_type type = top.type;
+
+               push(&s, type, top.data);
+          }
+          else if (strcmp(token, ";") == 0)
+          {
+               pop(&s);
+          }
+          else if (strcmp(token, "\\") == 0)
+          {
+               stack_elem x = pop(&s);
+               stack_elem y = pop(&s);
+
+               push(&s, x.type, x.data);
+               push(&s, y.type, y.data);
+          }
+          
 
           token = strtok(NULL, delim);
 
