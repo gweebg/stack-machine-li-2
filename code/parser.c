@@ -16,7 +16,7 @@
 bool check_reserved(char c)
 {
 
-     char *reserved = "ltpifcsw+-/&%#*_;\\@$";
+     char *reserved = "ltpifcsw+-/&%#*_;\\@$"; // String com letras reservadas a comandos.
      int i = 0;
 
      while (reserved[i] != '\0')
@@ -81,13 +81,14 @@ void parser(char *line)
           }
           else if (strlen(token) > 1)
           {
-               // Push da string para a stack.
+               // Push de uma string para a stack.
                push(&s, STACK_POINTER, token);
           }
           else if (strcmp(token, "+") == 0)
           {
 
-               // printf("%s\n", token);
+               // Daqui para baixo estamos a assumir que todos os valores introduzidos são inteiros.
+               // Sugestão, fazer muitos ifs para testar todas as combinações de tipos e decidir o tipo final com base nos mesmos.
                int x = pop(&s).data.int_value;
                int y = pop(&s).data.int_value;
 
@@ -194,7 +195,6 @@ void parser(char *line)
           else if (strcmp(token, "_") == 0)
           {
                // Duplicar o que está no topo
-               // printf("Entrou no certo!\n");
                stack_elem top = peek(&s);
                stack_type type = top.type;
 
@@ -227,19 +227,21 @@ void parser(char *line)
                stack_elem b = pop(&s);
                stack_elem c = pop(&s);
 
-               // a b c --> b c a
+               // a b c --> b c a (lembrando que c está no topo da stack)
 
                push(&s, b.type, b.data);
                push(&s, a.type, a.data);
                push(&s, c.type, c.data);     
           
           }
+          else if (strcmp(token, "c") == 0)
+          {
+               stack_elem ascii = pop(&s);
+               push(&s, STACK_CHAR, ascii.data.int_value);
+
+          }
 
           token = strtok(NULL, delim);
-
-          // TODO: Fazer função para ver os tipos dos 2 primeiros elementos
-          // TODO: Usar esse tipo na conversão de dados e forçar a ser INT
-          // Como está, dá 100% guião 1.
      }
 
      dumpStack(&s);
