@@ -74,14 +74,10 @@ void parser(char *line)
                // Pushes double to stack
                push(&s, STACK_DOUBLE, double_value);
           }
-          // else if (strlen(token) == 1)
-          // {
-
-          //      char c = token[0]; // Como temos a certeza de que a string só tem um elemento, podemos aceder ao seu primeiro elemento para depois usar no push.
-          //      // Temos de verificar se o char não é um comando
-          //      if (!check_reserved(c))
-          //           push(&s, STACK_CHAR, c); // Push do caratére c para a stack.
-          // }
+          else if (strlen(token) == 1 && !check_reserved(token[0]))
+          {
+               push(&s, STACK_CHAR, token[0]); // Push do caratére c para a stack.
+          }
           else if (strlen(token) > 1)
           {
                // Push da string para a stack.
