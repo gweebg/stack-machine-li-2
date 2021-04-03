@@ -136,7 +136,6 @@ void parser(char *line)
 
                push(&s, STACK_INT, (int)pow(y, x));
                // printf("%d ^ %d = %f\n", y, x, (pow(y,x)));
-
           }
           else if (strcmp(token, "%") == 0)
           {
@@ -198,51 +197,51 @@ void parser(char *line)
 
           else if (strcmp(token, "l") == 0)
           {
-              char* value;
-              scanf("%s"), &value;
-              push(&s, STACK_POINTER, value);
+               char value[SIZE];
+               assert(scanf("%s", value) == 1);
+               push(&s, STACK_POINTER, value);
           }
-
-          else if(strcmp(token, "p") == 0)
+          else if (strcmp(token, "p") == 0)
           {
-              stack_elem top = peek(&s);
+               stack_elem top = peek(&s);
 
-              if(top.type == STACK_CHAR)
-              {
-                printf("%c\n", top.data.char_value);
-              }
+               if (top.type == STACK_CHAR)
+               {
+                    printf("%c\n", top.data.char_value);
+               }
 
-              else if(top.type == STACK_POINTER)
-              {
-                printf("%s\n", top.data.string_value);
-              }
+               else if (top.type == STACK_POINTER)
+               {
+                    printf("%s\n", top.data.string_value);
+               }
 
-              else if(top.type == STACK_INT)
-              {
-                  printf("%i\n", top.data.int_value);
-              }
+               else if (top.type == STACK_INT)
+               {
+                    printf("%d\n", top.data.int_value);
+               }
 
-              else if(top.type == STACK_LONG)
-              {
-                  printf("%i\n", top.data.long_value);
-              }
+               else if (top.type == STACK_LONG)
+               {
+                    printf("%li\n", top.data.long_value);
+               }
 
-              else if(top.type == STACK_FLOAT)
-              {
-                  printf("%f\n", top.data.float_value);
-              }
+               else if (top.type == STACK_FLOAT)
+               {
+                    printf("%f\n", top.data.float_value);
+               }
 
-              else if(top.type == STACK_DOUBLE)
-              {
-                  printf("%f\n", top.data.string_value);
-              }
+               else if (top.type == STACK_DOUBLE)
+               {
+                    printf("%f\n", top.data.double_value);
+               }
 
-              else
-                printf("ERRO: topo da stack com formato desconhecido.");
-
+               else
+               {
+                    fprintf(stderr, "O tipo não existe!\n");
+                    exit(EXIT_FAILURE);
+               }
           }
-
-
+     
           token = strtok(NULL, delim);
 
           // TODO: Fazer função para ver os tipos dos 2 primeiros elementos
@@ -250,24 +249,7 @@ void parser(char *line)
           // Como está, dá 100% guião 1.
      }
 
-     // push(&s, STACK_CHAR, 'a');
-     // printf("Pushed 'a' to the stack.\n");
-
-     // push(&s, STACK_INT, 20);
-     // printf("Pushed 20 to the stack.\n");
-
-     // push(&s, STACK_POINTER, "ola");
-     // printf("Pushed 'ola' to the stack.\n");
-
-     // push(&s, STACK_FLOAT, 10.10);
-     // printf("Pushed 10.10 to the stack.\n\n");
-
-     // pop(&s);
-
      dumpStack(&s);
-     // printf("\n");
-
-     // pop(&s);
 
      // int status = stackStatus(&s);
      // printf("Stack Status: %d\nStack pointer: %d\n", status, s.pointer);
