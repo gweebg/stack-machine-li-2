@@ -16,7 +16,7 @@
 bool check_reserved(char c)
 {
 
-     char *reserved = "ltpifcsw+-/&%#*";
+     char *reserved = "ltpifcsw+-/&%#*_;\\@$";
      int i = 0;
 
      while (reserved[i] != '\0')
@@ -194,7 +194,47 @@ void parser(char *line)
                int x = pop(&s).data.int_value;
                push(&s, STACK_INT, ~x);
           }
+          else if (strcmp(token, "_") == 0)
+          {
+               // Duplicar o que está no topo
+               stack_elem top = peek(&s);
+               stack_type type = top.type;
 
+               push(&s, type, top.data);
+          }
+          else if (strcmp(token, ";") == 0)
+          {
+               pop(&s);
+          }
+          else if (strcmp(token, "\\") == 0)
+          {
+               stack_elem x = pop(&s);
+               stack_elem y = pop(&s);
+
+               push(&s, x.type, x.data);
+               push(&s, y.type, y.data);
+          }
+          else if (strcmp(token, "$") == 0)
+          {
+               int val = pop(&s).data.int_value;
+               int index = s.pointer - val;
+
+               stack_elem new_val = s.elems[index];
+               push(&s, new_val.type, new_val.data);
+          }
+          else if (strcmp(token, "@") == 0)
+          {
+
+               stack_elem a = pop(&s);
+               stack_elem b = pop(&s);
+               stack_elem c = pop(&s);
+
+               // a b c --> b c a (lembrando que c está no topo da stack)
+
+               push(&s, b.type, b.data);
+               push(&s, a.type, a.data);
+               push(&s, c.type, c.data);
+          }
           else if (strcmp(token, "l") == 0)
           {
                char value[SIZE];
@@ -241,7 +281,7 @@ void parser(char *line)
                     exit(EXIT_FAILURE);
                }
           }
-     
+
           token = strtok(NULL, delim);
 
           // TODO: Fazer função para ver os tipos dos 2 primeiros elementos
