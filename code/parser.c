@@ -264,7 +264,7 @@ void parser(char *line)
 
      // pop(&s);
 
-     //dumpStack(&s);
+     dumpStack(&s);
      // printf("\n");
 
      // pop(&s);
