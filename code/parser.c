@@ -12,11 +12,12 @@
 
 #include "parser.h"
 #include "stack.h"
+#include "operations.h"
 
 bool check_reserved(char c)
 {
 
-     char *reserved = "ltpifcsw+-/&%#*_;\\@$";
+     char *reserved = "+-*/()%#&|^~-;\\@$ltpifcs";
      int i = 0;
 
      while (reserved[i] != '\0')
@@ -50,8 +51,6 @@ void parser(char *line)
      float float_value;
      double double_value;
 
-     // Queremos iterar sobre todos os tokens na string dada.
-     // Mudar isto para outro módulo / função, está feio assim.
      while (token != NULL)
      {
 
@@ -59,178 +58,34 @@ void parser(char *line)
           float_value = strtof(token, &endptr_float);
           double_value = strtod(token, &endptr_double);
 
-          if (strlen(endptr_int) == 0)
-          {
-               // Pushes integer/long to stack
-               push(&s, STACK_INT, int_value);
-          }
-          else if (strlen(endptr_float) == 0)
-          {
-               // Pushes float to stack
-               push(&s, STACK_FLOAT, float_value);
-          }
-          else if (strlen(endptr_double) == 0)
-          {
-               // Pushes double to stack
-               push(&s, STACK_DOUBLE, double_value);
-          }
-          else if (strlen(token) == 1 && !check_reserved(token[0]))
-          {
-               push(&s, STACK_CHAR, token[0]); // Push do caratére c para a stack.
-          }
-          else if (strlen(token) > 1)
-          {
-               // Push da string para a stack.
-               push(&s, STACK_POINTER, token);
-          }
-          else if (strcmp(token, "+") == 0)
-          {
+          if (strlen(endptr_int) == 0) push(&s, STACK_INT, int_value);
+          else if (strlen(endptr_float) == 0) push(&s, STACK_FLOAT, float_value);
+          else if (strlen(endptr_double) == 0) push(&s, STACK_DOUBLE, double_value);
+          else if (strlen(token) == 1 && !check_reserved(token[0])) push(&s, STACK_CHAR, token[0]);
+          else if (strlen(token) > 1) push(&s, STACK_POINTER, token);
+          
+          // Operações com números.
+          else if (strcmp(token, "+") == 0) add(&s);
+          else if (strcmp(token, "-") == 0) sub(&s);
+          else if (strcmp(token, "*") == 0) mult(&s);
+          else if (strcmp(token, "/") == 0) division(&s);
+          else if (strcmp(token, "#") == 0) power(&s);
+          else if (strcmp(token, "%") == 0) modulus(&s);
+          else if (strcmp(token, "(") == 0) dec(&s);
+          else if (strcmp(token, ")") == 0) inc(&s);
+          else if (strcmp(token, "&") == 0) and(&s);
+          else if (strcmp(token, "|") == 0) or(&s);
+          else if (strcmp(token, "^") == 0) xor(&s);
+          else if (strcmp(token, "~") == 0) not(&s);
 
-               // printf("%s\n", token);
-               int x = pop(&s).data.int_value;
-               int y = pop(&s).data.int_value;
-
-               push(&s, STACK_INT, x + y);
-               // printf("%d + %d = %d\n", x, y, (x+y));
-          }
-          else if (strcmp(token, "-") == 0)
-          {
-
-               // printf("%s\n", token);
-               int x = pop(&s).data.int_value;
-               int y = pop(&s).data.int_value;
-
-               push(&s, STACK_INT, y - x);
-               // printf("%d - %d = %d\n", x, y, (y-x));
-          }
-          else if (strcmp(token, "*") == 0)
-          {
-
-               // printf("%s\n", token);
-               int x = pop(&s).data.int_value;
-               int y = pop(&s).data.int_value;
-
-               push(&s, STACK_INT, x * y);
-               // printf("%d * %d = %d\n", x, y, (x*y));
-          }
-          else if (strcmp(token, "/") == 0)
-          {
-
-               // printf("%s\n", token);
-               int x = pop(&s).data.int_value;
-               int y = pop(&s).data.int_value;
-
-               push(&s, STACK_INT, y / x);
-               // printf("%d / %d = %d\n", y, x, (y/x));
-          }
-          else if (strcmp(token, "#") == 0)
-          {
-
-               // printf("%s\n", token);
-               int x = pop(&s).data.int_value;
-               int y = pop(&s).data.int_value;
-
-               push(&s, STACK_INT, (int)pow(y, x));
-               // printf("%d ^ %d = %f\n", y, x, (pow(y,x)));
-          }
-          else if (strcmp(token, "%") == 0)
-          {
-
-               // printf("%s\n", token);
-               int x = pop(&s).data.int_value;
-               int y = pop(&s).data.int_value;
-
-               push(&s, STACK_INT, y % x);
-               // printf("%d + %d = %d\n", x, y, (x+y));
-          }
-          else if (strcmp(token, "(") == 0)
-          {
-
-               // printf("%s\n", token);
-               int x = pop(&s).data.int_value;
-               push(&s, STACK_INT, x - 1);
-               // printf("%d + %d = %d\n", x, y, (x+y));
-          }
-          else if (strcmp(token, ")") == 0)
-          {
-
-               // printf("%s\n", token);
-               int x = pop(&s).data.int_value;
-               push(&s, STACK_INT, x + 1);
-               // printf("%d + %d = %d\n", x, y, (x+y));
-          }
-          else if (strcmp(token, "&") == 0)
-          {
-
-               int x = pop(&s).data.int_value;
-               int y = pop(&s).data.int_value;
-
-               push(&s, STACK_INT, y & x);
-               // printf("%d & %d = %d\n", y, x, y&x);
-          }
-          else if (strcmp(token, "|") == 0)
-          {
-
-               int x = pop(&s).data.int_value;
-               int y = pop(&s).data.int_value;
-
-               push(&s, STACK_INT, y | x);
-          }
-          else if (strcmp(token, "^") == 0)
-          {
-
-               int x = pop(&s).data.int_value;
-               int y = pop(&s).data.int_value;
-
-               push(&s, STACK_INT, y ^ x);
-          }
-          else if (strcmp(token, "~") == 0)
-          {
-
-               int x = pop(&s).data.int_value;
-               push(&s, STACK_INT, ~x);
-          }
-          else if (strcmp(token, "_") == 0)
-          {
-               // Duplicar o que está no topo
-               stack_elem top = peek(&s);
-               stack_type type = top.type;
-
-               push(&s, type, top.data);
-          }
-          else if (strcmp(token, ";") == 0)
-          {
-               pop(&s);
-          }
-          else if (strcmp(token, "\\") == 0)
-          {
-               stack_elem x = pop(&s);
-               stack_elem y = pop(&s);
-
-               push(&s, x.type, x.data);
-               push(&s, y.type, y.data);
-          }
-          else if (strcmp(token, "$") == 0)
-          {
-               int val = pop(&s).data.int_value;
-               int index = s.pointer - val;
-
-               stack_elem new_val = s.elems[index];
-               push(&s, new_val.type, new_val.data);
-          }
-          else if (strcmp(token, "@") == 0)
-          {
-
-               stack_elem a = pop(&s);
-               stack_elem b = pop(&s);
-               stack_elem c = pop(&s);
-
-               // a b c --> b c a (lembrando que c está no topo da stack)
-
-               push(&s, b.type, b.data);
-               push(&s, a.type, a.data);
-               push(&s, c.type, c.data);
-          }
+          // Operações com a stack.
+          else if (strcmp(token, "_") == 0) duplicate(&s);
+          else if (strcmp(token, ";") == 0) pop(&s);
+          else if (strcmp(token, "\\") == 0) swap(&s);
+          else if (strcmp(token, "$") == 0) bring_top(&s);
+          else if (strcmp(token, "@") == 0) swap_three(&s);
+          
+          // Operações de IO.
           else if (strcmp(token, "l") == 0)
           {
                char value[SIZE];

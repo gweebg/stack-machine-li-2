@@ -125,27 +125,27 @@ void dumpStack(stack *s)
         switch (type)
         {
         case STACK_CHAR:
-            printf("%c ", elem.data.char_value);
+            printf("%c", elem.data.char_value);
             break;
 
         case STACK_INT:
-            printf("%d ", elem.data.int_value);
+            printf("%d", elem.data.int_value);
             break;
 
         case STACK_LONG:
-            printf("%ld ", elem.data.long_value);
+            printf("%ld", elem.data.long_value);
             break;
 
         case STACK_FLOAT:
-            printf("%f ", elem.data.float_value);
+            printf("%f", elem.data.float_value);
             break;
 
         case STACK_DOUBLE:
-            printf("%g ", elem.data.double_value);
+            printf("%g", elem.data.double_value);
             break;
 
         case STACK_POINTER:
-            printf("%s ", elem.data.string_value);
+            printf("%s", elem.data.string_value);
             break;
 
         default:
