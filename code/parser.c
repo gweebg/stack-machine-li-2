@@ -234,12 +234,6 @@ void parser(char *line)
                push(&s, c.type, c.data);     
           
           }
-          else if (strcmp(token, "c") == 0)
-          {
-               stack_elem ascii = pop(&s);
-               push(&s, STACK_CHAR, ascii.data.int_value);
-
-          }
 
           token = strtok(NULL, delim);
      }
