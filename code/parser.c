@@ -58,6 +58,7 @@ void parser(char *line)
           float_value = strtof(token, &endptr_float);
           double_value = strtod(token, &endptr_double);
 
+          // Push dos diferentes tipos para a stack.
           if (strlen(endptr_int) == 0) push(&s, STACK_INT, int_value);
           else if (strlen(endptr_float) == 0) push(&s, STACK_FLOAT, float_value);
           else if (strlen(endptr_double) == 0) push(&s, STACK_DOUBLE, double_value);
@@ -86,23 +87,11 @@ void parser(char *line)
           else if (strcmp(token, "@") == 0) swap_three(&s);
 
           // Operações de IO.
-          // Substitui o l com o input apresentado na linha a seguir (devolve em string)
-          else if (strcmp(token, "l") == 0)
-          {
-              line_after (&s);
-          }
-
-          // Imprime o topo da stack
-          else if (strcmp(token, "p") == 0)
-          {
-               peek_stack (&s);
-          }
-
+          else if (strcmp(token, "l") == 0) line_after (&s);
+          else if (strcmp(token, "p") == 0) peek_stack (&s);
+     
           token = strtok(NULL, delim);
 
-          // TODO: Fazer função para ver os tipos dos 2 primeiros elementos
-          // TODO: Usar esse tipo na conversão de dados e forçar a ser INT
-          // Como está, dá 100% guião 1.
      }
 
      dumpStack(&s);

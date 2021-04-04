@@ -137,7 +137,7 @@ void dumpStack(stack *s)
             break;
 
         case STACK_FLOAT:
-            printf("%f", elem.data.float_value);
+            printf("%g", elem.data.float_value);
             break;
 
         case STACK_DOUBLE:
