@@ -89,6 +89,12 @@ void parser(char *line)
           // Operações de IO.
           else if (strcmp(token, "l") == 0) line_after (&s);
           else if (strcmp(token, "p") == 0) peek_stack (&s);
+
+          // Funções para conversão de tipos.
+          else if (strcmp(token, "i") == 0) to_int(&s);
+          else if (strcmp(token, "f") == 0) to_double(&s);
+          else if (strcmp(token, "c") == 0) to_char(&s);
+          else if (strcmp(token, "s") == 0) to_string(&s);
      
           token = strtok(NULL, delim);
 

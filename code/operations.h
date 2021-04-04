@@ -22,3 +22,9 @@ void bring_top(stack *s);
 // Funções direcionadas ao IO
 void line_after(stack *s);
 void peek_stack(stack *s);
+
+// Funções para conversão de tipos.
+void to_int(stack *s);
+void to_double(stack *s);
+void to_char(stack *s);
+void to_string(stack *s);

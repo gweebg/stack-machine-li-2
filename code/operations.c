@@ -244,3 +244,128 @@ void peek_stack (stack *s)
          exit(EXIT_FAILURE);
     }
 }
+
+/*
+ * i Converter o topo da stack num inteiro
+ * f Converter o topo da stack num double
+ * c Converter o topo da stack para caratere
+ * s Converter o topo da stack para string 
+*/
+
+void to_int(stack *s)
+{
+    stack_elem x = pop(s);
+    stack_type x_type = x.type;
+
+    if (x_type == STACK_INT)
+        push(s, STACK_INT, x.data.int_value);
+    else if (x_type == STACK_FLOAT)
+        push(s, STACK_INT, (int)x.data.float_value);
+    else if (x_type == STACK_CHAR)
+        push(s, STACK_INT, (int)x.data.char_value);
+    else
+    {
+        fprintf(stderr, "Operação inválida!\n");
+        exit(EXIT_FAILURE);
+    }
+}
+
+void to_double(stack *s)
+{
+    stack_elem x = pop(s);
+    stack_type x_type = x.type;
+
+    if (x_type == STACK_INT)
+    {
+        float num = (float)x.data.int_value;
+        push(s, STACK_FLOAT, num);
+    }
+    else if (x_type == STACK_FLOAT)
+    {
+        push(s, STACK_DOUBLE, x.data.float_value);
+    }
+    else if (x_type == STACK_DOUBLE)
+    {
+        push(s, STACK_DOUBLE, x.data.float_value);
+    }
+    else if (x_type == STACK_POINTER)
+    {
+        char *string = x.data.string_value;
+        double num = strtod(string, NULL);
+
+        push(s, STACK_DOUBLE, num);
+    }
+    else
+    {
+        fprintf(stderr, "Operação inválida!\n");
+        exit(EXIT_FAILURE);
+    }
+}
+
+void to_char(stack *s)
+{
+    stack_elem x = pop(s);
+    stack_type x_type = x.type;
+
+    if (x_type == STACK_INT) push(s, STACK_CHAR, x.data.int_value);
+    else if (x_type == STACK_FLOAT) 
+    {
+        float temp = x.data.float_value;
+        int num = (int)temp;
+
+        push(s, STACK_CHAR, num);
+
+    }
+    else if (x_type == STACK_DOUBLE)
+    {
+        double temp = x.data.double_value;
+        int num = (int)temp;
+        push(s, STACK_CHAR, num);
+
+    }
+    else if (x_type == STACK_POINTER)
+    {
+        char c = x.data.string_value[0];
+        push(s, STACK_CHAR, c);
+
+    }
+
+}
+
+// Função retirada de : https://stackoverflow.com/questions/9655202/how-to-convert-integer-to-string-in-c
+char* itoa(int i, char b[]){
+    char const digit[] = "0123456789";
+    char* p = b;
+    if(i<0){
+        *p++ = '-';
+        i *= -1;
+    }
+    int shifter = i;
+    do{ //Move to where representation ends
+        ++p;
+        shifter = shifter/10;
+    }while(shifter);
+    *p = '\0';
+    do{ //Move back, inserting digits as u go
+        *--p = digit[i%10];
+        i = i/10;
+    }while(i);
+    return b;
+}
+
+void to_string(stack *s)
+{
+    stack_elem x = pop(s);
+    stack_type x_type = x.type;
+
+    if (x_type == STACK_INT)
+    {
+        char temp[SIZE];
+        int num = x.data.int_value;
+
+        itoa(num, temp);
+        push(s, STACK_POINTER, temp);
+
+    }
+
+}
