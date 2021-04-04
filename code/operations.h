@@ -18,3 +18,8 @@ void duplicate(stack *s);
 void swap(stack *s);
 void swap_three(stack *s);
 void bring_top(stack *s);
+
+// Funções direcionadas ao IO
+
+void line_after(stack *s);
+void peek_stack(stack *s);

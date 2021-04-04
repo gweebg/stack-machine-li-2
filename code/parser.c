@@ -63,7 +63,7 @@ void parser(char *line)
           else if (strlen(endptr_double) == 0) push(&s, STACK_DOUBLE, double_value);
           else if (strlen(token) == 1 && !check_reserved(token[0])) push(&s, STACK_CHAR, token[0]);
           else if (strlen(token) > 1) push(&s, STACK_POINTER, token);
-          
+
           // Operações com números.
           else if (strcmp(token, "+") == 0) add(&s);
           else if (strcmp(token, "-") == 0) sub(&s);
@@ -84,53 +84,18 @@ void parser(char *line)
           else if (strcmp(token, "\\") == 0) swap(&s);
           else if (strcmp(token, "$") == 0) bring_top(&s);
           else if (strcmp(token, "@") == 0) swap_three(&s);
-          
+
           // Operações de IO.
+          // Substitui o l com o input apresentado na linha a seguir (devolve em string)
           else if (strcmp(token, "l") == 0)
           {
-               char value[SIZE];
-               assert(scanf("%s", value) == 1);
-               push(&s, STACK_POINTER, value);
+              line_after (&s);
           }
+
+          // Imprime o topo da stack
           else if (strcmp(token, "p") == 0)
           {
-               stack_elem top = peek(&s);
-
-               if (top.type == STACK_CHAR)
-               {
-                    printf("%c\n", top.data.char_value);
-               }
-
-               else if (top.type == STACK_POINTER)
-               {
-                    printf("%s\n", top.data.string_value);
-               }
-
-               else if (top.type == STACK_INT)
-               {
-                    printf("%d\n", top.data.int_value);
-               }
-
-               else if (top.type == STACK_LONG)
-               {
-                    printf("%li\n", top.data.long_value);
-               }
-
-               else if (top.type == STACK_FLOAT)
-               {
-                    printf("%f\n", top.data.float_value);
-               }
-
-               else if (top.type == STACK_DOUBLE)
-               {
-                    printf("%f\n", top.data.double_value);
-               }
-
-               else
-               {
-                    fprintf(stderr, "O tipo não existe!\n");
-                    exit(EXIT_FAILURE);
-               }
+               peek_stack (&s);
           }
 
           token = strtok(NULL, delim);
