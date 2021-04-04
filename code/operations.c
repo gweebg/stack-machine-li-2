@@ -23,7 +23,6 @@ void add(stack *s)
 
     if (x_type == STACK_INT && y_type == STACK_INT) push(s, STACK_INT, x.data.int_value + y.data.int_value);
     else if (x_type == STACK_FLOAT && y_type == STACK_FLOAT) push(s, STACK_FLOAT, x.data.float_value + y.data.float_value);
-    else if (x_type == STACK_DOUBLE && y_type == STACK_DOUBLE) push(s, STACK_DOUBLE, x.data.double_value + y.data.double_value);
     else if (x_type == STACK_INT && y_type == STACK_FLOAT) push(s, STACK_FLOAT, (x.data.int_value) + y.data.float_value);
     else if (x_type == STACK_FLOAT && y_type == STACK_INT) push(s, STACK_FLOAT, (x.data.float_value + y.data.int_value));
     else { fprintf(stderr, "Operação inválida!\n"); exit(EXIT_FAILURE); }
@@ -32,57 +31,104 @@ void add(stack *s)
 
 void sub(stack *s)
 {
-    int x = pop(s).data.int_value;
-    int y = pop(s).data.int_value;
+    stack_elem x = pop(s);
+    stack_elem y = pop(s);
 
-    push(s, STACK_INT, y - x);
+    stack_type x_type = x.type;
+    stack_type y_type = y.type;
+
+    if (x_type == STACK_INT && y_type == STACK_INT) push(s, STACK_INT, y.data.int_value - x.data.int_value);
+    else if (x_type == STACK_FLOAT && y_type == STACK_FLOAT) push(s, STACK_FLOAT, y.data.float_value - x.data.float_value);
+    else if (x_type == STACK_INT && y_type == STACK_FLOAT) push(s, STACK_FLOAT, (y.data.float_value) - x.data.int_value);
+    else if (x_type == STACK_FLOAT && y_type == STACK_INT) push(s, STACK_FLOAT, (y.data.int_value - x.data.float_value));
+    else { fprintf(stderr, "Operação inválida!\n"); exit(EXIT_FAILURE); }
 }
 
 void mult(stack *s)
 {
-    int x = pop(s).data.int_value;
-    int y = pop(s).data.int_value;
+    stack_elem x = pop(s);
+    stack_elem y = pop(s);
 
-    push(s, STACK_INT, x * y);
+    stack_type x_type = x.type;
+    stack_type y_type = y.type;
+
+    if (x_type == STACK_INT && y_type == STACK_INT) push(s, STACK_INT, x.data.int_value * y.data.int_value);
+    else if (x_type == STACK_FLOAT && y_type == STACK_FLOAT) push(s, STACK_FLOAT, x.data.float_value * y.data.float_value);
+    else if (x_type == STACK_INT && y_type == STACK_FLOAT) push(s, STACK_FLOAT, (x.data.int_value) * y.data.float_value);
+    else if (x_type == STACK_FLOAT && y_type == STACK_INT) push(s, STACK_FLOAT, (x.data.float_value * y.data.int_value));
+    else { fprintf(stderr, "Operação inválida!\n"); exit(EXIT_FAILURE); }
 }
 
 void division(stack *s)
 {
 
-    int x = pop(s).data.int_value;
-    int y = pop(s).data.int_value;
+    stack_elem x = pop(s);
+    stack_elem y = pop(s);
 
-    push(s, STACK_INT, y / x);
+    stack_type x_type = x.type;
+    stack_type y_type = y.type;
+
+    if (x_type == STACK_INT && y_type == STACK_INT) push(s, STACK_INT, y.data.int_value / x.data.int_value);
+    else if (x_type == STACK_FLOAT && y_type == STACK_FLOAT) push(s, STACK_FLOAT, y.data.float_value / x.data.float_value);
+    else if (x_type == STACK_INT && y_type == STACK_FLOAT) push(s, STACK_FLOAT, (y.data.float_value) / x.data.int_value);
+    else if (x_type == STACK_FLOAT && y_type == STACK_INT) push(s, STACK_FLOAT, (y.data.int_value / x.data.float_value));
+    else { fprintf(stderr, "Operação inválida!\n"); exit(EXIT_FAILURE); }
 }
 
 void power(stack *s)
 {
-    int x = pop(s).data.int_value;
-    int y = pop(s).data.int_value;
+    
+    stack_elem x = pop(s);
+    stack_elem y = pop(s);
 
-    push(s, STACK_INT, (int)pow(y, x));
+    stack_type x_type = x.type;
+    stack_type y_type = y.type;
+
+    if (x_type == STACK_INT && y_type == STACK_INT) push(s, STACK_INT, (int)pow(y.data.int_value, x.data.int_value));
+    else if (x_type == STACK_FLOAT && y_type == STACK_FLOAT) push(s, STACK_FLOAT, pow(y.data.float_value, x.data.float_value));
+    else if (x_type == STACK_INT && y_type == STACK_FLOAT) push(s, STACK_FLOAT, pow((y.data.float_value), x.data.int_value));
+    else if (x_type == STACK_FLOAT && y_type == STACK_INT) push(s, STACK_FLOAT, pow(y.data.int_value, x.data.float_value));
+    else { fprintf(stderr, "Operação inválida!\n"); exit(EXIT_FAILURE); }
 }
 
 void modulus(stack *s)
 {
-    int x = pop(s).data.int_value;
-    int y = pop(s).data.int_value;
+    stack_elem x = pop(s);
+    stack_elem y = pop(s);
 
-    push(s, STACK_INT, y % x);
+    stack_type x_type = x.type;
+    stack_type y_type = y.type;
+
+    if (x_type == STACK_INT && y_type == STACK_INT) push(s, STACK_INT, y.data.int_value % x.data.int_value);
+    else if (x_type == STACK_FLOAT && y_type == STACK_FLOAT) push(s, STACK_INT, (int)y.data.float_value % (int)x.data.float_value);
+    else if (x_type == STACK_INT && y_type == STACK_FLOAT) push(s, STACK_INT, (int)(y.data.float_value) % x.data.int_value);
+    else if (x_type == STACK_FLOAT && y_type == STACK_INT) push(s, STACK_INT, (y.data.int_value % (int)x.data.float_value));
+    else { fprintf(stderr, "Operação inválida!\n"); exit(EXIT_FAILURE); }
 }
 
 void dec(stack *s)
 {
-    int x = pop(s).data.int_value;
 
-    push(s, STACK_INT, x - 1);
+    stack_elem x = pop(s);
+
+    stack_type x_type = x.type;
+
+    if (x_type == STACK_INT) push(s, STACK_INT, x.data.int_value - 1);
+    else if (x_type == STACK_FLOAT) push(s, STACK_FLOAT, x.data.float_value - 1);
+    else if (x_type == STACK_DOUBLE) push(s, STACK_FLOAT, x.data.double_value - 1);
+    else { fprintf(stderr, "Operação inválida!\n"); exit(EXIT_FAILURE); }
 }
 
 void inc(stack *s)
 {
-    int x = pop(s).data.int_value;
+    stack_elem x = pop(s);
 
-    push(s, STACK_INT, x + 1);
+    stack_type x_type = x.type;
+
+    if (x_type == STACK_INT) push(s, STACK_INT, x.data.int_value + 1);
+    else if (x_type == STACK_FLOAT) push(s, STACK_FLOAT, x.data.float_value + 1);
+    else if (x_type == STACK_DOUBLE) push(s, STACK_FLOAT, x.data.double_value + 1);
+    else { fprintf(stderr, "Operação inválida!\n"); exit(EXIT_FAILURE); }
 }
 
 void and (stack * s)

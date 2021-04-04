@@ -17,7 +17,7 @@
 bool check_reserved(char c)
 {
 
-     char *reserved = "+-*/()%#&|^~-;\\@$ltpifcs";
+     char *reserved = "+-*/()%#&|^~_;\\@$ltpifcs";
      int i = 0;
 
      while (reserved[i] != '\0')
@@ -58,6 +58,7 @@ void parser(char *line)
           float_value = strtof(token, &endptr_float);
           double_value = strtod(token, &endptr_double);
 
+          // Sorting de valores para a stack.
           if (strlen(endptr_int) == 0) push(&s, STACK_INT, int_value);
           else if (strlen(endptr_float) == 0) push(&s, STACK_FLOAT, float_value);
           else if (strlen(endptr_double) == 0) push(&s, STACK_DOUBLE, double_value);
