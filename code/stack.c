@@ -8,6 +8,7 @@
 #include <assert.h>
 #include <string.h>
 #include <stdarg.h>
+#include <math.h>
 
 #include "stack.h"
 
@@ -136,11 +137,11 @@ void dumpStack(stack *s)
             printf("%ld", elem.data.long_value);
             break;
 
-        case STACK_FLOAT:
+        case STACK_FLOAT: ;
             printf("%g", elem.data.float_value);
             break;
 
-        case STACK_DOUBLE:
+        case STACK_DOUBLE: 
             printf("%g", elem.data.double_value);
             break;
 
@@ -161,14 +162,3 @@ stack_elem peek(stack *s)
     return s->elems[s->pointer];
 }
 
-
-// stack_type decideType(stack_elem op1, stack_elem op2)
-// {
-//     stack_type op1_type = op1.type;
-//     stack_type op2_type = op2.type;
-
-//     stack_type final;
-
-//     //TODO: WIP
-
-// }

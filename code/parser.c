@@ -17,7 +17,7 @@
 bool check_reserved(char c)
 {
 
-     char *reserved = "+-*/()%#&|^~-;\\@$ltpifcs";
+     char *reserved = "+-*/()%#&|^~_;\\@$ltpifcs";
      int i = 0;
 
      while (reserved[i] != '\0')
