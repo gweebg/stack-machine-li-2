@@ -85,17 +85,70 @@ void xor(stack *s);
 void not(stack *s);
 
 // Funções direcionadas à stack.
+/**
+ * \brief Adiciona um elemento ao topo da stack,sendo este, igual ao topo da stack original.
+ * @param[in] s Stack a ser avaliada.
+ * @return Não devolve nada.
+ */
 void duplicate(stack *s);
+/**
+ * \brief Troca os dos dois elementos do topo da stack.
+ * @param[in] s Stack a ser avaliada.
+ * @return Não devolve nada.
+ * @example 
+ */
 void swap(stack *s);
+/**
+ * \brief Altera as posições dos 3 elementos do topo da stack.
+ * @param[in] s Stack a ser avaliada.
+ * @return Não devolve nada.
+ * @example a b c --> b c a, sendo c o topo da stack original.
+ */
 void swap_three(stack *s);
+/**
+ * \brief Adiciona um elemento ao topo da stack, tendo este um índice igual ao valor do topo da stack original.
+ * @param[in] s Stack a ser avaliada.
+ * @return Não devolve nada.
+ * @example 7 2 3 2 $ --> 7237
+ */
 void bring_top(stack *s);
 
 // Funções direcionadas ao IO
+/**
+ * \brief Lê a próxima linha do input.
+ * @param[in] s Stack a ser avaliada.
+ * @return Não devolve nada.
+ */
 void line_after(stack *s);
+/**
+ * \brief Retorna o elemento do topo da stack.
+ * @param[in] s Stack a ser avaliada.
+ * @return Não devolve nada.
+ */
 void peek_stack(stack *s);
 
 // Funções para conversão de tipos.
+/**
+ * \brief Altera o tipo do elemento do topo da stack para um Int.
+ * @param[in] s Stack a ser avaliada.
+ * @return Não devolve nada.
+ */
 void to_int(stack *s);
+/**
+ * \brief Altera o tipo do elemento do topo da stack para um Double.
+ * @param[in] s Stack a ser avaliada.
+ * @return Não devolve nada.
+ */
 void to_double(stack *s);
+/**
+ * \brief Altera o tipo do elemento do topo da stack para um Char.
+ * @param[in] s Stack a ser avaliada.
+ * @return Não devolve nada.
+ */
 void to_char(stack *s);
+/**
+ * \brief Altera o tipo do elemento do topo da stack para um Pointer de Char.
+ * @param[in] s Stack a ser avaliada.
+ * @return Não devolve nada.
+ */
 void to_string(stack *s);
