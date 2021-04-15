@@ -34,6 +34,20 @@ bool check_reserved(char c)
      return false; // False se não é reservado
 }
 
+bool check_reserved_string(char *s)
+{
+     char reserved[6][10] = {"e&", "e|", "e<", "e>"};
+
+     for (int i = 0; i < 6; i++)
+     {
+          if (strcmp(s, reserved[i]) == 0) return true;
+               
+     }
+
+     return false;  
+
+}
+
 void parser(char *line)
 {
 
@@ -63,7 +77,7 @@ void parser(char *line)
           else if (strlen(endptr_float) == 0) push(&s, STACK_FLOAT, float_value);
           else if (strlen(endptr_double) == 0) push(&s, STACK_DOUBLE, double_value);
           else if (strlen(token) == 1 && !check_reserved(token[0])) push(&s, STACK_CHAR, token[0]);
-          else if (strlen(token) > 1) push(&s, STACK_POINTER, token);
+          else if (strlen(token) > 1 && !check_reserved_string(token)) push(&s, STACK_POINTER, token);
 
           // Operações com números.
           else if (strcmp(token, "+") == 0) add(&s);
@@ -95,6 +109,9 @@ void parser(char *line)
           else if (strcmp(token, "f") == 0) to_double(&s);
           else if (strcmp(token, "c") == 0) to_char(&s);
           else if (strcmp(token, "s") == 0) to_string(&s);
+
+          // Funções lógicas.
+          else if (strcmp(token, "e>") == 0) largest(&s);
      
           token = strtok(NULL, delim);
 

@@ -1,3 +1,9 @@
+/**
+ * @file operations.c - Contém todas as funções para poder realizar as operações da linguagem.
+ * Para melhor legibilidade do código, separou-se as operações da Stack num módulo separado.
+ * @copyright Copyright (c) 2021
+ */
+
 #include <stdio.h>
 #include <math.h>
 #include <assert.h>
@@ -215,7 +221,7 @@ void xor (stack * s) {
     push(s, STACK_INT, y ^ x);
 }
 
-    void not(stack * s)
+void not(stack * s)
 {
 
     int x = pop(s).data.int_value;
@@ -229,7 +235,6 @@ void duplicate(stack *s)
     stack_elem top = peek(s);
     stack_type type = top.type;
 
-    // Por algum motivo não duplicava floating values.
     if (type == STACK_FLOAT)
         push(s, STACK_FLOAT, top.data.float_value);
     else
@@ -455,4 +460,49 @@ void to_string(stack *s)
     }
     else
         push(s, STACK_POINTER, x.data.string_value);
+}
+
+// * Operações lógicas
+
+/*
+0 ou {} -> False
+!= 0 -> Verdadeiro
+= -> Igual
+< -> Menor
+> -> Maior
+! -> Não
+e& -> E (com shortcut)
+e| -> Ou (com shortcut)
+e< -> Coloca o menor dos 2 valores na stack
+e> -> Coloca o maior dos 2 valores na stack
+? -> If-Then-Else
+*/
+
+void largest(stack *s)
+{
+
+    stack_elem x = pop(s);
+    stack_elem y = pop(s);
+
+    if (x.type == STACK_INT && y.type == STACK_INT) 
+    {
+        if (x.data.int_value < y.data.int_value) push(s, STACK_INT, y.data.int_value);
+    }
+    else if (x.type == STACK_FLOAT && y.type == STACK_FLOAT)
+    {
+        if (x.data.float_value < y.data.float_value) push(s, STACK_FLOAT, y.data.float_value); 
+    }
+    else if (x.type == STACK_INT && y.type == STACK_FLOAT) 
+    {
+        if (x.data.int_value < y.data.float_value) push(s, STACK_FLOAT, y.data.float_value); 
+    }
+    else if (x.type == STACK_FLOAT && y.type == STACK_INT)
+    {
+        if (x.data.float_value < y.data.int_value) push(s, STACK_INT, y.data.int_value);
+    }
+    else if (x.type == STACK_CHAR && y.type == STACK_CHAR)
+    {
+        if (x.data.char_value < y.data.char_value) push(s, STACK_CHAR, y.data.char_value);
+    }
+
 }

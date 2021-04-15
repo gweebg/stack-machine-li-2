@@ -3,13 +3,16 @@
  * @copyright Copyright (c) 2021
  */
 
-/** SIZE é o valor do tamanho máximo da stack. */
+/** 
+ * SIZE é o valor do tamanho máximo da stack.
+ * @note A ser mudado para memória automática.
+ */
 #define SIZE 10240
 
 /**
  * \brief Tipos exclusivos aos elementos da stack.
  * @enum stack_type
- * Este enumerator contém todos os possíveis tipos de valores que a stack pode receber:
+ * Este enumerador contém todos os possíveis tipos de valores que a stack pode receber:
  * *STACK_CHAR => char
  * *STACK_INT => int
  * *STACK_FLOAT => float

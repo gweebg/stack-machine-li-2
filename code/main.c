@@ -7,6 +7,7 @@
 # include <stdlib.h>
 # include <assert.h>
 # include <string.h>
+# include <stdbool.h>
 
 # include "parser.h"
 # include "stack.h"
