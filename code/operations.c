@@ -506,3 +506,9 @@ void largest(stack *s)
     }
 
 }
+
+// Criar projeto c executable 
+// 1 - carregar direito pasta raiz em new 
+// 2 - 2º / 3º opção header file ; source file 
+// aba com code -> reformat code 
+// target_link_libraries(project_name PRIVATE m) (project_name - nome projeto)

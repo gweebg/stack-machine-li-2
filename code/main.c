@@ -9,8 +9,9 @@
 # include <string.h>
 # include <stdbool.h>
 
-# include "parser.h"
 # include "stack.h"
+# include "parser.h"
+
 
 /**
  * @brief Esta é a função principal, responsável por receber o input do utilizador.
@@ -20,6 +21,7 @@
  */
 int main() {
 
+    stack s = create(); // Criação da stack
     char input[10240]; // Tamanho máximo que a string pode tomar.
 
     // Usa o fgets para extrair do input do stdin e guarda na variavel input (usa o assert para garantir que algo é introduzido).
@@ -29,7 +31,10 @@ int main() {
     assert( input[strlen(input) - 1] == '\n' ); 
 
     // Chama o parser para fazer o parsing da string.
-    parser(input); 
+    parser(input, &s); 
+
+    //Print do estado final da stack.
+    dumpStack(&s);
 
     return 0;
 

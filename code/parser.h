@@ -10,7 +10,7 @@
  * @return Não devolve nada.
  * @see main.c
  */
-void parser(char *line);
+void parser(char *line, stack *s);
 
 /**
  * \brief Esta função é responsável por verificar se um dado caráter está reservado a um comando ou não.

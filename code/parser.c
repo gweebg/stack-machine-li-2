@@ -10,8 +10,8 @@
 #include <math.h>
 #include <stdbool.h>
 
-#include "parser.h"
 #include "stack.h"
+#include "parser.h"
 #include "operations.h"
 
 bool check_reserved(char c)
@@ -48,11 +48,8 @@ bool check_reserved_string(char *s)
 
 }
 
-void parser(char *line)
+void parser(char *line, stack *s)
 {
-
-     stack s = create();
-     // printf("Stack criada com sucesso!\n");
 
      char *delim = " \t\n";
      char *token = strtok(line, delim); // Divide a string tendo em conta delimitadores (definidos em delim).
@@ -73,52 +70,50 @@ void parser(char *line)
           double_value = strtod(token, &endptr_double);
 
           // Push dos diferentes tipos para a stack.
-          if (strlen(endptr_int) == 0) push(&s, STACK_INT, int_value);
-          else if (strlen(endptr_float) == 0) push(&s, STACK_FLOAT, float_value);
-          else if (strlen(endptr_double) == 0) push(&s, STACK_DOUBLE, double_value);
-          else if (strlen(token) == 1 && !check_reserved(token[0])) push(&s, STACK_CHAR, token[0]);
-          else if (strlen(token) > 1 && !check_reserved_string(token)) push(&s, STACK_POINTER, token);
+          if (strlen(endptr_int) == 0) push(s, STACK_INT, int_value);
+          else if (strlen(endptr_float) == 0) push(s, STACK_FLOAT, float_value);
+          else if (strlen(endptr_double) == 0) push(s, STACK_DOUBLE, double_value);
+          else if (strlen(token) == 1 && !check_reserved(token[0])) push(s, STACK_CHAR, token[0]);
+          else if (strlen(token) > 1 && !check_reserved_string(token)) push(s, STACK_POINTER, token);
 
           // Operações com números.
-          else if (strcmp(token, "+") == 0) add(&s);
-          else if (strcmp(token, "-") == 0) sub(&s);
-          else if (strcmp(token, "*") == 0) mult(&s);
-          else if (strcmp(token, "/") == 0) division(&s);
-          else if (strcmp(token, "#") == 0) power(&s);
-          else if (strcmp(token, "%") == 0) modulus(&s);
-          else if (strcmp(token, "(") == 0) dec(&s);
-          else if (strcmp(token, ")") == 0) inc(&s);
-          else if (strcmp(token, "&") == 0) and(&s);
-          else if (strcmp(token, "|") == 0) or(&s);
-          else if (strcmp(token, "^") == 0) xor(&s);
-          else if (strcmp(token, "~") == 0) not(&s);
+          else if (strcmp(token, "+") == 0) add(s);
+          else if (strcmp(token, "-") == 0) sub(s);
+          else if (strcmp(token, "*") == 0) mult(s);
+          else if (strcmp(token, "/") == 0) division(s);
+          else if (strcmp(token, "#") == 0) power(s);
+          else if (strcmp(token, "%") == 0) modulus(s);
+          else if (strcmp(token, "(") == 0) dec(s);
+          else if (strcmp(token, ")") == 0) inc(s);
+          else if (strcmp(token, "&") == 0) and(s);
+          else if (strcmp(token, "|") == 0) or(s);
+          else if (strcmp(token, "^") == 0) xor(s);
+          else if (strcmp(token, "~") == 0) not(s);
 
           // Operações com a stack.
-          else if (strcmp(token, "_") == 0) duplicate(&s);
-          else if (strcmp(token, ";") == 0) pop(&s);
-          else if (strcmp(token, "\\") == 0) swap(&s);
-          else if (strcmp(token, "$") == 0) bring_top(&s);
-          else if (strcmp(token, "@") == 0) swap_three(&s);
+          else if (strcmp(token, "_") == 0) duplicate(s);
+          else if (strcmp(token, ";") == 0) pop(s);
+          else if (strcmp(token, "\\") == 0) swap(s);
+          else if (strcmp(token, "$") == 0) bring_top(s);
+          else if (strcmp(token, "@") == 0) swap_three(s);
 
           // Operações de IO.
-          else if (strcmp(token, "l") == 0) line_after (&s);
-          else if (strcmp(token, "p") == 0) peek_stack (&s);
+          else if (strcmp(token, "l") == 0) line_after (s);
+          else if (strcmp(token, "p") == 0) peek_stack (s);
 
           // Funções para conversão de tipos.
-          else if (strcmp(token, "i") == 0) to_int(&s);
-          else if (strcmp(token, "f") == 0) to_double(&s);
-          else if (strcmp(token, "c") == 0) to_char(&s);
-          else if (strcmp(token, "s") == 0) to_string(&s);
+          else if (strcmp(token, "i") == 0) to_int(s);
+          else if (strcmp(token, "f") == 0) to_double(s);
+          else if (strcmp(token, "c") == 0) to_char(s);
+          else if (strcmp(token, "s") == 0) to_string(s);
 
           // Funções lógicas.
-          else if (strcmp(token, "e>") == 0) largest(&s);
+          else if (strcmp(token, "e>") == 0) largest(s);
      
           token = strtok(NULL, delim);
 
      }
 
-     dumpStack(&s);
-
-     // int status = stackStatus(&s);
+     // int status = stackStatus(s);
      // printf("Stack Status: %d\nStack pointer: %d\n", status, s.pointer);
 }
