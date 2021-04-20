@@ -69,15 +69,6 @@ void parser(char *line, stack *s)
           float_value = strtof(token, &endptr_float);
           double_value = strtod(token, &endptr_double);
 
-<<<<<<< HEAD
-          // Sorting de valores para a stack.
-          if (strlen(endptr_int) == 0) push(&s, STACK_INT, int_value);
-          else if (strlen(endptr_float) == 0) push(&s, STACK_FLOAT, float_value);
-          else if (strlen(endptr_double) == 0) push(&s, STACK_DOUBLE, double_value);
-          else if (strlen(token) == 1 && !check_reserved(token[0])) push(&s, STACK_CHAR, token[0]);
-          else if (strlen(token) > 1) push(&s, STACK_POINTER, token);
-          
-=======
           // Push dos diferentes tipos para a stack.
           if (strlen(endptr_int) == 0) push(s, STACK_INT, int_value);
           else if (strlen(endptr_float) == 0) push(s, STACK_FLOAT, float_value);
@@ -85,7 +76,6 @@ void parser(char *line, stack *s)
           else if (strlen(token) == 1 && !check_reserved(token[0])) push(s, STACK_CHAR, token[0]);
           else if (strlen(token) > 1 && !check_reserved_string(token)) push(s, STACK_POINTER, token);
 
->>>>>>> master
           // Operações com números.
           else if (strcmp(token, "+") == 0) add(s);
           else if (strcmp(token, "-") == 0) sub(s);

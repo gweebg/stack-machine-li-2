@@ -10,7 +10,7 @@
  * SIZE é o valor do tamanho máximo da stack.
  * @note A ser mudado para memória automática.
  */
-#define SIZE 10240
+#define SIZE 100
 
 /**
  * \brief Tipos exclusivos aos elementos da stack.
@@ -71,9 +71,9 @@ typedef struct stack_elem
  */
 typedef struct stack
 {
-
+    int size;
     int pointer;
-    stack_elem elems[SIZE]; 
+    stack_elem *elems; 
     
 } stack;
 
