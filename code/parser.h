@@ -3,6 +3,9 @@
  * @copyright Copyright (c) 2021
  */
 
+#ifndef PARSER_H
+#define PARSER_H
+
 /**
  * \brief Esta função é responsável por tanto analisar o input como realizar as operações necessárias.
  * 
@@ -33,3 +36,5 @@ bool check_reserved(char c);
  * * False, se a string não for reservada.
  */
 bool check_reserved_string(char *s);
+
+#endif

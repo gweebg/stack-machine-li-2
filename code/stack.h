@@ -3,6 +3,9 @@
  * @copyright Copyright (c) 2021
  */
 
+#ifndef STACK_H
+#define STACK_H
+
 /** 
  * SIZE é o valor do tamanho máximo da stack.
  * @note A ser mudado para memória automática.
@@ -70,8 +73,8 @@ typedef struct stack
 {
 
     int pointer;
-    stack_elem elems[SIZE];
-
+    stack_elem elems[SIZE]; 
+    
 } stack;
 
 /**
@@ -137,3 +140,5 @@ void dumpStack(stack *s);
  * @returns Devolve um elemento da stack (stack_elem).
  */
 stack_elem peek(stack *s);
+
+#endif

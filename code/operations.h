@@ -4,6 +4,9 @@
  * @copyright Copyright (c) 2021
  */
 
+#ifndef OPERATIONS_H
+#define OPERATIONS_H
+
 // * Funções básicas com inteiros
 /**
  * \brief Soma os dois elementos no topo da Stack
@@ -177,3 +180,5 @@ void to_string(stack *s);
  * @return Não devolve nada.
  */
 void largest(stack *s);
+
+#endif

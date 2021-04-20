@@ -59,3 +59,5 @@ Doxyfile
 prog
 lines.sh
 code.zip
+doc/
+output.json

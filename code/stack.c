@@ -14,7 +14,6 @@
 
 stack create()
 {
-
     stack myStack;
     myStack.pointer = -1; // O stack pointer é sempre inicializado com o valor -1
     return myStack;
