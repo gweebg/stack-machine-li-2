@@ -220,7 +220,7 @@ void xor (stack * s) {
     push(s, STACK_INT, y ^ x);
 }
 
-    void not(stack * s)
+void not(stack * s)
 {
 
     int x = pop(s).data.int_value;
@@ -464,16 +464,150 @@ void to_string(stack *s)
 /*
 0 ou {} -> False
 != 0 -> Verdadeiro
-= -> Igual
-< -> Menor
-> -> Maior
-! -> Não
-e& -> E (com shortcut)
-e| -> Ou (com shortcut)
-e< -> Coloca o menor dos 2 valores na stack
-e> -> Coloca o maior dos 2 valores na stack
-? -> If-Then-Else
 */
+void equal(stack *s)
+{
+    stack_elem x = pop(s);
+    stack_elem y = pop(s);
+
+    if (x.type == STACK_INT && y.type == STACK_INT)
+    {
+        if (x.data.int_value == y.data.int_value)
+            push(s, STACK_INT, 1);
+    }
+    else if (x.type == STACK_FLOAT == y.type == STACK_FLOAT)
+    {
+        if (x.data.float_value == y.data.float_value)
+            push(s, STACK_FLOAT, 1);
+    }
+    else if (x.type == STACK_INT && y.type == STACK_FLOAT)
+    {
+        if (x.data.int_value == y.data.float_value)
+            push(s, STACK_FLOAT, 1);
+    }
+    else if (x.type == STACK_FLOAT && y.type == STACK_INT)
+    {
+        if (x.data.float_value == y.data.int_value)
+            push(s, STACK_INT, 1);
+    }
+    else if (x.type == STACK_CHAR && y.type == STACK_CHAR)
+    {
+        if (x.data.char_value == y.data.char_value)
+            push(s, STACK_CHAR, 1);
+    }
+    else push(s, STACK_INT, 0); 
+}
+
+void less(stack *s)
+{
+
+    stack_elem x = pop(s);
+    stack_elem y = pop(s);
+
+    if (x.type == STACK_INT && y.type == STACK_INT)
+    {
+        if (x.data.int_value < y.data.int_value)
+            push(s, STACK_INT, 1);
+    }
+    else if (x.type == STACK_FLOAT && y.type == STACK_FLOAT)
+    {
+        if (x.data.float_value < y.data.float_value)
+            push(s, STACK_FLOAT, 1);
+    }
+    else if (x.type == STACK_INT && y.type == STACK_FLOAT)
+    {
+        if (x.data.int_value < y.data.float_value)
+            push(s, STACK_FLOAT, 1);
+    }
+    else if (x.type == STACK_FLOAT && y.type == STACK_INT)
+    {
+        if (x.data.float_value < y.data.int_value)
+            push(s, STACK_INT, 1);
+    }
+    else if (x.type == STACK_CHAR && y.type == STACK_CHAR)
+    {
+        if (x.data.char_value < y.data.char_value)
+            push(s, STACK_CHAR, 1);
+    }
+    else push(s, STACK_INT, 0);
+}
+
+void greater(stack *s)
+{
+
+    stack_elem x = pop(s);
+    stack_elem y = pop(s);
+
+    if (x.type == STACK_INT && y.type == STACK_INT)
+    {
+        if (x.data.int_value > y.data.int_value)
+            push(s, STACK_INT, 1);
+    }
+    else if (x.type == STACK_FLOAT && y.type == STACK_FLOAT)
+    {
+        if (x.data.float_value > y.data.float_value)
+            push(s, STACK_FLOAT, 1);
+    }
+    else if (x.type == STACK_INT && y.type == STACK_FLOAT)
+    {
+        if (x.data.int_value > y.data.float_value)
+            push(s, STACK_FLOAT, 1);
+    }
+    else if (x.type == STACK_FLOAT && y.type == STACK_INT)
+    {
+        if (x.data.float_value > y.data.int_value)
+            push(s, STACK_INT, 1);
+    }
+    else if (x.type == STACK_CHAR && y.type == STACK_CHAR)
+    {
+        if (x.data.char_value > y.data.char_value)
+            push(s, STACK_CHAR, 1);
+    }
+    else push(s, STACK_INT, 0);
+}
+
+void smallest(stack *s)
+{
+
+    stack_elem x = pop(s);
+    stack_elem y = pop(s);
+
+    if (x.type == STACK_INT && y.type == STACK_INT)
+    {
+        if (x.data.int_value < y.data.int_value)
+            push(s, STACK_INT, x.data.int_value);
+        else if (x.data.int_value > y.data.int_value)
+            push(s, STACK_INT, y.data.int_value);
+    }
+    else if (x.type == STACK_FLOAT && y.type == STACK_FLOAT)
+    {
+        if (x.data.float_value < y.data.float_value)
+            push(s, STACK_FLOAT, x.data.float_value);
+        else if (x.data.float_value > y.data.float_value)
+            push(s, STACK_FLOAT, y.data.float_value);
+    }
+    else if (x.type == STACK_INT && y.type == STACK_FLOAT)
+    {
+        if (x.data.int_value < y.data.float_value)
+            push(s, STACK_FLOAT, x.data.float_value);
+        else if (x.data.int_value > y.data.float_value)
+            push(s, STACK_FLOAT, y.data.float_value);
+    }
+    else if (x.type == STACK_FLOAT && y.type == STACK_INT)
+    {
+        if (x.data.float_value < y.data.int_value)
+            push(s, STACK_INT, x.data.int_value);
+        else if (x.data.float_value > y.data.int_value)
+            push(s, STACK_INT, y.data.int_value);
+    }
+    else if (x.type == STACK_CHAR && y.type == STACK_CHAR)
+    {
+        if (x.data.char_value < y.data.char_value)
+            push(s, STACK_CHAR, x.data.char_value);
+        else if (x.data.char_value > y.data.char_value)
+            push(s, STACK_CHAR, y.data.char_value);
+    }
+}
 
 void largest(stack *s)
 {
@@ -485,26 +619,36 @@ void largest(stack *s)
     {
         if (x.data.int_value < y.data.int_value)
             push(s, STACK_INT, y.data.int_value);
+        else if (x.data.int_value > y.data.int_value)
+            push(s, STACK_INT, x.data.int_value);
     }
     else if (x.type == STACK_FLOAT && y.type == STACK_FLOAT)
     {
         if (x.data.float_value < y.data.float_value)
             push(s, STACK_FLOAT, y.data.float_value);
+        else if (x.data.float_value > y.data.float_value)
+            push(s, STACK_FLOAT, x.data.float_value);
     }
     else if (x.type == STACK_INT && y.type == STACK_FLOAT)
     {
         if (x.data.int_value < y.data.float_value)
             push(s, STACK_FLOAT, y.data.float_value);
+        else if (x.data.int_value > y.data.float_value)
+            push(s, STACK_FLOAT, x.data.float_value);
     }
     else if (x.type == STACK_FLOAT && y.type == STACK_INT)
     {
         if (x.data.float_value < y.data.int_value)
             push(s, STACK_INT, y.data.int_value);
+        else if (x.data.float_value > y.data.int_value)
+            push(s, STACK_INT, x.data.int_value);
     }
     else if (x.type == STACK_CHAR && y.type == STACK_CHAR)
     {
         if (x.data.char_value < y.data.char_value)
             push(s, STACK_CHAR, y.data.char_value);
+        else if (x.data.char_value > y.data.char_value)
+            push(s, STACK_CHAR, x.data.char_value);
     }
 }
 

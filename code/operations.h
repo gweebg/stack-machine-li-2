@@ -175,6 +175,43 @@ void to_char(stack *s);
 void to_string(stack *s);
 
 /**
+ * \brief Compara dois elementos da stack.Se forem iguais, retorna 1(Verdadeiro); caso contrário, retorna 0.
+ * @param[in] s Stack a ser avaliada.
+ * @return Não devolve nada.
+ */
+void equal(stack *s);
+
+/**
+ * \brief Compara dois elementos da stack.Se o primeiro for menor, retorna 1(Verdadeiro); caso contrário, retorna 0.
+ * @param[in] s Stack a ser avaliada.
+ * @return Não devolve nada.
+ * @example 7 2 < --> 0
+ */
+void less(stack *s);
+
+/**
+ * \brief Compara dois elementos da stack.Se o primeiro for maior, retorna 1(Verdadeiro); caso contrário, retorna 0.
+ * @param[in] s Stack a ser avaliada.
+ * @return Não devolve nada.
+ * @example 7 2 > --> 1
+ */
+void greater(stack *s);
+
+/**
+ * \brief Retira um elemento da stack.Caso seja 0, retorna 1; caso contrário retorna 0.
+ * @param[in] s Stack a ser avaliada.
+ * @return Não devolve nada.
+ */
+void no(stack *s);
+
+/**
+ * \brief Retira dois elementos da stack e dá push ao menor dos dois.
+ * @param[in] s Stack a ser avaliada.
+ * @return Não devolve nada.
+ */
+void smallest(stack *s);
+
+/**
  * \brief Retira dois elementos da stack e dá push ao maior dos dois.
  * @param[in] s Stack a ser avaliada.
  * @return Não devolve nada.
