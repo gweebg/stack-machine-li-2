@@ -22,7 +22,7 @@
 int main() {
 
     stack s = create(); // Criação da stack
-    char input[10240]; // Tamanho máximo que a string pode tomar.
+    char input[10240]; // Tamanho máximo que a string pode tomar. Mudar para malloc
 
     // Usa o fgets para extrair do input do stdin e guarda na variavel input (usa o assert para garantir que algo é introduzido).
     assert( fgets(input, 10240, stdin) != NULL);

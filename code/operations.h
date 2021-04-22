@@ -181,4 +181,12 @@ void to_string(stack *s);
  */
 void largest(stack *s);
 
+/**
+ * \brief Dado uma string, a função determina se é um caratere com um valor associado.
+ * @param[in] s Stack a ser avaliada.
+ * @param[in] var String a ser comparada.
+ * @return Não devolve nada.
+ */
+void choose_var(stack *s, char *var);
+
 #endif

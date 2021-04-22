@@ -151,22 +151,22 @@ void dec(stack *s)
 
     switch (x.type)
     {
-        case STACK_INT:
-            push(s, STACK_INT, x.data.int_value - 1);
-            break;
-        case STACK_FLOAT:
-            push(s, STACK_FLOAT, x.data.float_value - 1);
-            break;
-        case STACK_DOUBLE:
-            push(s, STACK_FLOAT, x.data.double_value - 1);
-            break;
-        case STACK_CHAR:
-            push(s, STACK_CHAR, x.data.char_value - 1);
-            break;
-        default:
-            fprintf(stderr, "Operação inválida!\n");
-            exit(EXIT_FAILURE);
-            break;
+    case STACK_INT:
+        push(s, STACK_INT, x.data.int_value - 1);
+        break;
+    case STACK_FLOAT:
+        push(s, STACK_FLOAT, x.data.float_value - 1);
+        break;
+    case STACK_DOUBLE:
+        push(s, STACK_FLOAT, x.data.double_value - 1);
+        break;
+    case STACK_CHAR:
+        push(s, STACK_CHAR, x.data.char_value - 1);
+        break;
+    default:
+        fprintf(stderr, "Operação inválida!\n");
+        exit(EXIT_FAILURE);
+        break;
     }
 }
 
@@ -176,22 +176,22 @@ void inc(stack *s)
 
     switch (x.type)
     {
-        case STACK_INT:
-            push(s, STACK_INT, x.data.int_value + 1);
-            break;
-        case STACK_FLOAT:
-            push(s, STACK_FLOAT, x.data.float_value + 1);
-            break;
-        case STACK_DOUBLE:
-            push(s, STACK_FLOAT, x.data.double_value + 1);
-            break;
-        case STACK_CHAR:
-            push(s, STACK_CHAR, x.data.char_value + 1);
-            break;
-        default:
-            fprintf(stderr, "Operação inválida!\n");
-            exit(EXIT_FAILURE);
-            break;
+    case STACK_INT:
+        push(s, STACK_INT, x.data.int_value + 1);
+        break;
+    case STACK_FLOAT:
+        push(s, STACK_FLOAT, x.data.float_value + 1);
+        break;
+    case STACK_DOUBLE:
+        push(s, STACK_FLOAT, x.data.double_value + 1);
+        break;
+    case STACK_CHAR:
+        push(s, STACK_CHAR, x.data.char_value + 1);
+        break;
+    default:
+        fprintf(stderr, "Operação inválida!\n");
+        exit(EXIT_FAILURE);
+        break;
     }
 }
 
@@ -233,13 +233,13 @@ void duplicate(stack *s)
 {
     stack_elem top = peek(s);
 
-    switch(top.type)
+    switch (top.type)
     {
-        case STACK_FLOAT:
-            push(s, STACK_FLOAT, top.data.float_value);
-            break;
-        default:
-            push(s, top.type, top.data);
+    case STACK_FLOAT:
+        push(s, STACK_FLOAT, top.data.float_value);
+        break;
+    default:
+        push(s, top.type, top.data);
     }
 }
 
@@ -296,7 +296,7 @@ void bring_top(stack *s)
 
 void line_after(stack *s)
 {
-    char value[SIZE];
+    char value[10240]; // Mudar para malloc
     assert(scanf("%s", value) == 1);
     push(s, STACK_POINTER, value);
 }
@@ -305,30 +305,30 @@ void peek_stack(stack *s)
 {
     stack_elem top = peek(s);
 
-    switch(top.type)
+    switch (top.type)
     {
-        case STACK_CHAR:
-            printf("%c\n", top.data.char_value);
-            break;
-        case STACK_POINTER:
-            printf("%s\n", top.data.string_value);
-            break;
-        case STACK_INT:
-            printf("%d\n", top.data.int_value);
-            break;
-        case STACK_LONG:
-            printf("%li\n", top.data.long_value);
-            break;
-        case STACK_FLOAT:
-            printf("%f\n", top.data.float_value);
-            break;
-        case STACK_DOUBLE:
-            printf("%f\n", top.data.double_value);
-            break;
-        default:
-            fprintf(stderr, "O tipo não existe!\n");
-            exit(EXIT_FAILURE);
-            break;
+    case STACK_CHAR:
+        printf("%c\n", top.data.char_value);
+        break;
+    case STACK_POINTER:
+        printf("%s\n", top.data.string_value);
+        break;
+    case STACK_INT:
+        printf("%d\n", top.data.int_value);
+        break;
+    case STACK_LONG:
+        printf("%li\n", top.data.long_value);
+        break;
+    case STACK_FLOAT:
+        printf("%f\n", top.data.float_value);
+        break;
+    case STACK_DOUBLE:
+        printf("%f\n", top.data.double_value);
+        break;
+    default:
+        fprintf(stderr, "O tipo não existe!\n");
+        exit(EXIT_FAILURE);
+        break;
     }
 }
 
@@ -338,27 +338,27 @@ void to_int(stack *s)
 {
     stack_elem x = pop(s);
 
-    switch(x.type)
+    switch (x.type)
     {
-        case STACK_INT:
-            push(s, STACK_INT, x.data.int_value);
-            break;
-        case STACK_FLOAT:
-            push(s, STACK_INT, (int)x.data.float_value);
-            break;
-        case STACK_CHAR:
-            push(s, STACK_INT, (int)x.data.char_value);
-            break;
-        case STACK_POINTER:;
-            char *end;
-            int num = strtol(x.data.string_value, &end, 10);
+    case STACK_INT:
+        push(s, STACK_INT, x.data.int_value);
+        break;
+    case STACK_FLOAT:
+        push(s, STACK_INT, (int)x.data.float_value);
+        break;
+    case STACK_CHAR:
+        push(s, STACK_INT, (int)x.data.char_value);
+        break;
+    case STACK_POINTER:;
+        char *end;
+        int num = strtol(x.data.string_value, &end, 10);
 
-            push(s, STACK_INT, num);
-            break;
-        default:
-            fprintf(stderr, "Operação inválida!\n");
-            exit(EXIT_FAILURE);
-            break;
+        push(s, STACK_INT, num);
+        break;
+    default:
+        fprintf(stderr, "Operação inválida!\n");
+        exit(EXIT_FAILURE);
+        break;
     }
 }
 
@@ -366,29 +366,28 @@ void to_double(stack *s)
 {
     stack_elem x = pop(s);
 
-    switch(x.type)
-    {   
-        case STACK_INT:;
-            float num = (float)x.data.int_value;
-            push(s, STACK_FLOAT, num);
-            break;
-        case STACK_FLOAT:
-            push(s, STACK_FLOAT, x.data.float_value);
-            break;
-        case STACK_DOUBLE:
-            push(s, STACK_FLOAT, x.data.float_value);
-            break;
-        case STACK_POINTER:;
-            char *end;
-            float num_ = strtof(x.data.string_value, &end);
+    switch (x.type)
+    {
+    case STACK_INT:;
+        float num = (float)x.data.int_value;
+        push(s, STACK_FLOAT, num);
+        break;
+    case STACK_FLOAT:
+        push(s, STACK_FLOAT, x.data.float_value);
+        break;
+    case STACK_DOUBLE:
+        push(s, STACK_FLOAT, x.data.float_value);
+        break;
+    case STACK_POINTER:;
+        char *end;
+        float num_ = strtof(x.data.string_value, &end);
 
-            push(s, STACK_FLOAT, num_);
-            break;
-        default:
-            fprintf(stderr, "Operação inválida!\n");
-            exit(EXIT_FAILURE);
-            break;
-
+        push(s, STACK_FLOAT, num_);
+        break;
+    default:
+        fprintf(stderr, "Operação inválida!\n");
+        exit(EXIT_FAILURE);
+        break;
     }
 }
 
@@ -396,33 +395,33 @@ void to_char(stack *s)
 {
     stack_elem x = pop(s);
 
-    switch(x.type)
+    switch (x.type)
     {
-        case STACK_INT:
-            push(s, STACK_CHAR, x.data.int_value);
-            break;
-        case STACK_CHAR:
-            push(s, STACK_CHAR, x.data.char_value);
-            break;
-        case STACK_FLOAT:;
-            float temp = x.data.float_value;
-            int num = (int)temp;
+    case STACK_INT:
+        push(s, STACK_CHAR, x.data.int_value);
+        break;
+    case STACK_CHAR:
+        push(s, STACK_CHAR, x.data.char_value);
+        break;
+    case STACK_FLOAT:;
+        float temp = x.data.float_value;
+        int num = (int)temp;
 
-            push(s, STACK_CHAR, num);
-            break;
-        case STACK_DOUBLE:;
-            double temp_ = x.data.double_value;
-            int num_ = (int)temp_;
+        push(s, STACK_CHAR, num);
+        break;
+    case STACK_DOUBLE:;
+        double temp_ = x.data.double_value;
+        int num_ = (int)temp_;
 
-            push(s, STACK_CHAR, num_);
-            break;
-        case STACK_POINTER:;
-            char c = x.data.string_value[0];
-            push(s, STACK_CHAR, c);
-            break;
-        default:
-            push(s, STACK_CHAR, x.data.int_value);
-            break;
+        push(s, STACK_CHAR, num_);
+        break;
+    case STACK_POINTER:;
+        char c = x.data.string_value[0];
+        push(s, STACK_CHAR, c);
+        break;
+    default:
+        push(s, STACK_CHAR, x.data.int_value);
+        break;
     }
 }
 
@@ -430,32 +429,32 @@ void to_string(stack *s)
 {
     stack_elem x = pop(s);
 
-    switch(x.type)
+    switch (x.type)
     {
-        case STACK_INT:;
-            char temp[SIZE];
-            int num = x.data.int_value;
+    case STACK_INT:;
+        char temp[SIZE];
+        int num = x.data.int_value;
 
-            sprintf(temp, "%d", num);
-            push(s, STACK_POINTER, temp);
-            break;
-        case STACK_FLOAT:;
-            float num_ = x.data.float_value;
-            char temp_[SIZE];
+        sprintf(temp, "%d", num);
+        push(s, STACK_POINTER, temp);
+        break;
+    case STACK_FLOAT:;
+        float num_ = x.data.float_value;
+        char temp_[SIZE];
 
-            sprintf(temp_, "%g", num_);
-            push(s, STACK_POINTER, temp_);
-            break;
-        case STACK_CHAR:;
-            char c = x.data.char_value;
-            char temp__[SIZE];
+        sprintf(temp_, "%g", num_);
+        push(s, STACK_POINTER, temp_);
+        break;
+    case STACK_CHAR:;
+        char c = x.data.char_value;
+        char temp__[SIZE];
 
-            temp__[0] = c;
-            push(s, STACK_POINTER, temp__);
-            break;
-        default:
-            push(s, STACK_POINTER, x.data.string_value);
-            break;
+        temp__[0] = c;
+        push(s, STACK_POINTER, temp__);
+        break;
+    default:
+        push(s, STACK_POINTER, x.data.string_value);
+        break;
     }
 }
 
@@ -508,8 +507,66 @@ void largest(stack *s)
     }
 }
 
-// Criar projeto c executable
-// 1 - carregar direito pasta raiz em new
-// 2 - 2º / 3º opção header file ; source file
-// aba com code -> reformat code
-// target_link_libraries(project_name PRIVATE m) (project_name - nome projeto)
+// * Operações relacionadas com variáveis
+
+/*
+:<Letra> Copia topo da stack à variável
+A Valor por omissão: 10
+B Valor por omissão: 11
+C Valor por omissão: 12
+D Valor por omissão: 13
+E Valor por omissão: 14
+F Valor por omissão: 15
+N Valor por omissão: '\n'
+S Valor por omissão: ' '
+X Valor por omissão: 0
+Y Valor por omissão: 1
+Z Valor por omissão: 2
+*/
+
+void choose_var(stack *s, char *var)
+{
+    // Na parser.c estamos a filtrar pelo caratere ":" por isso, aqui, temos de usar o segundo elemento da string.
+    // Daí vem o var[1]. O programa ignora qualquer outro char na frente do token pois estamos apenas a filtrar por :A, :B...
+    switch(var[1])
+    {
+        case 'A': // A = 10
+            push(s, STACK_INT, 10);
+            break;
+        case 'B': // B = 11
+            push(s, STACK_INT, 11);
+            break;
+        case 'C': // C = 12
+            push(s, STACK_INT, 12);
+            break;
+        case 'D': // D = 13
+            push(s, STACK_INT, 13);
+            break;
+        case 'E': // E = 14
+            push(s, STACK_INT, 14);
+            break;
+        case 'F': // F = 15
+            push(s, STACK_INT, 15);
+            break;
+        case 'N': // N = "\n"
+            push(s, STACK_POINTER, "\n");
+            break;
+        case 'S': // S = " "
+            push(s, STACK_POINTER, " ");
+            break;
+        case 'X': // X = 0
+            push(s, STACK_INT, 0);
+            break;
+        case 'Y': // Y = 1
+            push(s, STACK_INT, 1);
+            break;
+        case 'Z': // Z = 2
+            push(s, STACK_INT, 2);
+            break;
+        default: // Esta parte nunca vai correr, o filtro impede que alguma variavel não definida entre.
+            fprintf(stderr, "Variável não existente!\n");
+            exit(EXIT_FAILURE);
+            break;
+    }
+
+}

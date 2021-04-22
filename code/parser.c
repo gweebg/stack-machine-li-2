@@ -17,7 +17,7 @@
 bool check_reserved(char c)
 {
 
-     char *reserved = "+-*/()%#&|^~_;\\@$ltpifcs";
+     char *reserved = "+-*/()%#&|^~_;\\@$ltpifcsABCDEFNSXYZ:";
      int i = 0;
 
      while (reserved[i] != '\0')
@@ -36,7 +36,8 @@ bool check_reserved(char c)
 
 bool check_reserved_string(char *s)
 {
-     char reserved[6][10] = {"e&", "e|", "e<", "e>"};
+     char reserved[20][6] = {"e&", "e|", "e<", "e>", ":A", ":B", ":C"
+                             ":D", ":E", ":F", ":N", ":S", ":X", ":Y"};
 
      for (int i = 0; i < 6; i++)
      {
@@ -109,11 +110,12 @@ void parser(char *line, stack *s)
 
           // Funções lógicas.
           else if (strcmp(token, "e>") == 0) largest(s);
+
+          // Variáveis.
+          else if (token[0] == ':') choose_var(s, token);
      
           token = strtok(NULL, delim);
 
      }
 
-     // int status = stackStatus(s);
-     // printf("Stack Status: %d\nStack pointer: %d\n", status, s.pointer);
 }
