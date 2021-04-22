@@ -108,6 +108,11 @@ void parser(char *line, stack *s)
           else if (strcmp(token, "s") == 0) to_string(s);
 
           // Funções lógicas.
+          else if (strcmp(token, "=") == 0) equal(s);
+          else if (strcmp(token, "<") == 0) less(s);
+          else if (strcmp(token, ">") == 0) greater(s);
+          else if (strcmp(token, "!") == 0) no(s);
+          else if (strcmp(token, "e<") == 0) smallest(s);
           else if (strcmp(token, "e>") == 0) largest(s);
      
           token = strtok(NULL, delim);
