@@ -151,22 +151,22 @@ void dec(stack *s)
 
     switch (x.type)
     {
-        case STACK_INT:
-            push(s, STACK_INT, x.data.int_value - 1);
-            break;
-        case STACK_FLOAT:
-            push(s, STACK_FLOAT, x.data.float_value - 1);
-            break;
-        case STACK_DOUBLE:
-            push(s, STACK_FLOAT, x.data.double_value - 1);
-            break;
-        case STACK_CHAR:
-            push(s, STACK_CHAR, x.data.char_value - 1);
-            break;
-        default:
-            fprintf(stderr, "Operação inválida!\n");
-            exit(EXIT_FAILURE);
-            break;
+    case STACK_INT:
+        push(s, STACK_INT, x.data.int_value - 1);
+        break;
+    case STACK_FLOAT:
+        push(s, STACK_FLOAT, x.data.float_value - 1);
+        break;
+    case STACK_DOUBLE:
+        push(s, STACK_FLOAT, x.data.double_value - 1);
+        break;
+    case STACK_CHAR:
+        push(s, STACK_CHAR, x.data.char_value - 1);
+        break;
+    default:
+        fprintf(stderr, "Operação inválida!\n");
+        exit(EXIT_FAILURE);
+        break;
     }
 }
 
@@ -176,22 +176,22 @@ void inc(stack *s)
 
     switch (x.type)
     {
-        case STACK_INT:
-            push(s, STACK_INT, x.data.int_value + 1);
-            break;
-        case STACK_FLOAT:
-            push(s, STACK_FLOAT, x.data.float_value + 1);
-            break;
-        case STACK_DOUBLE:
-            push(s, STACK_FLOAT, x.data.double_value + 1);
-            break;
-        case STACK_CHAR:
-            push(s, STACK_CHAR, x.data.char_value + 1);
-            break;
-        default:
-            fprintf(stderr, "Operação inválida!\n");
-            exit(EXIT_FAILURE);
-            break;
+    case STACK_INT:
+        push(s, STACK_INT, x.data.int_value + 1);
+        break;
+    case STACK_FLOAT:
+        push(s, STACK_FLOAT, x.data.float_value + 1);
+        break;
+    case STACK_DOUBLE:
+        push(s, STACK_FLOAT, x.data.double_value + 1);
+        break;
+    case STACK_CHAR:
+        push(s, STACK_CHAR, x.data.char_value + 1);
+        break;
+    default:
+        fprintf(stderr, "Operação inválida!\n");
+        exit(EXIT_FAILURE);
+        break;
     }
 }
 
@@ -220,7 +220,7 @@ void xor (stack * s) {
     push(s, STACK_INT, y ^ x);
 }
 
-void not(stack * s)
+    void not(stack * s)
 {
 
     int x = pop(s).data.int_value;
@@ -233,13 +233,13 @@ void duplicate(stack *s)
 {
     stack_elem top = peek(s);
 
-    switch(top.type)
+    switch (top.type)
     {
-        case STACK_FLOAT:
-            push(s, STACK_FLOAT, top.data.float_value);
-            break;
-        default:
-            push(s, top.type, top.data);
+    case STACK_FLOAT:
+        push(s, STACK_FLOAT, top.data.float_value);
+        break;
+    default:
+        push(s, top.type, top.data);
     }
 }
 
@@ -305,30 +305,30 @@ void peek_stack(stack *s)
 {
     stack_elem top = peek(s);
 
-    switch(top.type)
+    switch (top.type)
     {
-        case STACK_CHAR:
-            printf("%c\n", top.data.char_value);
-            break;
-        case STACK_POINTER:
-            printf("%s\n", top.data.string_value);
-            break;
-        case STACK_INT:
-            printf("%d\n", top.data.int_value);
-            break;
-        case STACK_LONG:
-            printf("%li\n", top.data.long_value);
-            break;
-        case STACK_FLOAT:
-            printf("%f\n", top.data.float_value);
-            break;
-        case STACK_DOUBLE:
-            printf("%f\n", top.data.double_value);
-            break;
-        default:
-            fprintf(stderr, "O tipo não existe!\n");
-            exit(EXIT_FAILURE);
-            break;
+    case STACK_CHAR:
+        printf("%c\n", top.data.char_value);
+        break;
+    case STACK_POINTER:
+        printf("%s\n", top.data.string_value);
+        break;
+    case STACK_INT:
+        printf("%d\n", top.data.int_value);
+        break;
+    case STACK_LONG:
+        printf("%li\n", top.data.long_value);
+        break;
+    case STACK_FLOAT:
+        printf("%f\n", top.data.float_value);
+        break;
+    case STACK_DOUBLE:
+        printf("%f\n", top.data.double_value);
+        break;
+    default:
+        fprintf(stderr, "O tipo não existe!\n");
+        exit(EXIT_FAILURE);
+        break;
     }
 }
 
@@ -338,27 +338,27 @@ void to_int(stack *s)
 {
     stack_elem x = pop(s);
 
-    switch(x.type)
+    switch (x.type)
     {
-        case STACK_INT:
-            push(s, STACK_INT, x.data.int_value);
-            break;
-        case STACK_FLOAT:
-            push(s, STACK_INT, (int)x.data.float_value);
-            break;
-        case STACK_CHAR:
-            push(s, STACK_INT, (int)x.data.char_value);
-            break;
-        case STACK_POINTER:;
-            char *end;
-            int num = strtol(x.data.string_value, &end, 10);
+    case STACK_INT:
+        push(s, STACK_INT, x.data.int_value);
+        break;
+    case STACK_FLOAT:
+        push(s, STACK_INT, (int)x.data.float_value);
+        break;
+    case STACK_CHAR:
+        push(s, STACK_INT, (int)x.data.char_value);
+        break;
+    case STACK_POINTER:;
+        char *end;
+        int num = strtol(x.data.string_value, &end, 10);
 
-            push(s, STACK_INT, num);
-            break;
-        default:
-            fprintf(stderr, "Operação inválida!\n");
-            exit(EXIT_FAILURE);
-            break;
+        push(s, STACK_INT, num);
+        break;
+    default:
+        fprintf(stderr, "Operação inválida!\n");
+        exit(EXIT_FAILURE);
+        break;
     }
 }
 
@@ -366,29 +366,28 @@ void to_double(stack *s)
 {
     stack_elem x = pop(s);
 
-    switch(x.type)
-    {   
-        case STACK_INT:;
-            float num = (float)x.data.int_value;
-            push(s, STACK_FLOAT, num);
-            break;
-        case STACK_FLOAT:
-            push(s, STACK_FLOAT, x.data.float_value);
-            break;
-        case STACK_DOUBLE:
-            push(s, STACK_FLOAT, x.data.float_value);
-            break;
-        case STACK_POINTER:;
-            char *end;
-            float num_ = strtof(x.data.string_value, &end);
+    switch (x.type)
+    {
+    case STACK_INT:;
+        float num = (float)x.data.int_value;
+        push(s, STACK_FLOAT, num);
+        break;
+    case STACK_FLOAT:
+        push(s, STACK_FLOAT, x.data.float_value);
+        break;
+    case STACK_DOUBLE:
+        push(s, STACK_FLOAT, x.data.float_value);
+        break;
+    case STACK_POINTER:;
+        char *end;
+        float num_ = strtof(x.data.string_value, &end);
 
-            push(s, STACK_FLOAT, num_);
-            break;
-        default:
-            fprintf(stderr, "Operação inválida!\n");
-            exit(EXIT_FAILURE);
-            break;
-
+        push(s, STACK_FLOAT, num_);
+        break;
+    default:
+        fprintf(stderr, "Operação inválida!\n");
+        exit(EXIT_FAILURE);
+        break;
     }
 }
 
@@ -396,33 +395,33 @@ void to_char(stack *s)
 {
     stack_elem x = pop(s);
 
-    switch(x.type)
+    switch (x.type)
     {
-        case STACK_INT:
-            push(s, STACK_CHAR, x.data.int_value);
-            break;
-        case STACK_CHAR:
-            push(s, STACK_CHAR, x.data.char_value);
-            break;
-        case STACK_FLOAT:;
-            float temp = x.data.float_value;
-            int num = (int)temp;
+    case STACK_INT:
+        push(s, STACK_CHAR, x.data.int_value);
+        break;
+    case STACK_CHAR:
+        push(s, STACK_CHAR, x.data.char_value);
+        break;
+    case STACK_FLOAT:;
+        float temp = x.data.float_value;
+        int num = (int)temp;
 
-            push(s, STACK_CHAR, num);
-            break;
-        case STACK_DOUBLE:;
-            double temp_ = x.data.double_value;
-            int num_ = (int)temp_;
+        push(s, STACK_CHAR, num);
+        break;
+    case STACK_DOUBLE:;
+        double temp_ = x.data.double_value;
+        int num_ = (int)temp_;
 
-            push(s, STACK_CHAR, num_);
-            break;
-        case STACK_POINTER:;
-            char c = x.data.string_value[0];
-            push(s, STACK_CHAR, c);
-            break;
-        default:
-            push(s, STACK_CHAR, x.data.int_value);
-            break;
+        push(s, STACK_CHAR, num_);
+        break;
+    case STACK_POINTER:;
+        char c = x.data.string_value[0];
+        push(s, STACK_CHAR, c);
+        break;
+    default:
+        push(s, STACK_CHAR, x.data.int_value);
+        break;
     }
 }
 
@@ -430,32 +429,32 @@ void to_string(stack *s)
 {
     stack_elem x = pop(s);
 
-    switch(x.type)
+    switch (x.type)
     {
-        case STACK_INT:;
-            char temp[SIZE];
-            int num = x.data.int_value;
+    case STACK_INT:;
+        char temp[SIZE];
+        int num = x.data.int_value;
 
-            sprintf(temp, "%d", num);
-            push(s, STACK_POINTER, temp);
-            break;
-        case STACK_FLOAT:;
-            float num_ = x.data.float_value;
-            char temp_[SIZE];
+        sprintf(temp, "%d", num);
+        push(s, STACK_POINTER, temp);
+        break;
+    case STACK_FLOAT:;
+        float num_ = x.data.float_value;
+        char temp_[SIZE];
 
-            sprintf(temp_, "%g", num_);
-            push(s, STACK_POINTER, temp_);
-            break;
-        case STACK_CHAR:;
-            char c = x.data.char_value;
-            char temp__[SIZE];
+        sprintf(temp_, "%g", num_);
+        push(s, STACK_POINTER, temp_);
+        break;
+    case STACK_CHAR:;
+        char c = x.data.char_value;
+        char temp__[SIZE];
 
-            temp__[0] = c;
-            push(s, STACK_POINTER, temp__);
-            break;
-        default:
-            push(s, STACK_POINTER, x.data.string_value);
-            break;
+        temp__[0] = c;
+        push(s, STACK_POINTER, temp__);
+        break;
+    default:
+        push(s, STACK_POINTER, x.data.string_value);
+        break;
     }
 }
 
@@ -475,7 +474,7 @@ void equal(stack *s)
         if (x.data.int_value == y.data.int_value)
             push(s, STACK_INT, 1);
     }
-    else if (x.type == STACK_FLOAT == y.type == STACK_FLOAT)
+    else if (x.type == STACK_FLOAT && y.type == STACK_FLOAT)
     {
         if (x.data.float_value == y.data.float_value)
             push(s, STACK_FLOAT, 1);
@@ -495,7 +494,8 @@ void equal(stack *s)
         if (x.data.char_value == y.data.char_value)
             push(s, STACK_CHAR, 1);
     }
-    else push(s, STACK_INT, 0); 
+    else
+        push(s, STACK_INT, 0);
 }
 
 void less(stack *s)
@@ -529,7 +529,8 @@ void less(stack *s)
         if (x.data.char_value < y.data.char_value)
             push(s, STACK_CHAR, 1);
     }
-    else push(s, STACK_INT, 0);
+    else
+        push(s, STACK_INT, 0);
 }
 
 void greater(stack *s)
@@ -563,7 +564,8 @@ void greater(stack *s)
         if (x.data.char_value > y.data.char_value)
             push(s, STACK_CHAR, 1);
     }
-    else push(s, STACK_INT, 0);
+    else
+        push(s, STACK_INT, 0);
 }
 
 void smallest(stack *s)
@@ -576,35 +578,35 @@ void smallest(stack *s)
     {
         if (x.data.int_value < y.data.int_value)
             push(s, STACK_INT, x.data.int_value);
-        else if (x.data.int_value > y.data.int_value)
+        else
             push(s, STACK_INT, y.data.int_value);
     }
     else if (x.type == STACK_FLOAT && y.type == STACK_FLOAT)
     {
         if (x.data.float_value < y.data.float_value)
             push(s, STACK_FLOAT, x.data.float_value);
-        else if (x.data.float_value > y.data.float_value)
+        else
             push(s, STACK_FLOAT, y.data.float_value);
     }
     else if (x.type == STACK_INT && y.type == STACK_FLOAT)
     {
         if (x.data.int_value < y.data.float_value)
             push(s, STACK_FLOAT, x.data.float_value);
-        else if (x.data.int_value > y.data.float_value)
+        else 
             push(s, STACK_FLOAT, y.data.float_value);
     }
     else if (x.type == STACK_FLOAT && y.type == STACK_INT)
     {
         if (x.data.float_value < y.data.int_value)
             push(s, STACK_INT, x.data.int_value);
-        else if (x.data.float_value > y.data.int_value)
+        else 
             push(s, STACK_INT, y.data.int_value);
     }
     else if (x.type == STACK_CHAR && y.type == STACK_CHAR)
     {
         if (x.data.char_value < y.data.char_value)
             push(s, STACK_CHAR, x.data.char_value);
-        else if (x.data.char_value > y.data.char_value)
+        else 
             push(s, STACK_CHAR, y.data.char_value);
     }
 }
@@ -619,35 +621,35 @@ void largest(stack *s)
     {
         if (x.data.int_value < y.data.int_value)
             push(s, STACK_INT, y.data.int_value);
-        else if (x.data.int_value > y.data.int_value)
+        else
             push(s, STACK_INT, x.data.int_value);
     }
     else if (x.type == STACK_FLOAT && y.type == STACK_FLOAT)
     {
         if (x.data.float_value < y.data.float_value)
             push(s, STACK_FLOAT, y.data.float_value);
-        else if (x.data.float_value > y.data.float_value)
+        else
             push(s, STACK_FLOAT, x.data.float_value);
     }
     else if (x.type == STACK_INT && y.type == STACK_FLOAT)
     {
         if (x.data.int_value < y.data.float_value)
             push(s, STACK_FLOAT, y.data.float_value);
-        else if (x.data.int_value > y.data.float_value)
+        else
             push(s, STACK_FLOAT, x.data.float_value);
     }
     else if (x.type == STACK_FLOAT && y.type == STACK_INT)
     {
         if (x.data.float_value < y.data.int_value)
             push(s, STACK_INT, y.data.int_value);
-        else if (x.data.float_value > y.data.int_value)
+        else
             push(s, STACK_INT, x.data.int_value);
     }
     else if (x.type == STACK_CHAR && y.type == STACK_CHAR)
     {
         if (x.data.char_value < y.data.char_value)
             push(s, STACK_CHAR, y.data.char_value);
-        else if (x.data.char_value > y.data.char_value)
+        else
             push(s, STACK_CHAR, x.data.char_value);
     }
 }
