@@ -175,10 +175,19 @@ void to_char(stack *s);
 void to_string(stack *s);
 
 /**
- * \brief Compara dois elementos da stack.Se forem iguais, retorna 1(Verdadeiro); caso contrário, retorna 0.
- * @param[in] s Stack a ser avaliada.
- * @return Não devolve nada.
+ * \brief Verifica se os n elementos do topo da Stack são Ints, e podem ser usados em operações lógicas
+ * @param[in] s Stack a ser avaliada e Int n de quantos elementos devem ser avaliados
+ * @return 1 se todos os elementos forem válidos, 0 caso contrário
  */
+
+ int checkNbool (stack *s, int n);
+
+ /**
+  * \brief Compara dois elementos da stack.Se forem iguais, retorna 1(Verdadeiro); caso contrário, retorna 0.
+  * @param[in] s Stack a ser avaliada.
+  * @return Não devolve nada.
+  */
+
 void equal(stack *s);
 
 /**
@@ -217,5 +226,21 @@ void smallest(stack *s);
  * @return Não devolve nada.
  */
 void largest(stack *s);
+
+/**
+ * \brief Inverte o valor lógico do elemento do topo da stack
+ * @param[in] s Stack a ser avaliada.
+ * @return Não devolve nada.
+ */
+
+void invertBool (stack *s);
+
+/**
+ * \brief Analisa o valor lógico do 3º elemento da Stack. Se V, imprime o 2º valor, se falso, imprime o 1º
+ * @param[in] s Stack a ser avaliada.
+ * @return Não devolve nada.
+ */
+
+ void IfThenElse (stack *s);
 
 #endif

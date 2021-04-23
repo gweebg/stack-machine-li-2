@@ -464,6 +464,18 @@ void to_string(stack *s)
 0 ou {} -> False
 != 0 -> Verdadeiro
 */
+
+int checkNbool (stack *s, int n)
+{
+    n--;
+    while (n >= 0)
+    {
+        if((s->elems[(s->pointer)]).type != STACK_INT)
+            return 0;
+    }
+    return 1;
+}
+
 void equal(stack *s)
 {
     stack_elem x = pop(s);
@@ -592,21 +604,21 @@ void smallest(stack *s)
     {
         if (x.data.int_value < y.data.float_value)
             push(s, STACK_FLOAT, x.data.float_value);
-        else 
+        else
             push(s, STACK_FLOAT, y.data.float_value);
     }
     else if (x.type == STACK_FLOAT && y.type == STACK_INT)
     {
         if (x.data.float_value < y.data.int_value)
             push(s, STACK_INT, x.data.int_value);
-        else 
+        else
             push(s, STACK_INT, y.data.int_value);
     }
     else if (x.type == STACK_CHAR && y.type == STACK_CHAR)
     {
         if (x.data.char_value < y.data.char_value)
             push(s, STACK_CHAR, x.data.char_value);
-        else 
+        else
             push(s, STACK_CHAR, y.data.char_value);
     }
 }
@@ -653,6 +665,34 @@ void largest(stack *s)
             push(s, STACK_CHAR, x.data.char_value);
     }
 }
+
+void invertBool (stack *s)
+{
+    if(checkNbool (s, 1) == 1)
+    {
+        stack_elem x = pop (s);
+        if(x.data.int_value == 0)
+            push(s, STACK_INT, 1);
+        else
+            push(s, STACK_INT, 0);
+    }
+}
+
+void IfThenElse (stack *s)
+{
+    stack_elem y = pop(s);
+    stack_elem x = pop(s);
+    if(checkNbool (s, 1))
+    {
+        stack_elem bool = pop(s);
+        if(bool.data.int_value)
+            push (s, STACK_INT, x.data.int_value);
+        else
+            push (s, STACK_INT, y.data.int_value);
+    }
+}
+
+
 
 // Criar projeto c executable
 // 1 - carregar direito pasta raiz em new

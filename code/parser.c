@@ -41,10 +41,10 @@ bool check_reserved_string(char *s)
      for (int i = 0; i < 6; i++)
      {
           if (strcmp(s, reserved[i]) == 0) return true;
-               
+
      }
 
-     return false;  
+     return false;
 
 }
 
@@ -111,10 +111,12 @@ void parser(char *line, stack *s)
           else if (strcmp(token, "=") == 0) equal(s);
           else if (strcmp(token, "<") == 0) less(s);
           else if (strcmp(token, ">") == 0) greater(s);
-          // else if (strcmp(token, "!") == 0) no(s);
+          else if (strcmp(token, "!") == 0) invertBool(s);
           else if (strcmp(token, "e<") == 0) smallest(s);
           else if (strcmp(token, "e>") == 0) largest(s);
-     
+          else if (strcmp(token, "?") == 0) IfThenElse (s);
+          //else if (strcmp(token, "e&"))
+
           token = strtok(NULL, delim);
 
      }
