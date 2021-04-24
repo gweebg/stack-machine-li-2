@@ -528,9 +528,9 @@ void less(stack *s)
     {
         push(s, STACK_INT, 1);
     }
-    else 
+    else
     {
-        push(s, STACK_INT, 0); 
+        push(s, STACK_INT, 0);
     }
 
 }
@@ -556,72 +556,165 @@ void greater(stack *s)
     {
         push(s, STACK_INT, 1);
     }
-    else 
+    else
     {
-        push(s, STACK_INT, 0); 
+        push(s, STACK_INT, 0);
     }
 
 }
 
 void pushAnd(stack *s)
 {
-    stack_elem x = pop(s);
     stack_elem y = pop(s);
+    stack_elem x = pop(s);
 
-    if (x.type == STACK_INT && y.type == STACK_INT)
+    double a, b;
+    switch(x.type)
     {
-        if (x.data.int_value & y.data.int_value) push(s, STACK_INT, x.data.int_value);
-        else push(s, STACK_INT, y.data.int_value);
-    }
-    else if (x.type == STACK_FLOAT && y.type == STACK_FLOAT)
-    {
-        if ((int)x.data.float_value & (int)y.data.float_value) push(s, STACK_FLOAT, x.data.int_value);
-        else push(s, STACK_FLOAT, x.data.float_value);
-    }
-    else if (x.type == STACK_CHAR && y.type == STACK_CHAR)
-    {
-       if (x.data.char_value & y.data.char_value) push(s, STACK_FLOAT, x.data.char_value);
-       else push(s, STACK_FLOAT, y.data.char_value);
-    }
-    else if (x.type == STACK_POINTER && y.type == STACK_POINTER)
-    {
-        if ((int)strlen(x.data.string_value) & (int)strlen(y.data.string_value)) push(s, STACK_INT, x.data.int_value);
-        else push(s, STACK_INT, y.data.string_value);
+        case STACK_INT:
+            a = x.data.int_value;
+            break;
+
+        case STACK_FLOAT:
+            a = x.data.float_value;
+            break;
+
+        case STACK_POINTER:
+            a = atoi (x.data.string_value);
+            break;
+
+        default:
+            a = 0;
+            break;
     }
 
+    switch(y.type)
+    {
+        case STACK_INT:
+            b = y.data.int_value;
+            break;
+
+        case STACK_FLOAT:
+            b = y.data.float_value;
+            break;
+
+        case STACK_POINTER:
+            b = atoi (y.data.string_value);
+            break;
+
+        default:
+            b = 0;
+            break;
+    }
+    if(a && b)
+        {
+            switch(x.type)
+            {
+                case STACK_INT:
+                    push(s, x.type, (int) a);
+                    break;
+                case STACK_FLOAT:
+                    push (s, x.type, a);
+                    break;
+                case STACK_POINTER:
+                push (s, x.type, x.data.string_value);
+                    break;
+
+                default:
+                    push (s, x.type, a);
+                    break;
+            }
+        }
+    else
+        push(s, STACK_INT, 0);
 }
 
 void pushOr(stack *s)
 {
-    stack_elem x = pop(s);
     stack_elem y = pop(s);
+    stack_elem x = pop(s);
+    double a, b;
+    switch(x.type)
+    {
+        case STACK_INT:
+            a = x.data.int_value;
+            break;
+        case STACK_FLOAT:
+            a = x.data.float_value;
+            break;
+        case STACK_POINTER:
+            a = atoi (x.data.string_value);
+            break;
 
-    if (x.type == STACK_INT && y.type == STACK_INT)
-    {
-        if (x.data.int_value | y.data.int_value) push(s, STACK_INT, x.data.int_value);
-        else push(s, STACK_INT, y.data.int_value);
-    }
-    else if (x.type == STACK_FLOAT && y.type == STACK_FLOAT)
-    {
-        if ((int)x.data.float_value | (int)y.data.float_value) push(s, STACK_FLOAT, x.data.int_value);
-        else push(s, STACK_FLOAT, x.data.float_value);
-    }
-    else if (x.type == STACK_CHAR && y.type == STACK_CHAR)
-    {
-       if (x.data.char_value | y.data.char_value) push(s, STACK_FLOAT, x.data.char_value);
-       else push(s, STACK_FLOAT, y.data.char_value);
-    }
-    else if (x.type == STACK_POINTER && y.type == STACK_POINTER)
-    {
-        if ((int)strlen(x.data.string_value) | (int)strlen(y.data.string_value)) push(s, STACK_INT, x.data.int_value);
-        else push(s, STACK_INT, y.data.string_value);
+        default:
+            a = 0;
+            break;
     }
 
+    switch(y.type)
+    {
+        case STACK_INT:
+            b = y.data.int_value;
+            break;
+
+        case STACK_FLOAT:
+            b = y.data.float_value;
+            break;
+
+        case STACK_POINTER:
+            b = atoi (y.data.string_value);
+            break;
+
+        default:
+            b = 0;
+            break;
+    }
+
+    if (a)
+    {
+        switch(x.type)
+        {
+            case STACK_INT:
+                push(s, x.type, (int) a);
+                break;
+            case STACK_FLOAT:
+                push (s, x.type, a);
+                break;
+            case STACK_POINTER:
+            push (s, x.type, x.data.string_value);
+                break;
+
+            default:
+                push (s, x.type, a);
+                break;
+        }
+    }
+
+
+    else
+        {
+            switch(y.type)
+            {
+                case STACK_INT:
+                    push(s, y.type, (int) b);
+                    break;
+                case STACK_FLOAT:
+                    push (s, y.type, b);
+                    break;
+                case STACK_POINTER:
+                    push (s, y.type, y.data.string_value);
+                    break;
+
+                default:
+                    push (s, x.type, b);
+                    break;
+            }
+        }
 }
 
 void smallest(stack *s)
 {
-    
+
     stack_elem x = pop(s);
     stack_elem y = pop(s);
 
@@ -690,33 +783,32 @@ void invertBool(stack *s)
 
     switch(x.type)
     {
-        case STACK_INT: 
-            if((x.data.int_value) != 0) push(s, STACK_INT, 0); 
-            else push(s, STACK_INT, 1); 
+        case STACK_INT:
+            if((x.data.int_value) != 0) push(s, STACK_INT, 0);
+            else push(s, STACK_INT, 1);
             break;
-        case STACK_FLOAT: 
-            if((x.data.float_value) != 0.0) push(s, STACK_INT,0); 
-            else push(s, STACK_INT, 1); 
+        case STACK_FLOAT:
+            if((x.data.float_value) != 0.0) push(s, STACK_INT,0);
+            else push(s, STACK_INT, 1);
             break;
-        case STACK_CHAR: 
-            if((x.data.char_value) != 0) push(s, STACK_INT,0); 
-            else push(s, STACK_INT, 1); 
+        case STACK_CHAR:
+            if((x.data.char_value) != 0) push(s, STACK_INT,0);
+            else push(s, STACK_INT, 1);
             break;
-        default: 
-            push(s, STACK_INT,0); 
+        default:
+            push(s, STACK_INT,0);
             break;
     }
 
 }
 
-void IfThenElse(stack *s)
+void ifThenElse(stack *s)
 {
-    stack_elem x = pop(s); 
-    stack_elem y = pop(s); 
+    stack_elem x = pop(s);
+    stack_elem y = pop(s);
     stack_elem z = pop(s); // Conditional
 
     if (z.data.int_value) push(s, STACK_INT, y.data.int_value);
     else push(s, STACK_INT, x.data.int_value);
-    
-}
 
+}

@@ -239,9 +239,23 @@ void invertBool (stack *s);
  * @param[in] s Stack a ser avaliada.
  * @return Não devolve nada.
  */
- void IfThenElse (stack *s);
+
+ void ifThenElse (stack *s);
+
+ /**
+  * \brief Analisa o valor lógico da conjunção dos dois elementos do topo da Stack. Devolve 0 se falso, o valor do elemento do topo se for verdade
+  * @param[in] s Stack a ser avaliada.
+  * @return Não devolve nada.
+  */
 
  void pushAnd(stack *s);
+
+ /**
+  * \brief Analisa o valor lógico da disjunção dos dois elementos do topo da Stack. Devolve 0 se falso, o penultimo valor se for !=0, o topo da Stack se o abaixo for 0
+  * @param[in] s Stack a ser avaliada.
+  * @return Não devolve nada.
+  */
+
  void pushOr(stack *s);
 
 #endif

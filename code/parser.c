@@ -116,7 +116,7 @@ void parser(char *line, stack *s)
           else if (strcmp(token, "e>") == 0) largest(s);
           else if (strcmp(token, "e&") == 0) pushAnd(s);
           else if (strcmp(token, "e|") == 0) pushOr(s);
-          else if (strcmp(token, "?") == 0) IfThenElse (s);
+          else if (strcmp(token, "?") == 0) ifThenElse (s);
 
           token = strtok(NULL, delim);
 
