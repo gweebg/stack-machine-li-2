@@ -17,7 +17,7 @@
 bool check_reserved(char c)
 {
 
-     char *reserved = "+-*/()%#&|^~_;\\@$ltpifcs";
+     char *reserved = "+-*/()%#&|^~_;\\@$ltpifcs=<>!?";
      int i = 0;
 
      while (reserved[i] != '\0')
@@ -114,8 +114,9 @@ void parser(char *line, stack *s)
           else if (strcmp(token, "!") == 0) invertBool(s);
           else if (strcmp(token, "e<") == 0) smallest(s);
           else if (strcmp(token, "e>") == 0) largest(s);
+          else if (strcmp(token, "e&") == 0) pushAnd(s);
+          else if (strcmp(token, "e|") == 0) pushOr(s);
           else if (strcmp(token, "?") == 0) IfThenElse (s);
-          //else if (strcmp(token, "e&"))
 
           token = strtok(NULL, delim);
 

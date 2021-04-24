@@ -232,7 +232,6 @@ void largest(stack *s);
  * @param[in] s Stack a ser avaliada.
  * @return Não devolve nada.
  */
-
 void invertBool (stack *s);
 
 /**
@@ -240,7 +239,9 @@ void invertBool (stack *s);
  * @param[in] s Stack a ser avaliada.
  * @return Não devolve nada.
  */
-
  void IfThenElse (stack *s);
+
+ void pushAnd(stack *s);
+ void pushOr(stack *s);
 
 #endif

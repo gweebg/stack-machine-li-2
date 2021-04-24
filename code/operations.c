@@ -8,6 +8,7 @@
 #include <math.h>
 #include <assert.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "stack.h"
 #include "operations.h"
@@ -461,16 +462,19 @@ void to_string(stack *s)
 // * Operações lógicas
 
 /*
-0 ou {} -> False
-!= 0 -> Verdadeiro
+operations.c:479: warning: equal has 32 NLOC, 16 CCN, 233 token, 1 PARAM, 33 length
+operations.c:513: warning: less has 32 NLOC, 16 CCN, 233 token, 1 PARAM, 34 length
+operations.c:548: warning: greater has 32 NLOC, 16 CCN, 233 token, 1 PARAM, 34 length
+operations.c:583: warning: smallest has 40 NLOC, 16 CCN, 313 token, 1 PARAM, 42 length
+operations.c:626: warning: largest has 40 NLOC, 16 CCN, 313 token, 1 PARAM, 42 length
 */
 
-int checkNbool (stack *s, int n)
+int checkNbool(stack *s, int n)
 {
     n--;
     while (n >= 0)
     {
-        if((s->elems[(s->pointer)]).type != STACK_INT)
+        if ((s->elems[(s->pointer)]).type != STACK_INT)
             return 0;
     }
     return 1;
@@ -481,221 +485,238 @@ void equal(stack *s)
     stack_elem x = pop(s);
     stack_elem y = pop(s);
 
-    if (x.type == STACK_INT && y.type == STACK_INT)
+    // Só faz sentido entrarem números do mesmo tipo.
+    // Daí apenas termos: Int-Int ; Float-Float; Char-Char; String-String
+
+    if (x.type == STACK_INT && y.type == STACK_INT && (x.data.int_value == y.data.int_value))
     {
-        if (x.data.int_value == y.data.int_value)
-            push(s, STACK_INT, 1);
+        push(s, STACK_INT, 1);
     }
-    else if (x.type == STACK_FLOAT && y.type == STACK_FLOAT)
+    else if (x.type == STACK_FLOAT && y.type == STACK_FLOAT && (x.data.float_value == y.data.float_value))
     {
-        if (x.data.float_value == y.data.float_value)
-            push(s, STACK_FLOAT, 1);
+        push(s, STACK_FLOAT, 1);
     }
-    else if (x.type == STACK_INT && y.type == STACK_FLOAT)
+    else if (x.type == STACK_CHAR && y.type == STACK_CHAR && (x.data.char_value == y.data.char_value))
     {
-        if (x.data.int_value == y.data.float_value)
-            push(s, STACK_FLOAT, 1);
+       push(s, STACK_FLOAT, 1);
     }
-    else if (x.type == STACK_FLOAT && y.type == STACK_INT)
+    else if (x.type == STACK_POINTER && y.type == STACK_POINTER && (strlen(x.data.string_value) == strlen(y.data.string_value)))
     {
-        if (x.data.float_value == y.data.int_value)
-            push(s, STACK_INT, 1);
+        push(s, STACK_INT, 1);
     }
-    else if (x.type == STACK_CHAR && y.type == STACK_CHAR)
-    {
-        if (x.data.char_value == y.data.char_value)
-            push(s, STACK_CHAR, 1);
-    }
-    else
-        push(s, STACK_INT, 0);
+    else push(s, STACK_INT, 0);
 }
 
 void less(stack *s)
 {
-
     stack_elem x = pop(s);
     stack_elem y = pop(s);
 
-    if (x.type == STACK_INT && y.type == STACK_INT)
+    if (x.type == STACK_INT && y.type == STACK_INT && (x.data.int_value > y.data.int_value))
     {
-        if (x.data.int_value < y.data.int_value)
-            push(s, STACK_INT, 1);
+        push(s, STACK_INT, 1);
     }
-    else if (x.type == STACK_FLOAT && y.type == STACK_FLOAT)
+    else if (x.type == STACK_FLOAT && y.type == STACK_FLOAT && (x.data.float_value > y.data.float_value))
     {
-        if (x.data.float_value < y.data.float_value)
-            push(s, STACK_FLOAT, 1);
+        push(s, STACK_FLOAT, 1);
     }
-    else if (x.type == STACK_INT && y.type == STACK_FLOAT)
+    else if (x.type == STACK_CHAR && y.type == STACK_CHAR && (x.data.char_value > y.data.char_value))
     {
-        if (x.data.int_value < y.data.float_value)
-            push(s, STACK_FLOAT, 1);
+       push(s, STACK_FLOAT, 1);
     }
-    else if (x.type == STACK_FLOAT && y.type == STACK_INT)
+    else if (x.type == STACK_POINTER && y.type == STACK_POINTER && (strlen(x.data.string_value) > strlen(y.data.string_value)))
     {
-        if (x.data.float_value < y.data.int_value)
-            push(s, STACK_INT, 1);
+        push(s, STACK_INT, 1);
     }
-    else if (x.type == STACK_CHAR && y.type == STACK_CHAR)
+    else 
     {
-        if (x.data.char_value < y.data.char_value)
-            push(s, STACK_CHAR, 1);
+        push(s, STACK_INT, 0); 
     }
-    else
-        push(s, STACK_INT, 0);
+
 }
 
 void greater(stack *s)
 {
+    stack_elem x = pop(s);
+    stack_elem y = pop(s);
 
+    if (x.type == STACK_INT && y.type == STACK_INT && (x.data.int_value < y.data.int_value))
+    {
+        push(s, STACK_INT, 1);
+    }
+    else if (x.type == STACK_FLOAT && y.type == STACK_FLOAT && (x.data.float_value < y.data.float_value))
+    {
+        push(s, STACK_FLOAT, 1);
+    }
+    else if (x.type == STACK_CHAR && y.type == STACK_CHAR && (x.data.char_value < y.data.char_value))
+    {
+       push(s, STACK_FLOAT, 1);
+    }
+    else if (x.type == STACK_POINTER && y.type == STACK_POINTER && (strlen(x.data.string_value) < strlen(y.data.string_value)))
+    {
+        push(s, STACK_INT, 1);
+    }
+    else 
+    {
+        push(s, STACK_INT, 0); 
+    }
+
+}
+
+void pushAnd(stack *s)
+{
     stack_elem x = pop(s);
     stack_elem y = pop(s);
 
     if (x.type == STACK_INT && y.type == STACK_INT)
     {
-        if (x.data.int_value > y.data.int_value)
-            push(s, STACK_INT, 1);
+        if (x.data.int_value & y.data.int_value) push(s, STACK_INT, x.data.int_value);
+        else push(s, STACK_INT, y.data.int_value);
     }
     else if (x.type == STACK_FLOAT && y.type == STACK_FLOAT)
     {
-        if (x.data.float_value > y.data.float_value)
-            push(s, STACK_FLOAT, 1);
-    }
-    else if (x.type == STACK_INT && y.type == STACK_FLOAT)
-    {
-        if (x.data.int_value > y.data.float_value)
-            push(s, STACK_FLOAT, 1);
-    }
-    else if (x.type == STACK_FLOAT && y.type == STACK_INT)
-    {
-        if (x.data.float_value > y.data.int_value)
-            push(s, STACK_INT, 1);
+        if ((int)x.data.float_value & (int)y.data.float_value) push(s, STACK_FLOAT, x.data.int_value);
+        else push(s, STACK_FLOAT, x.data.float_value);
     }
     else if (x.type == STACK_CHAR && y.type == STACK_CHAR)
     {
-        if (x.data.char_value > y.data.char_value)
-            push(s, STACK_CHAR, 1);
+       if (x.data.char_value & y.data.char_value) push(s, STACK_FLOAT, x.data.char_value);
+       else push(s, STACK_FLOAT, y.data.char_value);
     }
-    else
-        push(s, STACK_INT, 0);
+    else if (x.type == STACK_POINTER && y.type == STACK_POINTER)
+    {
+        if ((int)strlen(x.data.string_value) & (int)strlen(y.data.string_value)) push(s, STACK_INT, x.data.int_value);
+        else push(s, STACK_INT, y.data.string_value);
+    }
+
+}
+
+void pushOr(stack *s)
+{
+    stack_elem x = pop(s);
+    stack_elem y = pop(s);
+
+    if (x.type == STACK_INT && y.type == STACK_INT)
+    {
+        if (x.data.int_value | y.data.int_value) push(s, STACK_INT, x.data.int_value);
+        else push(s, STACK_INT, y.data.int_value);
+    }
+    else if (x.type == STACK_FLOAT && y.type == STACK_FLOAT)
+    {
+        if ((int)x.data.float_value | (int)y.data.float_value) push(s, STACK_FLOAT, x.data.int_value);
+        else push(s, STACK_FLOAT, x.data.float_value);
+    }
+    else if (x.type == STACK_CHAR && y.type == STACK_CHAR)
+    {
+       if (x.data.char_value | y.data.char_value) push(s, STACK_FLOAT, x.data.char_value);
+       else push(s, STACK_FLOAT, y.data.char_value);
+    }
+    else if (x.type == STACK_POINTER && y.type == STACK_POINTER)
+    {
+        if ((int)strlen(x.data.string_value) | (int)strlen(y.data.string_value)) push(s, STACK_INT, x.data.int_value);
+        else push(s, STACK_INT, y.data.string_value);
+    }
+
 }
 
 void smallest(stack *s)
 {
-
+    
     stack_elem x = pop(s);
     stack_elem y = pop(s);
 
     if (x.type == STACK_INT && y.type == STACK_INT)
     {
-        if (x.data.int_value < y.data.int_value)
-            push(s, STACK_INT, x.data.int_value);
-        else
-            push(s, STACK_INT, y.data.int_value);
+        if (x.data.int_value > y.data.int_value) push(s, STACK_INT, y.data.int_value);
+        else push(s, STACK_INT, x.data.int_value);
     }
     else if (x.type == STACK_FLOAT && y.type == STACK_FLOAT)
     {
-        if (x.data.float_value < y.data.float_value)
-            push(s, STACK_FLOAT, x.data.float_value);
-        else
-            push(s, STACK_FLOAT, y.data.float_value);
+        if (x.data.float_value > y.data.float_value) push(s, STACK_FLOAT, y.data.float_value);
+        else push(s, STACK_FLOAT, x.data.float_value);
     }
     else if (x.type == STACK_INT && y.type == STACK_FLOAT)
     {
-        if (x.data.int_value < y.data.float_value)
-            push(s, STACK_FLOAT, x.data.float_value);
-        else
-            push(s, STACK_FLOAT, y.data.float_value);
+        if (x.data.int_value > y.data.float_value) push(s, STACK_FLOAT, y.data.float_value);
+        else push(s, STACK_FLOAT, x.data.float_value);
     }
     else if (x.type == STACK_FLOAT && y.type == STACK_INT)
     {
-        if (x.data.float_value < y.data.int_value)
-            push(s, STACK_INT, x.data.int_value);
-        else
-            push(s, STACK_INT, y.data.int_value);
+        if (x.data.float_value > y.data.int_value) push(s, STACK_INT, y.data.int_value);
+        else push(s, STACK_INT, x.data.int_value);
     }
     else if (x.type == STACK_CHAR && y.type == STACK_CHAR)
     {
-        if (x.data.char_value < y.data.char_value)
-            push(s, STACK_CHAR, x.data.char_value);
-        else
-            push(s, STACK_CHAR, y.data.char_value);
+        if (x.data.char_value > y.data.char_value) push(s, STACK_CHAR, y.data.char_value);
+        else push(s, STACK_CHAR, x.data.char_value);
     }
 }
 
 void largest(stack *s)
 {
-
     stack_elem x = pop(s);
     stack_elem y = pop(s);
 
     if (x.type == STACK_INT && y.type == STACK_INT)
     {
-        if (x.data.int_value < y.data.int_value)
-            push(s, STACK_INT, y.data.int_value);
-        else
-            push(s, STACK_INT, x.data.int_value);
+        if (x.data.int_value < y.data.int_value) push(s, STACK_INT, y.data.int_value);
+        else push(s, STACK_INT, x.data.int_value);
     }
     else if (x.type == STACK_FLOAT && y.type == STACK_FLOAT)
     {
-        if (x.data.float_value < y.data.float_value)
-            push(s, STACK_FLOAT, y.data.float_value);
-        else
-            push(s, STACK_FLOAT, x.data.float_value);
+        if (x.data.float_value < y.data.float_value) push(s, STACK_FLOAT, y.data.float_value);
+        else push(s, STACK_FLOAT, x.data.float_value);
     }
     else if (x.type == STACK_INT && y.type == STACK_FLOAT)
     {
-        if (x.data.int_value < y.data.float_value)
-            push(s, STACK_FLOAT, y.data.float_value);
-        else
-            push(s, STACK_FLOAT, x.data.float_value);
+        if (x.data.int_value < y.data.float_value) push(s, STACK_FLOAT, y.data.float_value);
+        else push(s, STACK_FLOAT, x.data.float_value);
     }
     else if (x.type == STACK_FLOAT && y.type == STACK_INT)
     {
-        if (x.data.float_value < y.data.int_value)
-            push(s, STACK_INT, y.data.int_value);
-        else
-            push(s, STACK_INT, x.data.int_value);
+        if (x.data.float_value < y.data.int_value) push(s, STACK_INT, y.data.int_value);
+        else push(s, STACK_INT, x.data.int_value);
     }
     else if (x.type == STACK_CHAR && y.type == STACK_CHAR)
     {
-        if (x.data.char_value < y.data.char_value)
-            push(s, STACK_CHAR, y.data.char_value);
-        else
-            push(s, STACK_CHAR, x.data.char_value);
+        if (x.data.char_value < y.data.char_value) push(s, STACK_CHAR, y.data.char_value);
+        else push(s, STACK_CHAR, x.data.char_value);
     }
 }
 
-void invertBool (stack *s)
+void invertBool(stack *s)
 {
-    if(checkNbool (s, 1) == 1)
-    {
-        stack_elem x = pop (s);
-        if(x.data.int_value == 0)
-            push(s, STACK_INT, 1);
-        else
-            push(s, STACK_INT, 0);
-    }
-}
-
-void IfThenElse (stack *s)
-{
-    stack_elem y = pop(s);
     stack_elem x = pop(s);
-    if(checkNbool (s, 1))
+
+    switch(x.type)
     {
-        stack_elem bool = pop(s);
-        if(bool.data.int_value)
-            push (s, STACK_INT, x.data.int_value);
-        else
-            push (s, STACK_INT, y.data.int_value);
+        case STACK_INT: 
+            if((x.data.int_value) != 0) push(s, STACK_INT, 0); 
+            else push(s, STACK_INT, 1); 
+            break;
+        case STACK_FLOAT: 
+            if((x.data.float_value) != 0.0) push(s, STACK_INT,0); 
+            else push(s, STACK_INT, 1); 
+            break;
+        case STACK_CHAR: 
+            if((x.data.char_value) != 0) push(s, STACK_INT,0); 
+            else push(s, STACK_INT, 1); 
+            break;
+        default: 
+            push(s, STACK_INT,0); 
+            break;
     }
+
 }
 
+void IfThenElse(stack *s)
+{
+    stack_elem x = pop(s); 
+    stack_elem y = pop(s); 
+    stack_elem z = pop(s); // Conditional
 
+    if (z.data.int_value) push(s, STACK_INT, y.data.int_value);
+    else push(s, STACK_INT, x.data.int_value);
+    
+}
 
-// Criar projeto c executable
-// 1 - carregar direito pasta raiz em new
-// 2 - 2º / 3º opção header file ; source file
-// aba com code -> reformat code
-// target_link_libraries(project_name PRIVATE m) (project_name - nome projeto)
