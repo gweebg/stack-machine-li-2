@@ -67,6 +67,8 @@ void mult(stack *s)
         push(s, STACK_FLOAT, (x.data.int_value) * y.data.float_value);
     else if (x.type == STACK_FLOAT && y.type == STACK_INT)
         push(s, STACK_FLOAT, (x.data.float_value * y.data.int_value));
+    else if (x.type == STACK_DOUBLE && y.type == STACK_DOUBLE)
+        push(s, STACK_DOUBLE, (x.data.double_value * y.data.double_value));
     else
     {
         fprintf(stderr, "Operação inválida!\n");
@@ -249,25 +251,48 @@ void swap(stack *s)
     stack_elem x = pop(s);
     stack_elem y = pop(s);
 
-    if (x.type == STACK_FLOAT && y.type == STACK_FLOAT)
+    switch(x.type)
     {
-        push(s, STACK_FLOAT, x.data.float_value);
-        push(s, STACK_FLOAT, y.data.float_value);
+        case(STACK_CHAR):
+            push(s, x.type, x.data.char_value);
+            break;
+
+        case(STACK_INT):
+            push(s, x.type, x.data.int_value);
+            break;
+
+        case(STACK_FLOAT):
+            push(s, x.type, x.data.float_value);
+            break;
+
+        case(STACK_POINTER):
+            push(s, x.type, x.data.string_value);
+            break;
+
+        default:
+            push(s, x.type, x.data);
     }
-    else if (x.type == STACK_FLOAT && y.type == STACK_INT)
+
+    switch(y.type)
     {
-        push(s, STACK_FLOAT, x.data.float_value);
-        push(s, STACK_INT, y.data.int_value);
-    }
-    else if (x.type == STACK_INT && y.type == STACK_FLOAT)
-    {
-        push(s, STACK_INT, x.data.int_value);
-        push(s, STACK_FLOAT, y.data.float_value);
-    }
-    else
-    {
-        push(s, x.type, x.data);
-        push(s, y.type, y.data);
+        case(STACK_CHAR):
+            push(s, y.type, y.data.char_value);
+            break;
+
+        case(STACK_INT):
+            push(s, y.type, y.data.int_value);
+            break;
+
+        case(STACK_FLOAT):
+            push(s, y.type, y.data.float_value);
+            break;
+
+        case(STACK_POINTER):
+            push(s, y.type, y.data.string_value);
+            break;
+
+        default:
+            push(s, x.type, y.data);
     }
 }
 
@@ -811,4 +836,53 @@ void ifThenElse(stack *s)
     if (z.data.int_value) push(s, STACK_INT, y.data.int_value);
     else push(s, STACK_INT, x.data.int_value);
 
+}
+
+//Operações com Variaveis
+
+float variNums[] = {10, 11, 12, 13, 14, 15, 0, 1, 2};
+char variChars[] = {'\n', 'a', 'b', 'c', 'd', ' '};
+
+void saveVar (stack *s, char i)
+{
+    if(i - 88 >= 0)
+        i = i - 17;
+    stack_elem x = peek(s);
+    if((unsigned int)(i - 65) <= 9)
+    {
+        double aux;
+        switch(x.type)
+        {
+            case STACK_INT:
+                aux = x.data.int_value;
+                break;
+
+            case STACK_FLOAT:
+                aux = x.data.double_value;
+                break;
+
+            default:
+                aux = 0;
+                break;
+        }
+    variNums [i - 65] = aux;
+    }
+    else
+    {
+        stack_elem x = peek(s);
+
+        if(x.type == STACK_CHAR)
+            variChars[i - 78] = x.data.char_value;
+    }
+}
+
+void pushVar (stack *s, char i)
+{
+    if(i >= 'X')
+        i = i - 17;
+
+    if((i - 65) <= 9)
+        push(s, STACK_FLOAT, variNums[i - 65]);
+    else
+        push(s, STACK_CHAR, variChars[i - 78]);
 }

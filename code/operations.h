@@ -258,4 +258,8 @@ void invertBool (stack *s);
 
  void pushOr(stack *s);
 
+ void saveVar(stack *s, char i);
+
+ void pushVar(stack *s, char i);
+
 #endif
