@@ -166,3 +166,77 @@ stack_elem peek(stack *s)
 {
     return s->elems[s->pointer];
 }
+
+void pushVar(stack *s, char var_letter)
+{
+
+    // Ao retirar 65 à letra (ASCII) obtemos o seu índice no array.
+    // Por exemplo : A = 65, 65 - 65 = 0 | B = 66, 66 - 65 = 1
+    int index = var_letter - 65; 
+    stack_elem var_element = peek(s);
+
+    // Queremos copiar o elemento no topo para a variável.
+    s->vars[index] = var_element;
+
+}
+
+void varStart(stack *stack)
+{
+
+    // Inicialização das variáveis default da linguagem.
+    stack_elem a, b, c, d, e, f, n, s, x, y, z;
+
+    // Valores default de cada variável
+    a.type = STACK_INT; a.data.int_value = 10;
+    b.type = STACK_INT; b.data.int_value = 11;
+    c.type = STACK_INT; c.data.int_value = 12;
+    d.type = STACK_INT; d.data.int_value = 13;
+    e.type = STACK_INT; e.data.int_value = 14;
+    f.type = STACK_INT; f.data.int_value = 15;
+
+    n.type = STACK_CHAR; n.data.char_value = '\n';
+    s.type = STACK_CHAR; s.data.char_value = ' ';
+
+    x.type = STACK_INT; x.data.int_value = 0;
+    y.type = STACK_INT; y.data.int_value = 1;
+    z.type = STACK_INT; z.data.int_value = 2;
+
+    // Atribuição de cada variável a um indice do array das variaveis.
+    stack->vars[0] = a;
+    stack->vars[1] = b;
+    stack->vars[2] = c;
+    stack->vars[3] = d;
+    stack->vars[4] = e;
+    stack->vars[5] = f;
+
+    stack->vars[13] = n;
+    stack->vars[18] = s;
+
+    stack->vars[23] = x;
+    stack->vars[24] = y;
+    stack->vars[25] = z;
+    
+}
+
+void getVar(stack *s, char var_letter)
+{                      
+
+    // Segue o mesmo raciocínio da função pushVar.
+    int index = var_letter - 65;
+                
+    // O valor da variável que cuja letra cooresponde ao índice var_letter - 65.
+    // Por exemplo, var_letter = S => index = 85 - 65 = 18 = índice do S no array das variáveis definido na estrutura da stack.
+    stack_elem onVariable = s->vars[index];
+
+    // Um caso para cada tipo.
+    switch(onVariable.type)
+    {
+        case STACK_INT: push(s, STACK_INT, onVariable.data.int_value); break;
+        case STACK_FLOAT: push(s, STACK_FLOAT, onVariable.data.float_value); break;
+        case STACK_DOUBLE: push(s, STACK_DOUBLE, onVariable.data.double_value); break;
+        case STACK_CHAR: push(s, STACK_CHAR, onVariable.data.char_value); break;
+        case STACK_POINTER: push(s, STACK_POINTER, onVariable.data.string_value); break;
+        default: fprintf(stderr, "Erro ao adicionar elemento!\n[function::getVar]"); break;
+    }
+
+}

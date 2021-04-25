@@ -73,6 +73,7 @@ typedef struct stack
 {
     int size;
     int pointer;
+    stack_elem vars[26]; // 26 é o número máximo de variáveis.
     stack_elem *elems; 
     
 } stack;
@@ -140,5 +141,34 @@ void dumpStack(stack *s);
  * @returns Devolve um elemento da stack (stack_elem).
  */
 stack_elem peek(stack *s);
+
+/**
+ * \brief Esta função é usada na recolocação de varoles nas variáveis disponíveis.
+ * Reescreve o valor das variáveis pelo valor do elemento no topo da stack.
+ * @param[in] s Stack a ser avaliada.
+ * @param[in] var_letter Letra a qual o valor vai estar associado.
+ * @note Ler código para explicação de como funciona a conversão de letra / ASCII / índice.
+ */
+void pushVar(stack *s, char var_letter);
+
+/**
+ * \brief Esta função inicializa as variáveis default da stack
+ * Esta inicialização apenas incluí os valores padrões, qualqueres outros valores poderão ser adicionados conforme o utilizador desejar
+ * Por exemplo: 'A' começa com o valor 10, 'U' não tem nenhum valor (poderá vir a ter).
+ * Esta função é executada sempre após a criação de uma nova stack.
+ * @param[in] s Stack na qual as variáveis serão adicionadas.
+ * @note Qualquer outra variável poderá ser inicializada por qualquer letra maiúscula do alfabeto.
+ */
+void varStart(stack *stack);
+
+/**
+ * \brief Esta função adiciona na stack o valor da variável cuja letra é dada
+ * A letra dada serve-nos como índice do array de variáveis, sabemos que a letra 'A' tem obrigatóriamente o valor de índice 0, daí podemos concluir que o valor do índice no array vai ser o valor da letra em ASCII - 65
+ * Assim, só precisamos de aceder ao array, mais especificamente ao índice var_letter - 65 e usar a função push para introduzir o valor na stack.
+ * @param[in] s Stack a ser avaliada.
+ * @param[in] var_letter Letra da variável, cujo valor vai ser extraido.
+ * @note Qualquer outra variável poderá ser inicializada por qualquer letra maiúscula do alfabeto.
+ */
+void getVar(stack *s, char var_letter);
 
 #endif

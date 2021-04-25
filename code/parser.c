@@ -17,7 +17,7 @@
 bool check_reserved(char c)
 {
 
-     char *reserved = "+-*/()%#&|^~_;\\@$ltpifcsABCDEFNSXYZ:";
+     char *reserved = "+-*/()%#&|^~_;\\@$ltpifcsABCDEFNSXYZU:";
      int i = 0;
 
      while (reserved[i] != '\0')
@@ -36,10 +36,10 @@ bool check_reserved(char c)
 
 bool check_reserved_string(char *s)
 {
-     char reserved[20][6] = {"e&", "e|", "e<", "e>", ":A", ":B", ":C"
-                             ":D", ":E", ":F", ":N", ":S", ":X", ":Y"};
+     char reserved[20][6] = {"e&", "e|", "e<", "e>", ":A", ":B", ":C", 
+                             ":D", ":E", ":F", ":N", ":S", ":X", ":Y", ":U"};
 
-     for (int i = 0; i < 6; i++)
+     for (int i = 0; i < 20; i++)
      {
           if (strcmp(s, reserved[i]) == 0) return true;
                
@@ -112,7 +112,8 @@ void parser(char *line, stack *s)
           else if (strcmp(token, "e>") == 0) largest(s);
 
           // Variáveis.
-          else if (token[0] == ':') choose_var(s, token);
+          else if (token[0] == ':') pushVar(s, token[1]);
+          else getVar(s, token[0]);
      
           token = strtok(NULL, delim);
 

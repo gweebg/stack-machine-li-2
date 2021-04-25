@@ -528,7 +528,7 @@ void choose_var(stack *s, char *var)
 {
     // Na parser.c estamos a filtrar pelo caratere ":" por isso, aqui, temos de usar o segundo elemento da string.
     // Daí vem o var[1]. O programa ignora qualquer outro char na frente do token pois estamos apenas a filtrar por :A, :B...
-    switch(var[1])
+    switch(var[0])
     {
         case 'A': // A = 10
             push(s, STACK_INT, 10);
