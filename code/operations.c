@@ -8,6 +8,7 @@
 #include <math.h>
 #include <assert.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "stack.h"
 #include "operations.h"
@@ -248,25 +249,48 @@ void swap(stack *s)
     stack_elem x = pop(s);
     stack_elem y = pop(s);
 
-    if (x.type == STACK_FLOAT && y.type == STACK_FLOAT)
+    switch (x.type)
     {
-        push(s, STACK_FLOAT, x.data.float_value);
-        push(s, STACK_FLOAT, y.data.float_value);
-    }
-    else if (x.type == STACK_FLOAT && y.type == STACK_INT)
-    {
-        push(s, STACK_FLOAT, x.data.float_value);
-        push(s, STACK_INT, y.data.int_value);
-    }
-    else if (x.type == STACK_INT && y.type == STACK_FLOAT)
-    {
-        push(s, STACK_INT, x.data.int_value);
-        push(s, STACK_FLOAT, y.data.float_value);
-    }
-    else
-    {
+    case (STACK_CHAR):
+        push(s, x.type, x.data.char_value);
+        break;
+
+    case (STACK_INT):
+        push(s, x.type, x.data.int_value);
+        break;
+
+    case (STACK_FLOAT):
+        push(s, x.type, x.data.float_value);
+        break;
+
+    case (STACK_POINTER):
+        push(s, x.type, x.data.string_value);
+        break;
+
+    default:
         push(s, x.type, x.data);
-        push(s, y.type, y.data);
+    }
+
+    switch (y.type)
+    {
+    case (STACK_CHAR):
+        push(s, y.type, y.data.char_value);
+        break;
+
+    case (STACK_INT):
+        push(s, y.type, y.data.int_value);
+        break;
+
+    case (STACK_FLOAT):
+        push(s, y.type, y.data.float_value);
+        break;
+
+    case (STACK_POINTER):
+        push(s, y.type, y.data.string_value);
+        break;
+
+    default:
+        push(s, x.type, y.data);
     }
 }
 
@@ -474,7 +498,259 @@ e> -> Coloca o maior dos 2 valores na stack
 ? -> If-Then-Else
 */
 
-void largest(stack *s)
+int checkNbool(stack *s, int n)
+{
+    n--;
+    while (n >= 0)
+    {
+        if ((s->elems[(s->pointer)]).type != STACK_INT)
+            return 0;
+    }
+    return 1;
+}
+
+void equal(stack *s)
+{
+    // Queremos os dois elementos no topo da stack.
+    stack_elem x = pop(s);
+    stack_elem y = pop(s);
+
+    // Precisamos de passar todos os casos possíveis de tipos.
+    // Por exemplo Int-Int ; Int-Float ; Float-Int
+    // ! É preciso criar uma função para "automatizar" este processo.
+    if (x.type == STACK_INT && y.type == STACK_INT && (x.data.int_value == y.data.int_value))
+    {
+        push(s, STACK_INT, 1);
+    }
+    else if (x.type == STACK_FLOAT && y.type == STACK_FLOAT && (x.data.float_value == y.data.float_value))
+    {
+        push(s, STACK_FLOAT, 1);
+    }
+    else if (x.type == STACK_CHAR && y.type == STACK_CHAR && (x.data.char_value == y.data.char_value))
+    {
+        push(s, STACK_FLOAT, 1);
+    }
+    else if (x.type == STACK_POINTER && y.type == STACK_POINTER && (strlen(x.data.string_value) == strlen(y.data.string_value)))
+    {
+        push(s, STACK_INT, 1);
+    }
+    else if (x.type == STACK_INT && y.type == STACK_FLOAT && ((float)x.data.int_value == y.data.float_value))
+    {
+        push(s, STACK_INT, 1);
+    }
+    else if (x.type == STACK_FLOAT && y.type == STACK_INT && (x.data.float_value == (float)y.data.int_value))
+    {
+        push(s, STACK_INT, 1);  
+    }
+    else
+    {
+        push(s, STACK_INT, 0); 
+    }
+}
+
+void less(stack *s)
+{
+    stack_elem x = pop(s);
+    stack_elem y = pop(s);
+
+    if (x.type == STACK_INT && y.type == STACK_INT && (x.data.int_value > y.data.int_value))
+    {
+        push(s, STACK_INT, 1);
+    }
+    else if (x.type == STACK_FLOAT && y.type == STACK_FLOAT && (x.data.float_value > y.data.float_value))
+    {
+        push(s, STACK_FLOAT, 1);
+    }
+    else if (x.type == STACK_CHAR && y.type == STACK_CHAR && (x.data.char_value > y.data.char_value))
+    {
+        push(s, STACK_FLOAT, 1);
+    }
+    else if (x.type == STACK_POINTER && y.type == STACK_POINTER && (strlen(x.data.string_value) > strlen(y.data.string_value)))
+    {
+        push(s, STACK_INT, 1);
+    }
+    else
+    {
+        push(s, STACK_INT, 0);
+    }
+}
+
+void greater(stack *s)
+{
+    stack_elem x = pop(s);
+    stack_elem y = pop(s);
+
+    if (x.type == STACK_INT && y.type == STACK_INT && (x.data.int_value < y.data.int_value))
+    {
+        push(s, STACK_INT, 1);
+    }
+    else if (x.type == STACK_FLOAT && y.type == STACK_FLOAT && (x.data.float_value < y.data.float_value))
+    {
+        push(s, STACK_FLOAT, 1);
+    }
+    else if (x.type == STACK_CHAR && y.type == STACK_CHAR && (x.data.char_value < y.data.char_value))
+    {
+        push(s, STACK_FLOAT, 1);
+    }
+    else if (x.type == STACK_POINTER && y.type == STACK_POINTER && (strlen(x.data.string_value) < strlen(y.data.string_value)))
+    {
+        push(s, STACK_INT, 1);
+    }
+    else
+    {
+        push(s, STACK_INT, 0);
+    }
+}
+
+void pushAnd(stack *s)
+{
+    stack_elem y = pop(s);
+    stack_elem x = pop(s);
+
+    double a, b;
+    switch (x.type)
+    {
+    case STACK_INT:
+        a = x.data.int_value;
+        break;
+
+    case STACK_FLOAT:
+        a = x.data.float_value;
+        break;
+
+    case STACK_POINTER:
+        a = atoi(x.data.string_value);
+        break;
+
+    default:
+        a = 0;
+        break;
+    }
+
+    switch (y.type)
+    {
+    case STACK_INT:
+        b = y.data.int_value;
+        break;
+
+    case STACK_FLOAT:
+        b = y.data.float_value;
+        break;
+
+    case STACK_POINTER:
+        b = atoi(y.data.string_value);
+        break;
+
+    default:
+        b = 0;
+        break;
+    }
+    if (a && b)
+    {
+        switch (x.type)
+        {
+        case STACK_INT:
+            push(s, x.type, (int)a);
+            break;
+        case STACK_FLOAT:
+            push(s, x.type, a);
+            break;
+        case STACK_POINTER:
+            push(s, x.type, x.data.string_value);
+            break;
+
+        default:
+            push(s, x.type, a);
+            break;
+        }
+    }
+    else
+        push(s, STACK_INT, 0);
+}
+
+void pushOr(stack *s)
+{
+    stack_elem y = pop(s);
+    stack_elem x = pop(s);
+    double a, b;
+    switch (x.type)
+    {
+    case STACK_INT:
+        a = x.data.int_value;
+        break;
+    case STACK_FLOAT:
+        a = x.data.float_value;
+        break;
+    case STACK_POINTER:
+        a = atoi(x.data.string_value);
+        break;
+
+    default:
+        a = 0;
+        break;
+    }
+
+    switch (y.type)
+    {
+    case STACK_INT:
+        b = y.data.int_value;
+        break;
+
+    case STACK_FLOAT:
+        b = y.data.float_value;
+        break;
+
+    case STACK_POINTER:
+        b = atoi(y.data.string_value);
+        break;
+
+    default:
+        b = 0;
+        break;
+    }
+
+    if (a)
+    {
+        switch (x.type)
+        {
+        case STACK_INT:
+            push(s, x.type, (int)a);
+            break;
+        case STACK_FLOAT:
+            push(s, x.type, a);
+            break;
+        case STACK_POINTER:
+            push(s, x.type, x.data.string_value);
+            break;
+
+        default:
+            push(s, x.type, a);
+            break;
+        }
+    }
+
+    else
+    {
+        switch (y.type)
+        {
+        case STACK_INT:
+            push(s, y.type, (int)b);
+            break;
+        case STACK_FLOAT:
+            push(s, y.type, b);
+            break;
+        case STACK_POINTER:
+            push(s, y.type, y.data.string_value);
+            break;
+
+        default:
+            push(s, x.type, b);
+            break;
+        }
+    }
+}
+
+void smallest(stack *s)
 {
 
     stack_elem x = pop(s);
@@ -482,91 +758,121 @@ void largest(stack *s)
 
     if (x.type == STACK_INT && y.type == STACK_INT)
     {
+        if (x.data.int_value > y.data.int_value)
+            push(s, STACK_INT, y.data.int_value);
+        else
+            push(s, STACK_INT, x.data.int_value);
+    }
+    else if (x.type == STACK_FLOAT && y.type == STACK_FLOAT)
+    {
+        if (x.data.float_value > y.data.float_value)
+            push(s, STACK_FLOAT, y.data.float_value);
+        else
+            push(s, STACK_FLOAT, x.data.float_value);
+    }
+    else if (x.type == STACK_INT && y.type == STACK_FLOAT)
+    {
+        if (x.data.int_value > y.data.float_value)
+            push(s, STACK_FLOAT, y.data.float_value);
+        else
+            push(s, STACK_FLOAT, x.data.float_value);
+    }
+    else if (x.type == STACK_FLOAT && y.type == STACK_INT)
+    {
+        if (x.data.float_value > y.data.int_value)
+            push(s, STACK_INT, y.data.int_value);
+        else
+            push(s, STACK_INT, x.data.int_value);
+    }
+    else if (x.type == STACK_CHAR && y.type == STACK_CHAR)
+    {
+        if (x.data.char_value > y.data.char_value)
+            push(s, STACK_CHAR, y.data.char_value);
+        else
+            push(s, STACK_CHAR, x.data.char_value);
+    }
+}
+
+void largest(stack *s)
+{
+    stack_elem x = pop(s);
+    stack_elem y = pop(s);
+
+    if (x.type == STACK_INT && y.type == STACK_INT)
+    {
         if (x.data.int_value < y.data.int_value)
             push(s, STACK_INT, y.data.int_value);
+        else
+            push(s, STACK_INT, x.data.int_value);
     }
     else if (x.type == STACK_FLOAT && y.type == STACK_FLOAT)
     {
         if (x.data.float_value < y.data.float_value)
             push(s, STACK_FLOAT, y.data.float_value);
+        else
+            push(s, STACK_FLOAT, x.data.float_value);
     }
     else if (x.type == STACK_INT && y.type == STACK_FLOAT)
     {
         if (x.data.int_value < y.data.float_value)
             push(s, STACK_FLOAT, y.data.float_value);
+        else
+            push(s, STACK_FLOAT, x.data.float_value);
     }
     else if (x.type == STACK_FLOAT && y.type == STACK_INT)
     {
         if (x.data.float_value < y.data.int_value)
             push(s, STACK_INT, y.data.int_value);
+        else
+            push(s, STACK_INT, x.data.int_value);
     }
     else if (x.type == STACK_CHAR && y.type == STACK_CHAR)
     {
         if (x.data.char_value < y.data.char_value)
             push(s, STACK_CHAR, y.data.char_value);
+        else
+            push(s, STACK_CHAR, x.data.char_value);
     }
 }
 
-// * Operações relacionadas com variáveis
-
-/*
-:<Letra> Copia topo da stack à variável
-A Valor por omissão: 10
-B Valor por omissão: 11
-C Valor por omissão: 12
-D Valor por omissão: 13
-E Valor por omissão: 14
-F Valor por omissão: 15
-N Valor por omissão: '\n'
-S Valor por omissão: ' '
-X Valor por omissão: 0
-Y Valor por omissão: 1
-Z Valor por omissão: 2
-*/
-
-void choose_var(stack *s, char *var)
+void invertBool(stack *s)
 {
-    // Na parser.c estamos a filtrar pelo caratere ":" por isso, aqui, temos de usar o segundo elemento da string.
-    // Daí vem o var[1]. O programa ignora qualquer outro char na frente do token pois estamos apenas a filtrar por :A, :B...
-    switch(var[0])
-    {
-        case 'A': // A = 10
-            push(s, STACK_INT, 10);
-            break;
-        case 'B': // B = 11
-            push(s, STACK_INT, 11);
-            break;
-        case 'C': // C = 12
-            push(s, STACK_INT, 12);
-            break;
-        case 'D': // D = 13
-            push(s, STACK_INT, 13);
-            break;
-        case 'E': // E = 14
-            push(s, STACK_INT, 14);
-            break;
-        case 'F': // F = 15
-            push(s, STACK_INT, 15);
-            break;
-        case 'N': // N = "\n"
-            push(s, STACK_POINTER, "\n");
-            break;
-        case 'S': // S = " "
-            push(s, STACK_POINTER, " ");
-            break;
-        case 'X': // X = 0
-            push(s, STACK_INT, 0);
-            break;
-        case 'Y': // Y = 1
-            push(s, STACK_INT, 1);
-            break;
-        case 'Z': // Z = 2
-            push(s, STACK_INT, 2);
-            break;
-        default: // Esta parte nunca vai correr, o filtro impede que alguma variavel não definida entre.
-            fprintf(stderr, "Variável não existente!\n");
-            exit(EXIT_FAILURE);
-            break;
-    }
+    stack_elem x = pop(s);
 
+    switch (x.type)
+    {
+    case STACK_INT:
+        if ((x.data.int_value) != 0)
+            push(s, STACK_INT, 0);
+        else
+            push(s, STACK_INT, 1);
+        break;
+    case STACK_FLOAT:
+        if ((x.data.float_value) != 0.0)
+            push(s, STACK_INT, 0);
+        else
+            push(s, STACK_INT, 1);
+        break;
+    case STACK_CHAR:
+        if ((x.data.char_value) != 0)
+            push(s, STACK_INT, 0);
+        else
+            push(s, STACK_INT, 1);
+        break;
+    default:
+        push(s, STACK_INT, 0);
+        break;
+    }
+}
+
+void ifThenElse(stack *s)
+{
+    stack_elem x = pop(s);
+    stack_elem y = pop(s);
+    stack_elem z = pop(s); // Conditional
+
+    if (z.data.int_value)
+        push(s, STACK_INT, y.data.int_value);
+    else
+        push(s, STACK_INT, x.data.int_value);
 }

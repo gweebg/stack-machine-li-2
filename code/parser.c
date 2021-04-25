@@ -17,7 +17,7 @@
 bool check_reserved(char c)
 {
 
-     char *reserved = "+-*/()%#&|^~_;\\@$ltpifcsABCDEFNSXYZU:";
+     char reserved[60] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ:+-*/()%#&|^~_;\\@$ltpifcs=<>!?";
      int i = 0;
 
      while (reserved[i] != '\0')
@@ -36,8 +36,11 @@ bool check_reserved(char c)
 
 bool check_reserved_string(char *s)
 {
-     char reserved[20][6] = {"e&", "e|", "e<", "e>", ":A", ":B", ":C", 
-                             ":D", ":E", ":F", ":N", ":S", ":X", ":Y", ":U"};
+     char reserved[30][6] = {"e&", "e|", "e<", "e>", ":A", ":B", ":C", 
+                             ":D", ":E", ":F",":G", ":H", ":I",":N", 
+                             ":S", ":X", ":Y", ":U", ":V", ":W", ":X", 
+                             ":J", ":K", ":L", ":M", ":O", ":P", ":Q", 
+                             ":R", ":T"};
 
      for (int i = 0; i < 20; i++)
      {
@@ -109,7 +112,15 @@ void parser(char *line, stack *s)
           else if (strcmp(token, "s") == 0) to_string(s);
 
           // Funções lógicas.
+          else if (strcmp(token, "=") == 0) equal(s);
+          else if (strcmp(token, "<") == 0) less(s);
+          else if (strcmp(token, ">") == 0) greater(s);
+          else if (strcmp(token, "!") == 0) invertBool(s);
+          else if (strcmp(token, "e<") == 0) smallest(s);
           else if (strcmp(token, "e>") == 0) largest(s);
+          else if (strcmp(token, "e&") == 0) pushAnd(s);
+          else if (strcmp(token, "e|") == 0) pushOr(s);
+          else if (strcmp(token, "?") == 0) ifThenElse (s);
 
           // Variáveis.
           else if (token[0] == ':') pushVar(s, token[1]);
