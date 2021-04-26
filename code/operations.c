@@ -540,11 +540,11 @@ void equal(stack *s)
     }
     else if (x.type == STACK_FLOAT && y.type == STACK_INT && (x.data.float_value == (float)y.data.int_value))
     {
-        push(s, STACK_INT, 1);  
+        push(s, STACK_INT, 1);
     }
     else
     {
-        push(s, STACK_INT, 0); 
+        push(s, STACK_INT, 0);
     }
 }
 
@@ -559,13 +559,29 @@ void less(stack *s)
     }
     else if (x.type == STACK_FLOAT && y.type == STACK_FLOAT && (x.data.float_value > y.data.float_value))
     {
-        push(s, STACK_FLOAT, 1);
+        push(s, STACK_INT, 1);
     }
     else if (x.type == STACK_CHAR && y.type == STACK_CHAR && (x.data.char_value > y.data.char_value))
     {
-        push(s, STACK_FLOAT, 1);
+        push(s, STACK_INT, 1);
+    }
+    else if (x.type == STACK_INT && y.type == STACK_FLOAT && ((float)x.data.int_value > y.data.float_value))
+    {
+        push(s, STACK_INT, 1);
+    }
+    else if (x.type == STACK_FLOAT && y.type == STACK_INT && (x.data.float_value > (float)y.data.int_value))
+    {
+        push(s, STACK_INT, 1);
     }
     else if (x.type == STACK_POINTER && y.type == STACK_POINTER && (strlen(x.data.string_value) > strlen(y.data.string_value)))
+    {
+        push(s, STACK_INT, 1);
+    }
+    else if (x.type == STACK_CHAR && y.type == STACK_INT && (x.data.char_value > y.data.int_value))
+    {
+        push(s, STACK_INT, 1);
+    }
+    else if (x.type == STACK_INT && y.type == STACK_CHAR && (x.data.int_value > y.data.char_value))
     {
         push(s, STACK_INT, 1);
     }
@@ -586,13 +602,29 @@ void greater(stack *s)
     }
     else if (x.type == STACK_FLOAT && y.type == STACK_FLOAT && (x.data.float_value < y.data.float_value))
     {
-        push(s, STACK_FLOAT, 1);
+        push(s, STACK_INT, 1);
     }
     else if (x.type == STACK_CHAR && y.type == STACK_CHAR && (x.data.char_value < y.data.char_value))
     {
-        push(s, STACK_FLOAT, 1);
+        push(s, STACK_INT, 1);
     }
     else if (x.type == STACK_POINTER && y.type == STACK_POINTER && (strlen(x.data.string_value) < strlen(y.data.string_value)))
+    {
+        push(s, STACK_INT, 1);
+    }
+    else if (x.type == STACK_INT && y.type == STACK_FLOAT && ((float)x.data.int_value < y.data.float_value))
+    {
+        push(s, STACK_INT, 1);
+    }
+    else if (x.type == STACK_FLOAT && y.type == STACK_INT && (x.data.float_value < (float)y.data.int_value))
+    {
+        push(s, STACK_INT, 1);
+    }
+    else if (x.type == STACK_CHAR && y.type == STACK_INT && (x.data.char_value < y.data.int_value))
+    {
+        push(s, STACK_INT, 1);
+    }
+    else if (x.type == STACK_INT && y.type == STACK_CHAR && (x.data.int_value < y.data.char_value))
     {
         push(s, STACK_INT, 1);
     }
@@ -604,150 +636,35 @@ void greater(stack *s)
 
 void pushAnd(stack *s)
 {
-    stack_elem y = pop(s);
-    stack_elem x = pop(s);
+    stack_elem x = pop(s); // 0
+    stack_elem y = pop(s); // 10
 
-    double a, b;
-    switch (x.type)
+    // >> 1 3 e&
+    // >> x = 3 ; y = 1
+
+    // Operações com bits apenas funcionam com números inteiros.
+    if (x.data.int_value & y.data.int_value)
     {
-    case STACK_INT:
-        a = x.data.int_value;
-        break;
-
-    case STACK_FLOAT:
-        a = x.data.float_value;
-        break;
-
-    case STACK_POINTER:
-        a = atoi(x.data.string_value);
-        break;
-
-    default:
-        a = 0;
-        break;
+        push(s,STACK_INT,x.data.int_value);
     }
+    else push(s, STACK_INT, 0);
 
-    switch (y.type)
-    {
-    case STACK_INT:
-        b = y.data.int_value;
-        break;
-
-    case STACK_FLOAT:
-        b = y.data.float_value;
-        break;
-
-    case STACK_POINTER:
-        b = atoi(y.data.string_value);
-        break;
-
-    default:
-        b = 0;
-        break;
-    }
-    if (a && b)
-    {
-        switch (x.type)
-        {
-        case STACK_INT:
-            push(s, x.type, (int)a);
-            break;
-        case STACK_FLOAT:
-            push(s, x.type, a);
-            break;
-        case STACK_POINTER:
-            push(s, x.type, x.data.string_value);
-            break;
-
-        default:
-            push(s, x.type, a);
-            break;
-        }
-    }
-    else
-        push(s, STACK_INT, 0);
 }
 
 void pushOr(stack *s)
 {
-    stack_elem y = pop(s);
     stack_elem x = pop(s);
-    double a, b;
-    switch (x.type)
+    stack_elem y = pop(s);
+   
+    if(!(y.data.int_value | x.data.int_value))
     {
-    case STACK_INT:
-        a = x.data.int_value;
-        break;
-    case STACK_FLOAT:
-        a = x.data.float_value;
-        break;
-    case STACK_POINTER:
-        a = atoi(x.data.string_value);
-        break;
-
-    default:
-        a = 0;
-        break;
+        push(s, STACK_INT, 0);
     }
-
-    switch (y.type)
-    {
-    case STACK_INT:
-        b = y.data.int_value;
-        break;
-
-    case STACK_FLOAT:
-        b = y.data.float_value;
-        break;
-
-    case STACK_POINTER:
-        b = atoi(y.data.string_value);
-        break;
-
-    default:
-        b = 0;
-        break;
-    }
-
-    if (a)
-    {
-        switch (x.type)
-        {
-        case STACK_INT:
-            push(s, x.type, (int)a);
-            break;
-        case STACK_FLOAT:
-            push(s, x.type, a);
-            break;
-        case STACK_POINTER:
-            push(s, x.type, x.data.string_value);
-            break;
-
-        default:
-            push(s, x.type, a);
-            break;
-        }
-    }
-
     else
     {
-        switch (y.type)
-        {
-        case STACK_INT:
-            push(s, y.type, (int)b);
-            break;
-        case STACK_FLOAT:
-            push(s, y.type, b);
-            break;
-        case STACK_POINTER:
-            push(s, y.type, y.data.string_value);
-            break;
-
-        default:
-            push(s, x.type, b);
-            break;
-        }
+        push(s, x.type, x.data.int_value); 
     }
+    
 }
 
 void smallest(stack *s)
@@ -772,17 +689,17 @@ void smallest(stack *s)
     }
     else if (x.type == STACK_INT && y.type == STACK_FLOAT)
     {
-        if (x.data.int_value > y.data.float_value)
+        if ((float)x.data.int_value > y.data.float_value)
             push(s, STACK_FLOAT, y.data.float_value);
         else
-            push(s, STACK_FLOAT, x.data.float_value);
+            push(s, STACK_INT, x.data.int_value);
     }
     else if (x.type == STACK_FLOAT && y.type == STACK_INT)
     {
-        if (x.data.float_value > y.data.int_value)
+        if (x.data.float_value > (float)y.data.int_value)
             push(s, STACK_INT, y.data.int_value);
         else
-            push(s, STACK_INT, x.data.int_value);
+            push(s, STACK_FLOAT, x.data.float_value);
     }
     else if (x.type == STACK_CHAR && y.type == STACK_CHAR)
     {
@@ -790,6 +707,20 @@ void smallest(stack *s)
             push(s, STACK_CHAR, y.data.char_value);
         else
             push(s, STACK_CHAR, x.data.char_value);
+    }
+     else if (x.type == STACK_CHAR && y.type == STACK_INT)
+    {
+        if (x.data.char_value > y.data.int_value)
+            push(s, STACK_INT, y.data.int_value);
+        else
+            push(s, STACK_CHAR, x.data.char_value);
+    }
+    else if (x.type == STACK_INT && y.type == STACK_CHAR)
+    {
+        if (x.data.int_value > y.data.char_value)
+            push(s, STACK_CHAR, y.data.char_value);
+        else
+            push(s, STACK_INT, x.data.int_value);
     }
 }
 
@@ -814,17 +745,17 @@ void largest(stack *s)
     }
     else if (x.type == STACK_INT && y.type == STACK_FLOAT)
     {
-        if (x.data.int_value < y.data.float_value)
+        if ((float)x.data.int_value < y.data.float_value)
             push(s, STACK_FLOAT, y.data.float_value);
         else
-            push(s, STACK_FLOAT, x.data.float_value);
+            push(s, STACK_INT, x.data.int_value);
     }
     else if (x.type == STACK_FLOAT && y.type == STACK_INT)
     {
-        if (x.data.float_value < y.data.int_value)
+        if (x.data.float_value < (float)y.data.int_value)
             push(s, STACK_INT, y.data.int_value);
         else
-            push(s, STACK_INT, x.data.int_value);
+            push(s, STACK_FLOAT, x.data.float_value);
     }
     else if (x.type == STACK_CHAR && y.type == STACK_CHAR)
     {
@@ -832,6 +763,20 @@ void largest(stack *s)
             push(s, STACK_CHAR, y.data.char_value);
         else
             push(s, STACK_CHAR, x.data.char_value);
+    }
+    else if (x.type == STACK_CHAR && y.type == STACK_INT)
+    {
+        if (x.data.char_value < y.data.int_value)
+            push(s, STACK_INT, y.data.int_value);
+        else
+            push(s, STACK_CHAR, x.data.char_value);
+    }
+    else if (x.type == STACK_INT && y.type == STACK_CHAR)
+    {
+        if (x.data.int_value < y.data.char_value)
+            push(s, STACK_CHAR, y.data.char_value);
+        else
+            push(s, STACK_INT, x.data.int_value);
     }
 }
 
