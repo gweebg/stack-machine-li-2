@@ -17,7 +17,7 @@
 bool check_reserved(char c)
 {
 
-     char *reserved = "ABCDEFNSXYZ:+-*/()%#&|^~_;\\@$ltpifcs=<>!?";
+     char reserved[60] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ:+-*/()%#&|^~_;\\@$ltpifcs=<>!?";
      int i = 0;
 
      while (reserved[i] != '\0')
@@ -36,9 +36,13 @@ bool check_reserved(char c)
 
 bool check_reserved_string(char *s)
 {
-    char reserved[20][6] = {"e&", "e|", "e<", "e>", ":A", ":B", ":C", ":D", ":E", ":F", ":N", ":S", ":X", ":Y"};
+     char reserved[30][6] = {"e&", "e|", "e<", "e>", ":A", ":B", ":C", 
+                             ":D", ":E", ":F",":G", ":H", ":I",":N", 
+                             ":S", ":X", ":Y", ":U", ":V", ":W", ":X", 
+                             ":J", ":K", ":L", ":M", ":O", ":P", ":Q", 
+                             ":R", ":T"};
 
-     for (int i = 0; i < 6; i++)
+     for (int i = 0; i < 20; i++)
      {
           if (strcmp(s, reserved[i]) == 0) return true;
 
@@ -118,14 +122,12 @@ void parser(char *line, stack *s)
           else if (strcmp(token, "e|") == 0) pushOr(s);
           else if (strcmp(token, "?") == 0) ifThenElse (s);
 
-          //Variaveis
-
-          else if (token[0] == ':') saveVar (s, token[1]);
-          else pushVar (s, token[0]);
-
+          // Variáveis.
+          else if (token[0] == ':') pushVar(s, token[1]);
+          else getVar(s, token[0]);
+     
           token = strtok(NULL, delim);
+
      }
 
-     // int status = stackStatus(s);
-     // printf("Stack Status: %d\nStack pointer: %d\n", status, s.pointer);
 }

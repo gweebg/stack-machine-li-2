@@ -7,6 +7,20 @@
 #ifndef OPERATIONS_H
 #define OPERATIONS_H
 
+// * Função de decisão de tipo.
+
+/**
+ * \brief Verifica as combinações possíveis dos tipos dos dois elementos.
+ * @param[in] s Stack a ser alterada.
+ * @return Devolve um inteiro coorespondente à combinação
+ * Tabela de valores:
+ * * 0 - Int - Int
+ * * 1 - Int - Float
+ * * 2 - Float - Int
+ * * 3 - Float - Float
+ */
+int operationType(stack_elem x, stack_elem y);
+
 // * Funções básicas com inteiros
 /**
  * \brief Soma os dois elementos no topo da Stack
@@ -70,7 +84,7 @@ void dec(stack *s);
  * @return Não devolve nada.
  * @note Só funciona se os dois elementos do topo da stack forem inteiros ou carateres.
  */
-void and(stack *s);
+void and (stack * s);
 
 /**
  * \brief Altera os dois elementos do topo da stack para um inteiro com o valor lógico da sua disjunção binária.
@@ -78,7 +92,7 @@ void and(stack *s);
  * @return Não devolve nada.
  * @note Só funciona se os dois elementos do topo da stack forem inteiros ou carateres.
  */
-void or(stack *s);
+void or (stack * s);
 
 /**
  * \brief Altera os dois elementos do topo da stack para um inteiro com o valor lógico da sua disjunção exclusiva (1 só se um e só um elemento for 1).
@@ -86,7 +100,7 @@ void or(stack *s);
  * @return Não devolve nada.
  * @note Só funciona se os dois elementos do topo da stack forem inteiros ou carateres.
  */
-void xor(stack *s);
+void xor (stack * s);
 
 /**
  * \brief Negação binária do topo da stack.
@@ -94,7 +108,7 @@ void xor(stack *s);
  * @return Não devolve nada.
  * @note Só funciona se o elemento do topo da stack for um inteiro.
  */
-void not(stack *s);
+void not(stack * s);
 
 // * Funções direcionadas à stack.
 /**
@@ -128,7 +142,6 @@ void swap_three(stack *s);
  */
 void bring_top(stack *s);
 
-
 // * Funções direcionadas ao IO
 /**
  * \brief Lê a próxima uma linha como string e dá push a esse valor (como string).
@@ -143,7 +156,6 @@ void line_after(stack *s);
  * @return Não devolve nada.
  */
 void peek_stack(stack *s);
-
 
 // * Funções para conversão de tipos.
 /**
@@ -180,9 +192,9 @@ void to_string(stack *s);
  * @return 1 se todos os elementos forem válidos, 0 caso contrário
  */
 
- int checkNbool (stack *s, int n);
+int checkNbool(stack *s, int n);
 
- /**
+/**
   * \brief Compara dois elementos da stack.Se forem iguais, retorna 1(Verdadeiro); caso contrário, retorna 0.
   * @param[in] s Stack a ser avaliada.
   * @return Não devolve nada.
@@ -232,7 +244,7 @@ void largest(stack *s);
  * @param[in] s Stack a ser avaliada.
  * @return Não devolve nada.
  */
-void invertBool (stack *s);
+void invertBool(stack *s);
 
 /**
  * \brief Analisa o valor lógico do 3º elemento da Stack. Se V, imprime o 2º valor, se falso, imprime o 1º
@@ -240,26 +252,22 @@ void invertBool (stack *s);
  * @return Não devolve nada.
  */
 
- void ifThenElse (stack *s);
+void ifThenElse(stack *s);
 
- /**
+/**
   * \brief Analisa o valor lógico da conjunção dos dois elementos do topo da Stack. Devolve 0 se falso, o valor do elemento do topo se for verdade
   * @param[in] s Stack a ser avaliada.
   * @return Não devolve nada.
   */
 
- void pushAnd(stack *s);
+void pushAnd(stack *s);
 
- /**
+/**
   * \brief Analisa o valor lógico da disjunção dos dois elementos do topo da Stack. Devolve 0 se falso, o penultimo valor se for !=0, o topo da Stack se o abaixo for 0
   * @param[in] s Stack a ser avaliada.
   * @return Não devolve nada.
   */
 
- void pushOr(stack *s);
-
- void saveVar(stack *s, char i);
-
- void pushVar(stack *s, char i);
+void pushOr(stack *s);
 
 #endif
