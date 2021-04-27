@@ -13,24 +13,60 @@
 #include "stack.h"
 #include "operations.h"
 
+// * Funções auxiliares.
+
+/*
++-------+----------------+-------------------+
+| Valor |   Combinação   |       x / y       |
++-------+----------------+-------------------+
+|     0 | Int - Int      | x::int y::int     |
+|     1 | Int - Float    | x::int y::float   |
+|     2 | Float - Int    | x::float y::int   |
+|     3 | Float - Float  | x::float y::float |
++-------+----------------+-------------------+
+*/
+
+int operationType(stack_elem x, stack_elem y)
+{
+    int operation = 0;
+
+    switch(x.type)
+    {
+        case STACK_INT: // float-int
+            switch(y.type)
+            {
+                case STACK_FLOAT: operation = 1; break; // int - float
+                default: operation = 0; break; // int - int
+            }
+            break;
+        case STACK_FLOAT: 
+            switch(y.type)
+            {
+                case STACK_FLOAT: operation = 3; break; // float - float
+                default: operation = 2; break; // float - int
+            }
+            break;
+        default: fprintf(stderr, "Uso da [floatOperation] inválido!\n"); exit(EXIT_FAILURE); break;
+
+    }
+
+    return operation;
+}
+
 // * Operações com números.
+
 void add(stack *s)
 {
     stack_elem x = pop(s);
     stack_elem y = pop(s);
 
-    if (x.type == STACK_INT && y.type == STACK_INT)
-        push(s, STACK_INT, x.data.int_value + y.data.int_value);
-    else if (x.type == STACK_FLOAT && y.type == STACK_FLOAT)
-        push(s, STACK_FLOAT, x.data.float_value + y.data.float_value);
-    else if (x.type == STACK_INT && y.type == STACK_FLOAT)
-        push(s, STACK_FLOAT, (x.data.int_value) + y.data.float_value);
-    else if (x.type == STACK_FLOAT && y.type == STACK_INT)
-        push(s, STACK_FLOAT, (x.data.float_value + y.data.int_value));
-    else
+    switch (operationType(x,y)) 
     {
-        fprintf(stderr, "Operação inválida!\n");
-        exit(EXIT_FAILURE);
+        case 0: push(s, STACK_INT, (x.data.int_value + y.data.int_value)); break; // int - int
+        case 1: push(s, STACK_FLOAT, (x.data.int_value) + (y.data.float_value)); break; // int - float
+        case 2: push(s, STACK_FLOAT, (x.data.float_value) + (y.data.int_value)); break; // float - int
+        case 3: push(s, STACK_FLOAT, (x.data.float_value + y.data.float_value)); break; // float - float
+        default: fprintf(stderr, "Erro na funçao [add] em operations.c : switch to default."); exit(EXIT_FAILURE); break;
     }
 }
 
@@ -39,18 +75,13 @@ void sub(stack *s)
     stack_elem x = pop(s);
     stack_elem y = pop(s);
 
-    if (x.type == STACK_INT && y.type == STACK_INT)
-        push(s, STACK_INT, y.data.int_value - x.data.int_value);
-    else if (x.type == STACK_FLOAT && y.type == STACK_FLOAT)
-        push(s, STACK_FLOAT, y.data.float_value - x.data.float_value);
-    else if (x.type == STACK_INT && y.type == STACK_FLOAT)
-        push(s, STACK_FLOAT, (y.data.float_value) - x.data.int_value);
-    else if (x.type == STACK_FLOAT && y.type == STACK_INT)
-        push(s, STACK_FLOAT, (y.data.int_value - x.data.float_value));
-    else
+    switch (operationType(x,y)) 
     {
-        fprintf(stderr, "Operação inválida!\n");
-        exit(EXIT_FAILURE);
+        case 0: push(s, STACK_INT, (y.data.int_value - x.data.int_value)); break; // int - int
+        case 1: push(s, STACK_FLOAT, (y.data.float_value) - (x.data.int_value)); break; // int - float | x.int y.float
+        case 2: push(s, STACK_FLOAT, (y.data.int_value) - (x.data.float_value)); break; // float - int | x.float y.int
+        case 3: push(s, STACK_FLOAT, (y.data.float_value - x.data.float_value)); break; // float - float
+        default: fprintf(stderr, "Erro na funçao [sub] em operations.c : switch to default."); exit(EXIT_FAILURE); break;
     }
 }
 
@@ -59,18 +90,13 @@ void mult(stack *s)
     stack_elem x = pop(s);
     stack_elem y = pop(s);
 
-    if (x.type == STACK_INT && y.type == STACK_INT)
-        push(s, STACK_INT, x.data.int_value * y.data.int_value);
-    else if (x.type == STACK_FLOAT && y.type == STACK_FLOAT)
-        push(s, STACK_FLOAT, x.data.float_value * y.data.float_value);
-    else if (x.type == STACK_INT && y.type == STACK_FLOAT)
-        push(s, STACK_FLOAT, (x.data.int_value) * y.data.float_value);
-    else if (x.type == STACK_FLOAT && y.type == STACK_INT)
-        push(s, STACK_FLOAT, (x.data.float_value * y.data.int_value));
-    else
+    switch (operationType(x,y)) 
     {
-        fprintf(stderr, "Operação inválida!\n");
-        exit(EXIT_FAILURE);
+        case 0: push(s, STACK_INT, (x.data.int_value * y.data.int_value)); break; // int - int
+        case 1: push(s, STACK_FLOAT, (x.data.int_value) * (y.data.float_value)); break; // int - float
+        case 2: push(s, STACK_FLOAT, (x.data.float_value) * (y.data.int_value)); break; // float - int
+        case 3: push(s, STACK_FLOAT, (x.data.float_value * y.data.float_value)); break; // float - float
+        default: fprintf(stderr, "Erro na funçao [mult] em operations.c : switch to default."); exit(EXIT_FAILURE); break;
     }
 }
 
@@ -80,45 +106,28 @@ void division(stack *s)
     stack_elem x = pop(s);
     stack_elem y = pop(s);
 
-    stack_type x_type = x.type;
-    stack_type y_type = y.type;
-
-    if (x_type == STACK_INT && y_type == STACK_INT)
-        push(s, STACK_INT, y.data.int_value / x.data.int_value);
-    else if (x_type == STACK_FLOAT && y_type == STACK_FLOAT)
-        push(s, STACK_FLOAT, y.data.float_value / x.data.float_value);
-    else if (x_type == STACK_INT && y_type == STACK_FLOAT)
-        push(s, STACK_FLOAT, (y.data.float_value) / x.data.int_value);
-    else if (x_type == STACK_FLOAT && y_type == STACK_INT)
-        push(s, STACK_FLOAT, (y.data.int_value / x.data.float_value));
-    else
+    switch (operationType(x,y)) 
     {
-        fprintf(stderr, "Operação inválida!\n");
-        exit(EXIT_FAILURE);
+        case 0: push(s, STACK_INT, (y.data.int_value / x.data.int_value)); break; // int - int
+        case 1: push(s, STACK_FLOAT, (y.data.float_value) / (x.data.int_value)); break; // int - float | x.int y.float
+        case 2: push(s, STACK_FLOAT, (y.data.int_value) / (x.data.float_value)); break; // float - int | x.float y.int
+        case 3: push(s, STACK_FLOAT, (y.data.float_value / x.data.float_value)); break; // float - float
+        default: fprintf(stderr, "Erro na funçao [divison] em operations.c : switch to default."); exit(EXIT_FAILURE); break;
     }
 }
 
 void power(stack *s)
 {
-
     stack_elem x = pop(s);
     stack_elem y = pop(s);
 
-    stack_type x_type = x.type;
-    stack_type y_type = y.type;
-
-    if (x_type == STACK_INT && y_type == STACK_INT)
-        push(s, STACK_INT, (int)pow(y.data.int_value, x.data.int_value));
-    else if (x_type == STACK_FLOAT && y_type == STACK_FLOAT)
-        push(s, STACK_FLOAT, pow(y.data.float_value, x.data.float_value));
-    else if (x_type == STACK_INT && y_type == STACK_FLOAT)
-        push(s, STACK_FLOAT, pow((y.data.float_value), x.data.int_value));
-    else if (x_type == STACK_FLOAT && y_type == STACK_INT)
-        push(s, STACK_FLOAT, pow(y.data.int_value, x.data.float_value));
-    else
+    switch (operationType(x,y)) 
     {
-        fprintf(stderr, "Operação inválida!\n");
-        exit(EXIT_FAILURE);
+        case 0: push(s, STACK_INT, (int)pow(y.data.int_value, x.data.int_value)); break; // int - int
+        case 1: push(s, STACK_FLOAT, pow((y.data.float_value), x.data.int_value)); break; // int - float | x.int y.float
+        case 2: push(s, STACK_FLOAT, pow(y.data.int_value, x.data.float_value)); break; // float - int | x.float y.int
+        case 3: push(s, STACK_FLOAT, pow(y.data.float_value, x.data.float_value)); break; // float - float
+        default: fprintf(stderr, "Erro na funçao [power] em operations.c : switch to default."); exit(EXIT_FAILURE); break;
     }
 }
 
@@ -127,47 +136,27 @@ void modulus(stack *s)
     stack_elem x = pop(s);
     stack_elem y = pop(s);
 
-    stack_type x_type = x.type;
-    stack_type y_type = y.type;
-
-    if (x_type == STACK_INT && y_type == STACK_INT)
-        push(s, STACK_INT, y.data.int_value % x.data.int_value);
-    else if (x_type == STACK_FLOAT && y_type == STACK_FLOAT)
-        push(s, STACK_INT, (int)y.data.float_value % (int)x.data.float_value);
-    else if (x_type == STACK_INT && y_type == STACK_FLOAT)
-        push(s, STACK_INT, (int)(y.data.float_value) % x.data.int_value);
-    else if (x_type == STACK_FLOAT && y_type == STACK_INT)
-        push(s, STACK_INT, (y.data.int_value % (int)x.data.float_value));
-    else
+    switch (operationType(x,y)) 
     {
-        fprintf(stderr, "Operação inválida!\n");
-        exit(EXIT_FAILURE);
+        case 0: push(s, STACK_INT, y.data.int_value % x.data.int_value); break; // int - int
+        case 1: push(s, STACK_INT, (int)(y.data.float_value) % x.data.int_value); break; // int - float | x.int y.float
+        case 2: push(s, STACK_INT, (int)y.data.float_value % (int)x.data.float_value); break; // float - int | x.float y.int
+        case 3: push(s, STACK_INT, (int)y.data.float_value % (int)x.data.float_value); break; // float - float
+        default: fprintf(stderr, "Erro na funçao [modulus] em operations.c : switch to default."); exit(EXIT_FAILURE); break;
     }
 }
 
 void dec(stack *s)
 {
-
     stack_elem x = pop(s);
 
     switch (x.type)
     {
-    case STACK_INT:
-        push(s, STACK_INT, x.data.int_value - 1);
-        break;
-    case STACK_FLOAT:
-        push(s, STACK_FLOAT, x.data.float_value - 1);
-        break;
-    case STACK_DOUBLE:
-        push(s, STACK_FLOAT, x.data.double_value - 1);
-        break;
-    case STACK_CHAR:
-        push(s, STACK_CHAR, x.data.char_value - 1);
-        break;
-    default:
-        fprintf(stderr, "Operação inválida!\n");
-        exit(EXIT_FAILURE);
-        break;
+        case STACK_INT: push(s, STACK_INT, x.data.int_value - 1); break;
+        case STACK_FLOAT: push(s, STACK_FLOAT, x.data.float_value - 1); break;
+        case STACK_DOUBLE: push(s, STACK_FLOAT, x.data.double_value - 1); break;
+        case STACK_CHAR: push(s, STACK_CHAR, x.data.char_value - 1); break;
+        default: fprintf(stderr, "Erro na funçao [dec] em operations.c : switch to default."); exit(EXIT_FAILURE); break;
     }
 }
 
@@ -177,26 +166,17 @@ void inc(stack *s)
 
     switch (x.type)
     {
-    case STACK_INT:
-        push(s, STACK_INT, x.data.int_value + 1);
-        break;
-    case STACK_FLOAT:
-        push(s, STACK_FLOAT, x.data.float_value + 1);
-        break;
-    case STACK_DOUBLE:
-        push(s, STACK_FLOAT, x.data.double_value + 1);
-        break;
-    case STACK_CHAR:
-        push(s, STACK_CHAR, x.data.char_value + 1);
-        break;
-    default:
-        fprintf(stderr, "Operação inválida!\n");
-        exit(EXIT_FAILURE);
-        break;
+        case STACK_INT: push(s, STACK_INT, x.data.int_value + 1); break;
+        case STACK_FLOAT: push(s, STACK_FLOAT, x.data.float_value + 1); break;
+        case STACK_DOUBLE: push(s, STACK_FLOAT, x.data.double_value + 1); break;
+        case STACK_CHAR: push(s, STACK_CHAR, x.data.char_value + 1); break;
+        default: fprintf(stderr, "Erro na funçao [dec] em operations.c : switch to default."); exit(EXIT_FAILURE); break;
     }
 }
 
+// * Operações binárias
 // ? "bitwise operators are only defined for integral types, and do not work for floating pointing types"
+
 void and (stack * s)
 {
     int x = pop(s).data.int_value;
@@ -207,23 +187,22 @@ void and (stack * s)
 
 void or (stack * s)
 {
-
     int x = pop(s).data.int_value;
     int y = pop(s).data.int_value;
 
     push(s, STACK_INT, y | x);
 }
 
-void xor (stack * s) {
+void xor (stack * s) 
+{
     int x = pop(s).data.int_value;
     int y = pop(s).data.int_value;
 
     push(s, STACK_INT, y ^ x);
 }
 
-    void not(stack * s)
+void not(stack * s)
 {
-
     int x = pop(s).data.int_value;
     push(s, STACK_INT, ~x);
 }
@@ -236,11 +215,8 @@ void duplicate(stack *s)
 
     switch (top.type)
     {
-    case STACK_FLOAT:
-        push(s, STACK_FLOAT, top.data.float_value);
-        break;
-    default:
-        push(s, top.type, top.data);
+        case STACK_FLOAT: push(s, STACK_FLOAT, top.data.float_value); break;
+        default: push(s, top.type, top.data); break;
     }
 }
 
@@ -251,46 +227,20 @@ void swap(stack *s)
 
     switch (x.type)
     {
-    case (STACK_CHAR):
-        push(s, x.type, x.data.char_value);
-        break;
-
-    case (STACK_INT):
-        push(s, x.type, x.data.int_value);
-        break;
-
-    case (STACK_FLOAT):
-        push(s, x.type, x.data.float_value);
-        break;
-
-    case (STACK_POINTER):
-        push(s, x.type, x.data.string_value);
-        break;
-
-    default:
-        push(s, x.type, x.data);
+        case (STACK_CHAR): push(s, x.type, x.data.char_value); break;
+        case (STACK_INT): push(s, x.type, x.data.int_value); break;
+        case (STACK_FLOAT): push(s, x.type, x.data.float_value); break;
+        case (STACK_POINTER): push(s, x.type, x.data.string_value); break;
+        default: push(s, x.type, x.data); break;
     }
 
     switch (y.type)
     {
-    case (STACK_CHAR):
-        push(s, y.type, y.data.char_value);
-        break;
-
-    case (STACK_INT):
-        push(s, y.type, y.data.int_value);
-        break;
-
-    case (STACK_FLOAT):
-        push(s, y.type, y.data.float_value);
-        break;
-
-    case (STACK_POINTER):
-        push(s, y.type, y.data.string_value);
-        break;
-
-    default:
-        push(s, x.type, y.data);
+        case (STACK_CHAR): push(s, y.type, y.data.char_value); break;
+        case (STACK_INT): push(s, y.type, y.data.int_value); break;
+        case (STACK_FLOAT): push(s, y.type, y.data.float_value); break;
+        case (STACK_POINTER): push(s, y.type, y.data.string_value); break;
+        default: push(s, x.type, y.data);
     }
 }
 
@@ -301,10 +251,21 @@ void swap_three(stack *s)
     stack_elem c = pop(s);
 
     // a b c --> b c a (lembrando que c está no topo da stack)
-
-    push(s, b.type, b.data);
-    push(s, a.type, a.data);
-    push(s, c.type, c.data);
+    switch(b.type)
+    {
+        case STACK_FLOAT: push(s, STACK_FLOAT, b.data.float_value); break;
+        default: push(s, b.type, b.data); 
+    }
+    switch(c.type)
+    {
+        case STACK_FLOAT: push(s, STACK_FLOAT, c.data.float_value); break;
+        default: push(s, c.type, c.data); 
+    }
+    switch(a.type)
+    {
+        case STACK_FLOAT: push(s, STACK_FLOAT, a.data.float_value); break;
+        default: push(s, a.type, a.data); 
+    }
 }
 
 void bring_top(stack *s)
@@ -313,14 +274,19 @@ void bring_top(stack *s)
     int index = s->pointer - val;
 
     stack_elem new_val = s->elems[index];
-    push(s, new_val.type, new_val.data);
+
+    switch(new_val.type)
+    {
+        case STACK_FLOAT: push(s, STACK_FLOAT, new_val.data.float_value); break;
+        default: push(s, new_val.type, new_val.data);
+    }
 }
 
 // * Funções de IO.
 
 void line_after(stack *s)
 {
-    char value[10240]; // Mudar para malloc
+    char value[10240]; //! LMAO WHAT ?!?!?!?!?!
     assert(scanf("%s", value) == 1);
     push(s, STACK_POINTER, value);
 }
@@ -517,7 +483,6 @@ void equal(stack *s)
 
     // Precisamos de passar todos os casos possíveis de tipos.
     // Por exemplo Int-Int ; Int-Float ; Float-Int
-    // ! É preciso criar uma função para "automatizar" este processo.
     if (x.type == STACK_INT && y.type == STACK_INT && (x.data.int_value == y.data.int_value))
     {
         push(s, STACK_INT, 1);
@@ -636,35 +601,28 @@ void greater(stack *s)
 
 void pushAnd(stack *s)
 {
-    stack_elem x = pop(s); // 0
-    stack_elem y = pop(s); // 10
+    stack_elem y = pop(s);
+    stack_elem x = pop(s);
 
-    // >> 1 3 e&
-    // >> x = 3 ; y = 1
-
-    // Operações com bits apenas funcionam com números inteiros.
-    if (x.data.int_value & y.data.int_value)
-    {
-        push(s,STACK_INT,x.data.int_value);
-    }
-    else push(s, STACK_INT, 0);
-
+    if(!(x.data.int_value) || !(y.data.int_value))
+        push(s, STACK_INT, 0);
+    else 
+        push(s, STACK_INT, y.data.int_value);
 }
 
 void pushOr(stack *s)
 {
-    stack_elem x = pop(s);
     stack_elem y = pop(s);
-   
-    if(!(y.data.int_value | x.data.int_value))
-    {
-        push(s, STACK_INT, 0);
-    }
-    else
-    {
-        push(s, x.type, x.data.int_value); 
-    }
+    stack_elem x = pop(s);
     
+            // x = 1            // y = 1
+            // x = 0            // y = 1
+            // x = 1            // y = 0
+            // x = 0            // y = 0
+    if(y.data.int_value && x.data.int_value) push(s, STACK_INT, x.data.int_value);
+    else if (!(y.data.int_value) && x.data.int_value) push(s, STACK_INT, x.data.int_value);
+    else if (y.data.int_value && !(x.data.int_value)) push(s, STACK_INT, y.data.int_value);
+    else push(s, STACK_INT, 0);   
 }
 
 void smallest(stack *s)

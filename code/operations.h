@@ -7,6 +7,20 @@
 #ifndef OPERATIONS_H
 #define OPERATIONS_H
 
+// * Função de decisão de tipo.
+
+/**
+ * \brief Verifica as combinações possíveis dos tipos dos dois elementos.
+ * @param[in] s Stack a ser alterada.
+ * @return Devolve um inteiro coorespondente à combinação
+ * Tabela de valores:
+ * * 0 - Int - Int
+ * * 1 - Int - Float
+ * * 2 - Float - Int
+ * * 3 - Float - Float
+ */
+int operationType(stack_elem x, stack_elem y);
+
 // * Funções básicas com inteiros
 /**
  * \brief Soma os dois elementos no topo da Stack
