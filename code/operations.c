@@ -258,13 +258,13 @@ void swap_three(stack *s)
     }
     switch(c.type)
     {
-        case STACK_FLOAT: push(s, STACK_FLOAT, c.data.float_value); break;
-        default: push(s, c.type, c.data);
+        case STACK_FLOAT: push(s, STACK_FLOAT, a.data.float_value); break;
+        default: push(s, a.type, a.data);
     }
     switch(a.type)
     {
-        case STACK_FLOAT: push(s, STACK_FLOAT, a.data.float_value); break;
-        default: push(s, a.type, a.data);
+        case STACK_FLOAT: push(s, STACK_FLOAT, c.data.float_value); break;
+        default: push(s, c.type, c.data);
     }
 }
 
@@ -605,7 +605,6 @@ void pushAnd(stack *s)
     stack_elem x = pop(s);
 
     float a, b;
-    stack_type tipo;
 
     switch(x.type)
     {
@@ -684,7 +683,7 @@ void pushOr(stack *s)
             b = 0;
             break;
     }
-    printf("%g, %g\n", a, b);
+    // printf("%g, %g\n", a, b);
     if(a == 0)
     {
         pop(s);
@@ -693,6 +692,7 @@ void pushOr(stack *s)
         else
             push(s, y.type, (int) b);
     }
+
 }
 
 void smallest(stack *s)
