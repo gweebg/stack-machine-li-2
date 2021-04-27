@@ -606,7 +606,6 @@ void pushAnd(stack *s)
 
     float a, b;
 
-    double a, b;
     switch(x.type)
     {
         case(STACK_INT):
@@ -632,7 +631,6 @@ void pushAnd(stack *s)
 
             b = y.data.float_value;
             break;
-
         default:
             b = 0;
             break;
@@ -681,7 +679,6 @@ void pushOr(stack *s)
 
             b = y.data.float_value;
             break;
-
         default:
             b = 0;
             break;
@@ -839,7 +836,6 @@ void invertBool(stack *s)
         push(s, STACK_INT, 0);
         break;
     }
-
 }
 
 void ifThenElse(stack *s)
