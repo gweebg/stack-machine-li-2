@@ -639,9 +639,9 @@ void pushAnd(stack *s)
     if(a && b)
     {
         if(y.type == STACK_FLOAT)
-            push(s, x.type, a);
+            push(s, y.type, b);
         else
-            push(s, x.type, (int) a);
+            push(s, y.type, (int) b);
     }
     else
         push(s, STACK_INT, 0);
