@@ -250,21 +250,21 @@ void swap_three(stack *s)
     stack_elem b = pop(s);
     stack_elem c = pop(s);
 
-    // a b c --> b c a (lembrando que c está no topo da stack)
+    // c b a --> b c a (lembrando que c está no topo da stack)
     switch(b.type)
     {
-        case STACK_FLOAT: push(s, STACK_FLOAT, b.data.float_value); break;
-        default: push(s, b.type, b.data);
-    }
-    switch(c.type)
-    {
-        case STACK_FLOAT: push(s, STACK_FLOAT, a.data.float_value); break;
-        default: push(s, a.type, a.data);
+        case STACK_FLOAT: push(s, b.type, b.data.float_value); break;
+        default: push(s, b.type, b.data); break;
     }
     switch(a.type)
     {
-        case STACK_FLOAT: push(s, STACK_FLOAT, c.data.float_value); break;
-        default: push(s, c.type, c.data);
+        case STACK_FLOAT: push(s, a.type, a.data.float_value); break;
+        default: push(s, a.type, a.data); break;
+    }
+    switch(c.type)
+    {
+        case STACK_FLOAT: push(s, c.type, c.data.float_value); break;
+        default: push(s, c.type, c.data); break;
     }
 }
 
@@ -845,7 +845,20 @@ void ifThenElse(stack *s)
     stack_elem z = pop(s); // Conditional
 
     if (z.data.int_value)
-        push(s, STACK_INT, y.data.int_value);
+    {
+        switch(y.type)
+        {
+            case STACK_FLOAT: push(s, STACK_FLOAT, y.data.float_value); break;
+            default: push(s, STACK_INT, y.data.int_value); break;
+        }
+    }     
     else
-        push(s, STACK_INT, x.data.int_value);
+    {
+        switch(x.type)
+        {
+            case STACK_FLOAT: push(s, STACK_FLOAT, x.data.float_value); break;
+            default: push(s, STACK_INT, x.data.int_value); break;
+        }
+    }
+    
 }
