@@ -223,6 +223,7 @@ void getVar(stack *s, char var_letter)
 
     // Segue o mesmo raciocínio da função pushVar.
     int index = var_letter - 65;
+    printf("O char %c entrou na getVar!\n",var_letter);
                 
     // O valor da variável que cuja letra cooresponde ao índice var_letter - 65.
     // Por exemplo, var_letter = S => index = 85 - 65 = 18 = índice do S no array das variáveis definido na estrutura da stack.

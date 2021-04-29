@@ -31,7 +31,8 @@ typedef enum stack_type
     STACK_LONG,
     STACK_FLOAT,
     STACK_DOUBLE,
-    STACK_POINTER
+    STACK_POINTER,
+    STACK_ARRAY
 
 }stack_type;
 
@@ -57,6 +58,7 @@ typedef struct stack_elem
         float float_value;
         double double_value;
         char *string_value;
+        int *array_value;
 
     } data;
 }stack_elem;

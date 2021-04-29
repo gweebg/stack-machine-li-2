@@ -37,4 +37,6 @@ bool check_reserved(char c);
  */
 bool check_reserved_string(char *s);
 
+bool is_in_string(char *token, char *chars);
+
 #endif
