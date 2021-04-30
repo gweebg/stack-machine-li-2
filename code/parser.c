@@ -78,7 +78,7 @@ void parser(char *line, stack *s)
           else if (strlen(endptr_float) == 0) push(s, STACK_FLOAT, float_value);
           else if (strlen(endptr_double) == 0) push(s, STACK_DOUBLE, double_value);
           else if (strlen(token) == 1 && !check_reserved(token[0])) push(s, STACK_CHAR, token[0]);
-          else if (strlen(token) > 1 && !check_reserved_string(token)) push(s, STACK_POINTER, token);
+          else if (strlen(token) > 1 && !check_reserved_string(token)) push(s, STACK_STRING, token);
 
           // Operações com números.
           else if (strcmp(token, "+") == 0) add(s);

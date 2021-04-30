@@ -37,4 +37,74 @@ bool check_reserved(char c);
  */
 bool check_reserved_string(char *s);
 
+/**
+ * \brief Esta função é responsável por verificar o tipo de operação que vai ser realizada
+ * Visto ao detalhe, esta função quando dada duas strings compara-as para ver se, pelo menos, um char do argumento chars está presente no argumento token. 
+ * @param[in] token String na qual vamos verificar a existência do operador.
+ * @param[in] chars Conjunto de símbolos de operações. Por exemplo '+/-%#'.
+ * @return Devolve um valor booleano. Sendo este verdadeiro caso existam chars em comum.
+ */
+bool is_in_string(char *token, char *chars);
+
+/**
+ * \brief Esta função é responsável por executar a operação pedida.
+ * Executa a operação de uma determinada categoria, neste caso, operações ariteméticas. 
+ * @param[in] s Stack dada pelo utilizador.
+ * @param[in] token Operador a ser utilizado na operação.
+ * @return É uma função do tipo void, daí não devolver nada.
+ */
+void arit_op(stack *s, char* token);
+
+/**
+ * \brief Esta função é responsável por executar as operações binárias.
+ * @param[in] s Stack dada pelo utilizador.
+ * @param[in] token Operador a ser utilizado na operação.
+ * @return É uma função do tipo void, daí não devolver nada.
+ */
+void bin_op(stack *s, char* token);
+
+/**
+ * \brief Esta função é responsável por executar as operações direcionas à stack. Por exemplo, duplicar elementos, pop, rodar elementos, etc.
+ * @param[in] s Stack dada pelo utilizador.
+ * @param[in] token Operador a ser utilizado na operação.
+ * @return É uma função do tipo void, daí não devolver nada.
+ */
+void stack_op(stack *s, char* token);
+
+/**
+ * \brief Esta função é responsável por executar as operações de input/output
+ * Funções de leitura de dados são executadas nesta função. Por exemplo, ler uma linha ou ler múltiplas linhas.
+ * @param[in] s Stack dada pelo utilizador.
+ * @param[in] token Operador a ser utilizado na operação.
+ * @return É uma função do tipo void, daí não devolver nada.
+ */
+void io_op(stack *s, char* token);
+
+/**
+ * \brief Esta função é responsável por executar as operações de conversão de dados
+ * Por exmpleo conversão de char para inteiro.
+ * @param[in] s Stack dada pelo utilizador.
+ * @param[in] token Operador a ser utilizado na operação.
+ * @return É uma função do tipo void, daí não devolver nada.
+ */
+void convert_op(stack *s, char* token);
+
+/**
+ * \brief Esta função é responsável por executar as operações lógicas simples
+ * São consideradas funções lógicas simples as funções que não precisam de adicionar novos elementos na stack.
+ * @param[in] s Stack dada pelo utilizador.
+ * @param[in] token Operador a ser utilizado na operação.
+ * @return É uma função do tipo void, daí não devolver nada.
+ */
+void logic_op(stack *s, char* token);
+
+/**
+ * \brief Esta função é responsável por executar as operações lógicas complexas
+ * São consideradas funções lógicas simples as funções que adicionam um elemento anterior na stack.
+ * @param[in] s Stack dada pelo utilizador.
+ * @param[in] token Operador a ser utilizado na operação.
+ * @return É uma função do tipo void, daí não devolver nada.
+ */
+void logicPush_op(stack *s, char* token);
+
 #endif

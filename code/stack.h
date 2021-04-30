@@ -7,31 +7,24 @@
 #define STACK_H
 
 /** 
- * SIZE é o valor do tamanho máximo da stack.
- * @note A ser mudado para memória automática.
+ * É o tamanho inicial que a nossa stack toma.
  */
 #define SIZE 100
 
 /**
  * \brief Tipos exclusivos aos elementos da stack.
  * @enum stack_type
- * Este enumerador contém todos os possíveis tipos de valores que a stack pode receber:
- * *STACK_CHAR => char
- * *STACK_INT => int
- * *STACK_FLOAT => float
- * *STACK_LONG => long
- * *STACK_DOUBLE => double
- * *STACK_POINTER => char *
  */
 typedef enum stack_type
 {
 
-    STACK_CHAR,
-    STACK_INT,
-    STACK_LONG,
-    STACK_FLOAT,
-    STACK_DOUBLE,
-    STACK_POINTER
+    STACK_CHAR, /**< Equivale ao tipo char. */
+    STACK_INT, /**< Equivale ao tipo int. */
+    STACK_LONG, /**< Equivale ao tipo long. */
+    STACK_FLOAT, /**< Equivale ao tipo float. */
+    STACK_DOUBLE, /**< Equivale ao tipo double. */
+    STACK_STRING, /**< Equivale ao tipo char* (string). */
+    STACK_ARRAY /**< Equivale ao tipo stack_elem* (array). */
 
 }stack_type;
 
@@ -46,19 +39,22 @@ typedef enum stack_type
  */
 typedef struct stack_elem
 {
-
-    enum stack_type type;
+    /*@{*/
+    enum stack_type type; /**< Temos de chamar o enum stack_type para podermos associar os elementos no union. Com isto também conseguimos aceder ao tipo do elemento do array. */
+    /*@}*/
     union data
     {
 
-        char char_value;
-        int int_value;
-        long long_value;
-        float float_value;
-        double double_value;
-        char *string_value;
+        /*@{*/
+        char char_value; /**< STACK_CHAR -> char */
+        int int_value; /**< STACK_INT -> int */
+        long long_value; /**< STACK_LONG -> long */ 
+        float float_value; /**< STACK_FLOAT -> float */
+        double double_value; /**< STACK_DOUBLE -> double */
+        char *string_value; /**< STACK_STRING -> char* */
+        /*@}*/
 
-    } data;
+    } data; /**< Criamos este parâmetro para poder aceder aos valores dos elementos da stack. */
 }stack_elem;
 
 /**
@@ -71,10 +67,10 @@ typedef struct stack_elem
  */
 typedef struct stack
 {
-    int size;
-    int pointer;
-    stack_elem vars[26]; // 26 é o número máximo de variáveis.
-    stack_elem *elems; 
+    int size; /**< Tamanho do array, este tamanho vai variar caso seja necessária re-alocação de memória. */
+    int pointer; /**< Número inteiro que nos indica o número de elemntos da stack. */
+    stack_elem vars[26]; /**< Este array armazena todas as variáveis possíveis, neste caso são 26 uma para cada letra maiúscula do alfabeto.*/
+    stack_elem *elems; /**< Aqui é onde os elementos da stack ficam guardados. Estes podem ser acedidos usando os parâmentros definidos na strutc stack_elem.  */ 
     
 } stack;
 
