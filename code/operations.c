@@ -230,7 +230,7 @@ void swap(stack *s)
         case (STACK_CHAR): push(s, x.type, x.data.char_value); break;
         case (STACK_INT): push(s, x.type, x.data.int_value); break;
         case (STACK_FLOAT): push(s, x.type, x.data.float_value); break;
-        case (STACK_POINTER): push(s, x.type, x.data.string_value); break;
+        case (STACK_STRING): push(s, x.type, x.data.string_value); break;
         default: push(s, x.type, x.data); break;
     }
 
@@ -239,7 +239,7 @@ void swap(stack *s)
         case (STACK_CHAR): push(s, y.type, y.data.char_value); break;
         case (STACK_INT): push(s, y.type, y.data.int_value); break;
         case (STACK_FLOAT): push(s, y.type, y.data.float_value); break;
-        case (STACK_POINTER): push(s, y.type, y.data.string_value); break;
+        case (STACK_STRING): push(s, y.type, y.data.string_value); break;
         default: push(s, x.type, y.data);
     }
 }
@@ -288,7 +288,7 @@ void line_after(stack *s)
 {
     char value[10240]; //! LMAO WHAT ?!?!?!?!?!
     assert(scanf("%s", value) == 1);
-    push(s, STACK_POINTER, value);
+    push(s, STACK_STRING, value);
 }
 
 void peek_stack(stack *s)
@@ -300,7 +300,7 @@ void peek_stack(stack *s)
     case STACK_CHAR:
         printf("%c\n", top.data.char_value);
         break;
-    case STACK_POINTER:
+    case STACK_STRING:
         printf("%s\n", top.data.string_value);
         break;
     case STACK_INT:
@@ -339,7 +339,7 @@ void to_int(stack *s)
     case STACK_CHAR:
         push(s, STACK_INT, (int)x.data.char_value);
         break;
-    case STACK_POINTER:;
+    case STACK_STRING:;
         char *end;
         int num = strtol(x.data.string_value, &end, 10);
 
@@ -368,7 +368,7 @@ void to_double(stack *s)
     case STACK_DOUBLE:
         push(s, STACK_FLOAT, x.data.float_value);
         break;
-    case STACK_POINTER:;
+    case STACK_STRING:;
         char *end;
         float num_ = strtof(x.data.string_value, &end);
 
@@ -405,7 +405,7 @@ void to_char(stack *s)
 
         push(s, STACK_CHAR, num_);
         break;
-    case STACK_POINTER:;
+    case STACK_STRING:;
         char c = x.data.string_value[0];
         push(s, STACK_CHAR, c);
         break;
@@ -426,24 +426,24 @@ void to_string(stack *s)
         int num = x.data.int_value;
 
         sprintf(temp, "%d", num);
-        push(s, STACK_POINTER, temp);
+        push(s, STACK_STRING, temp);
         break;
     case STACK_FLOAT:;
         float num_ = x.data.float_value;
         char temp_[SIZE];
 
         sprintf(temp_, "%g", num_);
-        push(s, STACK_POINTER, temp_);
+        push(s, STACK_STRING, temp_);
         break;
     case STACK_CHAR:;
         char c = x.data.char_value;
         char temp__[SIZE];
 
         temp__[0] = c;
-        push(s, STACK_POINTER, temp__);
+        push(s, STACK_STRING, temp__);
         break;
     default:
-        push(s, STACK_POINTER, x.data.string_value);
+        push(s, STACK_STRING, x.data.string_value);
         break;
     }
 }
@@ -495,7 +495,7 @@ void equal(stack *s)
     {
         push(s, STACK_FLOAT, 1);
     }
-    else if (x.type == STACK_POINTER && y.type == STACK_POINTER && (strlen(x.data.string_value) == strlen(y.data.string_value)))
+    else if (x.type == STACK_STRING && y.type == STACK_STRING && (strlen(x.data.string_value) == strlen(y.data.string_value)))
     {
         push(s, STACK_INT, 1);
     }
@@ -538,7 +538,7 @@ void less(stack *s)
     {
         push(s, STACK_INT, 1);
     }
-    else if (x.type == STACK_POINTER && y.type == STACK_POINTER && (strlen(x.data.string_value) > strlen(y.data.string_value)))
+    else if (x.type == STACK_STRING && y.type == STACK_STRING && (strlen(x.data.string_value) > strlen(y.data.string_value)))
     {
         push(s, STACK_INT, 1);
     }
@@ -573,7 +573,7 @@ void greater(stack *s)
     {
         push(s, STACK_INT, 1);
     }
-    else if (x.type == STACK_POINTER && y.type == STACK_POINTER && (strlen(x.data.string_value) < strlen(y.data.string_value)))
+    else if (x.type == STACK_STRING && y.type == STACK_STRING && (strlen(x.data.string_value) < strlen(y.data.string_value)))
     {
         push(s, STACK_INT, 1);
     }

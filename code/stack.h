@@ -12,6 +12,8 @@
  */
 #define SIZE 100
 
+typedef struct array array;
+
 /**
  * \brief Tipos exclusivos aos elementos da stack.
  * @enum stack_type
@@ -21,7 +23,7 @@
  * *STACK_FLOAT => float
  * *STACK_LONG => long
  * *STACK_DOUBLE => double
- * *STACK_POINTER => char *
+ * *STACK_STRING => char *
  */
 typedef enum stack_type
 {
@@ -31,7 +33,7 @@ typedef enum stack_type
     STACK_LONG,
     STACK_FLOAT,
     STACK_DOUBLE,
-    STACK_POINTER,
+    STACK_STRING,
     STACK_ARRAY
 
 }stack_type;
@@ -58,10 +60,27 @@ typedef struct stack_elem
         float float_value;
         double double_value;
         char *string_value;
-        int *array_value;
+        array array_value;
 
     } data;
 }stack_elem;
+
+/**
+ * \brief Estrutura do array, que vai aceitar stack_elem.
+ * @struct array
+ * @var array::size
+ * O size contém o valor máximo que o array pode ter. Este tamanho poderá ser alterado caso a memória não seja suficiente.
+ * @var array::elems 
+ * Este array é composta por stack_elem e tem um tamanho dinâmico. Server para armazenar os valores do array.
+ * @var array::num
+ * Guarda o número de elementos presentes no array.
+ */
+typedef struct array
+{
+    stack_elem *elems; // Array que vai armazenar os elementos
+    int size; // Tamanho máximo do array;
+    int num; // Número de elementos no array.
+}array;
 
 /**
  * \brief Estrutura da stack.

@@ -16,7 +16,7 @@
 /**
  * @brief Esta é a função principal, responsável por receber o input do utilizador.
  * A função main é essencial para que o interpretador funcione, não só lê o input do utilizador como chama as funções contidas no módulo parser.c para analizar e realizar as operações necessárias de modo a fornecer um output válido.
- * @return 0, se o input foi lido e parsed com sucesso. 
+ * @return 0, se o input foi lido e parsed com sucesso.
  * @see parser.c
  */
 int main() {
@@ -29,14 +29,14 @@ int main() {
     // Usa o fgets para extrair do input do stdin e guarda na variavel input (usa o assert para garantir que algo é introduzido).
     assert( fgets(input, 10240, stdin) != NULL);
 
-    // Verifica se o tamanho da string não ultrapassa os 10k. 
-    assert( input[strlen(input) - 1] == '\n' ); 
+    // Verifica se o tamanho da string não ultrapassa os 10k.
+    assert( input[strlen(input) - 1] == '\n' );
 
     // bool x = (is_in_string("+", "+-/*#()%"));
     // printf("%d\n",x);
 
     // Chama o parser para fazer o parsing da string.
-    parser(input, &s); 
+    parser(input, &s);
 
     //Print do estado final da stack.
     dumpStack(&s);

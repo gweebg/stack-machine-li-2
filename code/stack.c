@@ -88,7 +88,7 @@ void push(stack *s, const enum stack_type type, ...)
         s->elems[s->pointer].type = type;
         break;
 
-    case STACK_POINTER:
+    case STACK_STRING:
         s->pointer++;
         s->elems[s->pointer].data.string_value = va_arg(ap, char *);
         s->elems[s->pointer].type = type;
@@ -150,7 +150,7 @@ void dumpStack(stack *s)
             printf("%g", elem.data.double_value);
             break;
 
-        case STACK_POINTER:
+        case STACK_STRING:
             printf("%s", elem.data.string_value);
             break;
 
@@ -223,7 +223,6 @@ void getVar(stack *s, char var_letter)
 
     // Segue o mesmo raciocínio da função pushVar.
     int index = var_letter - 65;
-    printf("O char %c entrou na getVar!\n",var_letter);
                 
     // O valor da variável que cuja letra cooresponde ao índice var_letter - 65.
     // Por exemplo, var_letter = S => index = 85 - 65 = 18 = índice do S no array das variáveis definido na estrutura da stack.
@@ -236,7 +235,7 @@ void getVar(stack *s, char var_letter)
         case STACK_FLOAT: push(s, STACK_FLOAT, onVariable.data.float_value); break;
         case STACK_DOUBLE: push(s, STACK_DOUBLE, onVariable.data.double_value); break;
         case STACK_CHAR: push(s, STACK_CHAR, onVariable.data.char_value); break;
-        case STACK_POINTER: push(s, STACK_POINTER, onVariable.data.string_value); break;
+        case STACK_STRING: push(s, STACK_STRING, onVariable.data.string_value); break;
         default: fprintf(stderr, "Erro ao adicionar elemento!\n[function::getVar]"); break;
     }
 
