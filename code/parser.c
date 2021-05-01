@@ -45,10 +45,10 @@ bool check_reserved_string(char *s)
      for (int i = 0; i < 20; i++)
      {
           if (strcmp(s, reserved[i]) == 0) return true;
-               
+
      }
 
-     return false;  
+     return false;
 
 }
 
@@ -189,7 +189,6 @@ void parser(char *line, stack *s)
           else if (strlen(endptr_double) == 0) push(s, STACK_DOUBLE, double_value);
           else if (strlen(token) == 1 && !check_reserved(token[0])) push(s, STACK_CHAR, token[0]);
           else if (strlen(token) > 1 && !check_reserved_string(token)) push(s, STACK_STRING, token);
-          // ! Adicionar caso para arrays aqui !!!
 
           // Operações com números.
           else if (is_in_string(token, "+-*/#%()")) arit_op(s, token);
