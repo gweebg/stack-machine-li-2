@@ -86,6 +86,26 @@ bool check_logic(char* token)
      return false; // Devolve false, caso contrário.
 }
 
+bool saveValues(stack *s, char* token)
+{    
+     bool pushed = true;
+
+     char *endptr_int, *endptr_float;
+     long int_value; float float_value;
+
+     int_value = strtol(token, &endptr_int, 10);
+     float_value = strtof(token, &endptr_float);
+
+     // Push dos diferentes tipos para a stack.
+     if (strlen(endptr_int) == 0) push(s, STACK_INT, int_value);
+     else if (strlen(endptr_float) == 0) push(s, STACK_FLOAT, float_value);
+     else if (strlen(token) == 1 && !check_reserved(token[0])) push(s, STACK_CHAR, token[0]);
+     else if (strlen(token) > 1 && !check_reserved_string(token)) push(s, STACK_STRING, token);
+     else pushed = false;
+
+     return pushed;
+}
+
 void arit_op(stack *s, char* token)
 {
      // Funções dedicadas a operações aritméticas.
@@ -102,7 +122,7 @@ void arit_op(stack *s, char* token)
           else if (strcmp(token, "%") == 0) modulus(s);
           else if (strcmp(token, "(") == 0) dec(s);
           else inc(s);
-         
+ 
      } 
 }
 
@@ -141,16 +161,11 @@ void io_op(stack *s, char* token)
      // Funções dedicadas à leitura de dados.
      if (strcmp(token, "l") == 0) line_after (s);
      else if (strcmp(token, "p") == 0) peek_stack (s);
-     else return; // A adicionar mais funções.
-}
-
-void convert_op(stack *s, char* token)
-{
-     // Funções dedicadas à conversão de tipos.
-     if (strcmp(token, "i") == 0) to_int(s);
+     else if (strcmp(token, "i") == 0) to_int(s);
      else if (strcmp(token, "f") == 0) to_double(s);
      else if (strcmp(token, "c") == 0) to_char(s);
-     else to_string(s);
+     else if (strcmp(token, "s") == 0) to_string(s);
+     else return; // A adicionar mais funções.
 }
 
 void logic_op(stack *s, char* token)
@@ -177,42 +192,26 @@ void logicPush_op(stack *s, char* token)
      else pushOr(s); // (strcmp(token, "e|") == 0) 
 }
 
-
 void parser(char *line, stack *s)
 {
 
      char *delim = " \t\n";
      char *token = strtok(line, delim); // Divide a string tendo em conta delimitadores (definidos em delim).
 
-     char *endptr_int, *endptr_float;
-
-     long int_value;
-     float float_value;
-
      while (token != NULL)
      {
-          
-          int_value = strtol(token, &endptr_int, 10);
-          float_value = strtof(token, &endptr_float);
-
-          // Push dos diferentes tipos para a stack.
-          if (strlen(endptr_int) == 0) push(s, STACK_INT, int_value);
-          else if (strlen(endptr_float) == 0) push(s, STACK_FLOAT, float_value);
-          else if (strlen(token) == 1 && !check_reserved(token[0])) push(s, STACK_CHAR, token[0]);
-          else if (strlen(token) > 1 && !check_reserved_string(token)) push(s, STACK_STRING, token);
+          // Função que dá push dos diferentes elementos de diferentes tipos para a stack.
+          bool pushed = saveValues(s,token);
           
           // Operações com números.
-          else if (is_in_string(token, "+-*/#%()")) arit_op(s, token);
+          if (is_in_string(token, "+-*/#%()")) arit_op(s, token);
           else if (is_in_string(token, "&|^~")) bin_op(s,token);
 
           // Operações com a stack.
-          else if (is_in_string(token, "_;\\$")) stack_op(s, token);
+          else if (is_in_string(token, "_;\\$@")) stack_op(s, token);
           
-          // Operações de IO.
-          else if (is_in_string(token, "lpt")) io_op(s, token);
-          
-          // Funções para conversão de tipos.
-          else if (is_in_string(token, "ifcs")) convert_op(s, token);
+          // Operações de IO + conversão de tipos.
+          else if (is_in_string(token, "lptifcs")) io_op(s, token);
           
           // Funções lógicas.
           else if (is_in_string(token, "=<>!?")) logic_op(s, token);
@@ -220,10 +219,9 @@ void parser(char *line, stack *s)
       
           // Handle de variáveis.
           else if (token[0] == ':') pushVar(s, token[1]);
-          else getVar(s, token[0]);
+          else if (!pushed) getVar(s, token[0]);
      
           token = strtok(NULL, delim);
-
      }
 
 }

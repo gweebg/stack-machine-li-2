@@ -54,6 +54,14 @@ bool is_in_string(char *token, char *chars);
 bool check_logic(char* token);
 
 /**
+ * \brief Esta função tenta dar push a valores inteiros,floats,chars e strings. Caso consiga devolve o true.
+ * @param[in] s Stack na qual os elementos vão ser adicionados.
+ * @param[in] token String na qual vamos verificar a conversão de string para outro data-type (int,float,char,string).
+ * @return Devolve um valor booleano. Sendo este verdadeiro caso consiga adicionar o valor na stack.
+ */
+bool saveValues(stack *s, char* token);
+
+/**
  * \brief Esta função é responsável por executar a operação pedida.
  * Executa a operação de uma determinada categoria, neste caso, operações ariteméticas. 
  * @param[in] s Stack dada pelo utilizador.
@@ -86,15 +94,6 @@ void stack_op(stack *s, char* token);
  * @return É uma função do tipo void, daí não devolver nada.
  */
 void io_op(stack *s, char* token);
-
-/**
- * \brief Esta função é responsável por executar as operações de conversão de dados
- * Por exmpleo conversão de char para inteiro.
- * @param[in] s Stack dada pelo utilizador.
- * @param[in] token Operador a ser utilizado na operação.
- * @return É uma função do tipo void, daí não devolver nada.
- */
-void convert_op(stack *s, char* token);
 
 /**
  * \brief Esta função é responsável por executar as operações lógicas simples
