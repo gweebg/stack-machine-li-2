@@ -37,10 +37,6 @@ bool check_reserved(char c);
  */
 bool check_reserved_string(char *s);
 
-<<<<<<< HEAD
-bool is_in_string(char *token, char *chars);
-
-=======
 /**
  * \brief Esta função é responsável por verificar o tipo de operação que vai ser realizada
  * Visto ao detalhe, esta função quando dada duas strings compara-as para ver se, pelo menos, um char do argumento chars está presente no argumento token. 
@@ -49,6 +45,13 @@ bool is_in_string(char *token, char *chars);
  * @return Devolve um valor booleano. Sendo este verdadeiro caso existam chars em comum.
  */
 bool is_in_string(char *token, char *chars);
+
+/**
+ * \brief Esta função verifica se uma dada string (o nosso token) é igual a um dos seguintes operadores: e> ; e< ; e& ; e| .
+ * @param[in] token String na qual vamos verificar a existência do operador.
+ * @return Devolve um valor booleano. Sendo este verdadeiro caso seja verdadeiro a pelo menos um.
+ */
+bool check_logic(char* token);
 
 /**
  * \brief Esta função é responsável por executar a operação pedida.
@@ -111,5 +114,4 @@ void logic_op(stack *s, char* token);
  */
 void logicPush_op(stack *s, char* token);
 
->>>>>>> master
 #endif

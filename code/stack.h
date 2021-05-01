@@ -11,34 +11,22 @@
  */
 #define SIZE 100
 
+/**
+ * Declaração da struct array.
+ */
 typedef struct array array;
+
+// ===========================================
+// DEFINIÇÃO DA STACK
+// ===========================================
 
 /**
  * \brief Tipos exclusivos aos elementos da stack.
  * @enum stack_type
-<<<<<<< HEAD
- * Este enumerador contém todos os possíveis tipos de valores que a stack pode receber:
- * *STACK_CHAR => char
- * *STACK_INT => int
- * *STACK_FLOAT => float
- * *STACK_LONG => long
- * *STACK_DOUBLE => double
- * *STACK_STRING => char *
-=======
->>>>>>> master
  */
 typedef enum stack_type
 {
 
-<<<<<<< HEAD
-    STACK_CHAR,
-    STACK_INT,
-    STACK_LONG,
-    STACK_FLOAT,
-    STACK_DOUBLE,
-    STACK_STRING,
-    STACK_ARRAY
-=======
     STACK_CHAR, /**< Equivale ao tipo char. */
     STACK_INT, /**< Equivale ao tipo int. */
     STACK_LONG, /**< Equivale ao tipo long. */
@@ -46,7 +34,6 @@ typedef enum stack_type
     STACK_DOUBLE, /**< Equivale ao tipo double. */
     STACK_STRING, /**< Equivale ao tipo char* (string). */
     STACK_ARRAY /**< Equivale ao tipo stack_elem* (array). */
->>>>>>> master
 
 }stack_type;
 
@@ -67,15 +54,6 @@ typedef struct stack_elem
     union data
     {
 
-<<<<<<< HEAD
-        char char_value;
-        int int_value;
-        long long_value;
-        float float_value;
-        double double_value;
-        char *string_value;
-        array array_value;
-=======
         /*@{*/
         char char_value; /**< STACK_CHAR -> char */
         int int_value; /**< STACK_INT -> int */
@@ -83,11 +61,12 @@ typedef struct stack_elem
         float float_value; /**< STACK_FLOAT -> float */
         double double_value; /**< STACK_DOUBLE -> double */
         char *string_value; /**< STACK_STRING -> char* */
+        array *array_value; /**< STACK_ARRAY -> array* */
         /*@}*/
->>>>>>> master
 
     } data; /**< Criamos este parâmetro para poder aceder aos valores dos elementos da stack. */
 }stack_elem;
+
 
 /**
  * \brief Estrutura do array, que vai aceitar stack_elem.
@@ -99,12 +78,12 @@ typedef struct stack_elem
  * @var array::num
  * Guarda o número de elementos presentes no array.
  */
-typedef struct array
+struct array
 {
-    stack_elem *elems; // Array que vai armazenar os elementos
-    int size; // Tamanho máximo do array;
-    int num; // Número de elementos no array.
-}array;
+    stack_elem *elems; /**< Array que vai armazenar os elementos. */
+    int size; /**< Tamanho inicial do array, pode ser mudado com realloc caso seja necessário. */
+    int num; /**< Número total de elementos no array. */
+};
 
 /**
  * \brief Estrutura da stack.

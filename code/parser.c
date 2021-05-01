@@ -73,6 +73,19 @@ bool is_in_string(char *token, char *chars)
      return false; // False se não é reservado
 }
 
+bool check_logic(char* token)
+{    
+     // Conjunto de operadores lógico "avançados".
+     char reserved[5][6] = {"e&", "e|", "e<", "e>"};
+
+     for (int i = 0; i < 5; i++) // Vamos verificar se o token pertence a este grupo.
+     {
+          if (strcmp(token, reserved[i]) == 0) return true; // Devolve true se pertencer.
+
+     }
+     return false; // Devolve false, caso contrário.
+}
+
 void arit_op(stack *s, char* token)
 {
      // Funções dedicadas a operações aritméticas.
@@ -164,32 +177,30 @@ void logicPush_op(stack *s, char* token)
      else pushOr(s); // (strcmp(token, "e|") == 0) 
 }
 
+
 void parser(char *line, stack *s)
 {
 
      char *delim = " \t\n";
      char *token = strtok(line, delim); // Divide a string tendo em conta delimitadores (definidos em delim).
 
-     char *endptr_int, *endptr_float, *endptr_double;
+     char *endptr_int, *endptr_float;
 
      long int_value;
      float float_value;
-     double double_value;
 
      while (token != NULL)
      {
-
+          
           int_value = strtol(token, &endptr_int, 10);
           float_value = strtof(token, &endptr_float);
-          double_value = strtod(token, &endptr_double);
 
           // Push dos diferentes tipos para a stack.
           if (strlen(endptr_int) == 0) push(s, STACK_INT, int_value);
           else if (strlen(endptr_float) == 0) push(s, STACK_FLOAT, float_value);
-          else if (strlen(endptr_double) == 0) push(s, STACK_DOUBLE, double_value);
           else if (strlen(token) == 1 && !check_reserved(token[0])) push(s, STACK_CHAR, token[0]);
           else if (strlen(token) > 1 && !check_reserved_string(token)) push(s, STACK_STRING, token);
-
+          
           // Operações com números.
           else if (is_in_string(token, "+-*/#%()")) arit_op(s, token);
           else if (is_in_string(token, "&|^~")) bin_op(s,token);
@@ -205,9 +216,8 @@ void parser(char *line, stack *s)
           
           // Funções lógicas.
           else if (is_in_string(token, "=<>!?")) logic_op(s, token);
-          else if (check_reserved_string(token)) logicPush_op(s, token);
-                   // Pouco eficiente usar esta função aqui, porque ela verifica para todos os token reservados com mais de um char.
-
+          else if (check_logic(token)) logicPush_op(s, token);
+      
           // Handle de variáveis.
           else if (token[0] == ':') pushVar(s, token[1]);
           else getVar(s, token[0]);
