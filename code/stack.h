@@ -6,7 +6,7 @@
 #ifndef STACK_H
 #define STACK_H
 
-/** 
+/**
  * É o tamanho inicial que a nossa stack toma.
  */
 #define SIZE 100
@@ -33,8 +33,8 @@ typedef enum stack_type
  * @struct stack_elem
  * @var stack::type
  * O type é um objeto do tipo stack_type e é-nos útil para aceder ao tipo do valor da stack.
- * @var stack::data 
- * Esta estrura é uma union mostra como os valores serão guardados na stack. Para além disso garante-nos a possibilidade de aceder ao valor guardado. 
+ * @var stack::data
+ * Esta estrura é uma union mostra como os valores serão guardados na stack. Para além disso garante-nos a possibilidade de aceder ao valor guardado.
  * @see stack_type
  */
 typedef struct stack_elem
@@ -48,7 +48,7 @@ typedef struct stack_elem
         /*@{*/
         char char_value; /**< STACK_CHAR -> char */
         int int_value; /**< STACK_INT -> int */
-        long long_value; /**< STACK_LONG -> long */ 
+        long long_value; /**< STACK_LONG -> long */
         float float_value; /**< STACK_FLOAT -> float */
         double double_value; /**< STACK_DOUBLE -> double */
         char *string_value; /**< STACK_STRING -> char* */
@@ -62,7 +62,7 @@ typedef struct stack_elem
  * @struct stack
  * @var stack::pointer
  * O pointer contém o valor de um inteiro, este aponta sempre para o topo da stack.
- * @var stack::elems 
+ * @var stack::elems
  * Esta array é composta por stack_elem e tem um tamanho fixo de 10240 bytes. Server para armazenar os valores na stack.
  */
 typedef struct stack
@@ -70,8 +70,8 @@ typedef struct stack
     int size; /**< Tamanho do array, este tamanho vai variar caso seja necessária re-alocação de memória. */
     int pointer; /**< Número inteiro que nos indica o número de elemntos da stack. */
     stack_elem vars[26]; /**< Este array armazena todas as variáveis possíveis, neste caso são 26 uma para cada letra maiúscula do alfabeto.*/
-    stack_elem *elems; /**< Aqui é onde os elementos da stack ficam guardados. Estes podem ser acedidos usando os parâmentros definidos na strutc stack_elem.  */ 
-    
+    stack_elem *elems; /**< Aqui é onde os elementos da stack ficam guardados. Estes podem ser acedidos usando os parâmentros definidos na strutc stack_elem.  */
+
 } stack;
 
 /**
@@ -83,10 +83,10 @@ stack create();
 
 /**
  * \brief Função que verifica o estado da stack.
- * 
+ *
  * Determina o estado verificando o valor do stack pointer.
  * @param s Stack a ser avaliada.
- * @returns 
+ * @returns
  * Devolve :
  * * 0, se a stack estiver vazia;
  * * 1, se a stack estiver cheia;
@@ -111,7 +111,7 @@ void push(stack *s, const enum stack_type type, ...);
 
 /**
  * \brief Adiciona um elemento no topo da stack.
- * 
+ *
  * @param[in] s Stack a ser avaliada.
  * @returns
  * Devolve :
@@ -123,7 +123,7 @@ stack_elem pop(stack *s);
 
 /**
  * \brief Esta função despeja todos os elementos contidos na stack.
- * 
+ *
  * @param[in] s Stack a ser avaliada.
  * @returns Escreve a stack no ecrã, porém não devolve nada, sendo que é do tipo void.
  * @see pop() push()
@@ -132,7 +132,7 @@ void dumpStack(stack *s);
 
 /**
  * \brief Esta função é usada para ver quail elemento está no topo da stack.
- * 
+ *
  * @param[in] s Stack a ser avaliada.
  * @returns Devolve um elemento da stack (stack_elem).
  */
