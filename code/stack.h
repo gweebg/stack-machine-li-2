@@ -12,9 +12,9 @@
 #define SIZE 100
 
 /**
- * Declaração da struct array.
+ * Vamos usar uma stack auxiliar para simular um array.
  */
-typedef struct array array;
+typedef struct stack stack;
 
 // ===========================================
 // DEFINIÇÃO DA STACK
@@ -33,7 +33,7 @@ typedef enum stack_type
     STACK_FLOAT, /**< Equivale ao tipo float. */
     STACK_DOUBLE, /**< Equivale ao tipo double. */
     STACK_STRING, /**< Equivale ao tipo char* (string). */
-    STACK_ARRAY /**< Equivale ao tipo stack_elem* (array). */
+    STACK_ARRAY /**< Equivale ao tipo stack* (é usada uma stack auxiliar para a simulação de um array). */
 
 }stack_type;
 
@@ -61,29 +61,11 @@ typedef struct stack_elem
         float float_value; /**< STACK_FLOAT -> float */
         double double_value; /**< STACK_DOUBLE -> double */
         char *string_value; /**< STACK_STRING -> char* */
-        array *array_value; /**< STACK_ARRAY -> array* */
+        stack *array_value; /**< STACK_ARRAY -> stack* */
         /*@}*/
 
     } data; /**< Criamos este parâmetro para poder aceder aos valores dos elementos da stack. */
 }stack_elem;
-
-
-/**
- * \brief Estrutura do array, que vai aceitar stack_elem.
- * @struct array
- * @var array::size
- * O size contém o valor máximo que o array pode ter. Este tamanho poderá ser alterado caso a memória não seja suficiente.
- * @var array::elems 
- * Este array é composta por stack_elem e tem um tamanho dinâmico. Server para armazenar os valores do array.
- * @var array::num
- * Guarda o número de elementos presentes no array.
- */
-struct array
-{
-    stack_elem *elems; /**< Array que vai armazenar os elementos. */
-    int size; /**< Tamanho inicial do array, pode ser mudado com realloc caso seja necessário. */
-    int num; /**< Número total de elementos no array. */
-};
 
 /**
  * \brief Estrutura da stack.
@@ -93,14 +75,13 @@ struct array
  * @var stack::elems
  * Esta array é composta por stack_elem e tem um tamanho fixo de 10240 bytes. Server para armazenar os valores na stack.
  */
-typedef struct stack
+struct stack
 {
     int size; /**< Tamanho do array, este tamanho vai variar caso seja necessária re-alocação de memória. */
     int pointer; /**< Número inteiro que nos indica o número de elemntos da stack. */
     stack_elem vars[26]; /**< Este array armazena todas as variáveis possíveis, neste caso são 26 uma para cada letra maiúscula do alfabeto.*/
     stack_elem *elems; /**< Aqui é onde os elementos da stack ficam guardados. Estes podem ser acedidos usando os parâmentros definidos na strutc stack_elem.  */
-
-} stack;
+};
 
 /**
  * \brief Função que inicializa/cria uma stack.

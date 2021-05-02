@@ -11,6 +11,7 @@
 
 # include "stack.h"
 # include "parser.h"
+# include "array.h"
 
 /**
  * @brief Esta é a função principal, responsável por receber o input do utilizador.
@@ -36,6 +37,7 @@ int main() {
 
     // Chama o parser para fazer o parsing da string.
     parser(input, &s);
+    // example();
 
     //Print do estado final da stack.
     dumpStack(&s);

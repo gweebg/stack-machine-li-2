@@ -13,6 +13,7 @@
 #include "stack.h"
 #include "parser.h"
 #include "operations.h"
+#include "array.h"
 
 bool check_reserved(char c)
 {
@@ -165,7 +166,7 @@ void io_op(stack *s, char* token)
      else if (strcmp(token, "f") == 0) to_double(s);
      else if (strcmp(token, "c") == 0) to_char(s);
      else if (strcmp(token, "s") == 0) to_string(s);
-     else return; // A adicionar mais funções.
+     else multipleLines(s); // A adicionar mais funções.
 }
 
 void logic_op(stack *s, char* token)
