@@ -159,6 +159,11 @@ void dumpStack(stack *s)
         case STACK_STRING:
             printf("%s", elem.data.string_value);
             break;
+        
+        case STACK_ARRAY:
+            printf("array: ");
+            dumpStack(elem.data.array_value);
+            break;
 
         default:
             fprintf(stderr, "unknown");

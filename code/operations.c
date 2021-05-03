@@ -170,7 +170,7 @@ void inc(stack *s)
         case STACK_FLOAT: push(s, STACK_FLOAT, x.data.float_value + 1); break;
         case STACK_DOUBLE: push(s, STACK_FLOAT, x.data.double_value + 1); break;
         case STACK_CHAR: push(s, STACK_CHAR, x.data.char_value + 1); break;
-        default: fprintf(stderr, "Erro na funçao [dec] em operations.c : switch to default."); exit(EXIT_FAILURE); break;
+        default: fprintf(stderr, "Erro na funçao [inc] em operations.c : switch to default."); exit(EXIT_FAILURE); break;
     }
 }
 

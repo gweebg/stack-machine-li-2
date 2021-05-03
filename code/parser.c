@@ -18,7 +18,7 @@
 bool check_reserved(char c)
 {
 
-     char reserved[60] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ:+-*/()%#&|^~_;\\@$ltpifcs=<>!?";
+     char reserved[60] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ:+-*/()%#&|^~_;\\@$ltpifcs=<>!?[]";
      int i = 0;
 
      while (reserved[i] != '\0')
@@ -166,7 +166,7 @@ void io_op(stack *s, char* token)
      else if (strcmp(token, "f") == 0) to_double(s);
      else if (strcmp(token, "c") == 0) to_char(s);
      else if (strcmp(token, "s") == 0) to_string(s);
-     else multipleLines(s); // A adicionar mais funções.
+     else if (strcmp(token, "t") == 0) multipleLines(s); // A adicionar mais funções.
 }
 
 void logic_op(stack *s, char* token)
@@ -193,14 +193,24 @@ void logicPush_op(stack *s, char* token)
      else pushOr(s); // (strcmp(token, "e|") == 0) 
 }
 
+void array_op(stack *s, char* token, char* line)
+{
+     // printf("Entrou nas array_op!");
+     if (strcmp(token, "[") == 0) parseArray(s, line);
+}
+
 void parser(char *line, stack *s)
 {
+     char *full_string = (char *)malloc(strlen(line) * sizeof(char));
+     strcpy(full_string, line);
 
      char *delim = " \t\n";
      char *token = strtok(line, delim); // Divide a string tendo em conta delimitadores (definidos em delim).
 
      while (token != NULL)
      {
+          printf("Token atual = %s\n",token);
+
           // Função que dá push dos diferentes elementos de diferentes tipos para a stack.
           bool pushed = saveValues(s,token);
           
@@ -217,7 +227,11 @@ void parser(char *line, stack *s)
           // Funções lógicas.
           else if (is_in_string(token, "=<>!?")) logic_op(s, token);
           else if (check_logic(token)) logicPush_op(s, token);
-      
+
+          // Funções com arrays.
+          else if (is_in_string(token, "[")) array_op(s, token, full_string);
+                                                       // Passo a linha toda para poder retirar o que quero.
+
           // Handle de variáveis.
           else if (token[0] == ':') pushVar(s, token[1]);
           else if (!pushed) getVar(s, token[0]);

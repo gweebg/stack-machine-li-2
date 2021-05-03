@@ -32,12 +32,8 @@ int main() {
     // Verifica se o tamanho da string não ultrapassa os 10k.
     assert( input[strlen(input) - 1] == '\n' );
 
-    // bool x = (is_in_string("+", "+-/*#()%"));
-    // printf("%d\n",x);
-
     // Chama o parser para fazer o parsing da string.
     parser(input, &s);
-    // example();
 
     //Print do estado final da stack.
     dumpStack(&s);
