@@ -18,7 +18,7 @@
 bool check_reserved(char c)
 {
 
-     char reserved[60] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ:+-*/()%#&|^~_;\\@$ltpifcs=<>!?[]";
+     char reserved[60] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ:+-*/()%#&|^~_;\\@$ltpifcs=<>!?[\",";
      int i = 0;
 
      while (reserved[i] != '\0')
@@ -43,14 +43,12 @@ bool check_reserved_string(char *s)
                              ":J", ":K", ":L", ":M", ":O", ":P", ":Q", 
                              ":R", ":T"};
 
-     for (int i = 0; i < 20; i++)
+     for (int i = 0; i < 30; i++)
      {
           if (strcmp(s, reserved[i]) == 0) return true;
-
      }
 
      return false;
-
 }
 
 bool is_in_string(char *token, char *chars)
@@ -134,10 +132,18 @@ void bin_op(stack *s, char* token)
      // Assim, é preciso verificar que o elemento no topo da stack não é um array.
      if (peek(s).type != STACK_ARRAY)
      {
+          // printf("Entrei no if.");
           if (strcmp(token, "&") == 0) and(s);
           else if (strcmp(token, "|") == 0) or(s);
           else if (strcmp(token, "^") == 0) xor(s);
           else not(s);
+     }
+     else // Significa que o elemento no topo da stack é um array.
+     {
+          // Se entrou neste else, temos a certeza que o char pertence a "&|^~" e como o '~' é a única operação válida, não precisamos de fazer a verificação.
+          // ~ Colocar na stack todos os elementos do array.
+          // printf("Entrei no else.");
+          dumpArray(s);
      }
 
 }
@@ -173,7 +179,7 @@ void logic_op(stack *s, char* token)
 {
      // Funções dedicadas a operações lógicas básicas.
      // O char '=' é comum em duas operações, por isso é preciso verificar com que tipo estamos a trabalhar.
-     if (peek(s).type != STACK_ARRAY)
+     if (getSecondType(s) != STACK_ARRAY)
      {
           if (strcmp(token, "=") == 0) equal(s);
           else if (strcmp(token, "<") == 0) less(s);
@@ -181,7 +187,7 @@ void logic_op(stack *s, char* token)
           else if (strcmp(token, "!") == 0) invertBool(s);
           else ifThenElse(s);
      }
-
+     else getValueByIndex(s);
 }
 
 void logicPush_op(stack *s, char* token)
@@ -197,18 +203,14 @@ int array_op(stack *s, char* token, char* line)
 {    
      int e = 1;
      // printf("Entrou nas array_op!");
-     if (strcmp(token, "[") == 0) 
-     {
-          parseArray(s, line);
-          e = 0;
-     }
+     if (strcmp(token, "[") == 0) {parseArray(s, line); e = 0;}
+     else if (strcmp(token, ",") == 0) arrayRange(s);
 
      return e;
 }
 
 void parser(char *line, stack *s)
 {    
-     int decide = 1;
      char *full_string = (char *)malloc(strlen(line) * sizeof(char));
      strcpy(full_string, line);
 
@@ -217,7 +219,8 @@ void parser(char *line, stack *s)
 
      while (token != NULL)
      {
-          // printf("Token atual = %s\n",token);
+          int decide = 1;
+          printf("Token atual = %s\n",token);
 
           // Função que dá push dos diferentes elementos de diferentes tipos para a stack.
           bool pushed = saveValues(s,token);
@@ -237,20 +240,15 @@ void parser(char *line, stack *s)
           else if (check_logic(token)) logicPush_op(s, token);
 
           // Funções com arrays.             // Guardo um valor inteiro em decide, isto vai indicar ao parser se esta função foi executada ou não.
-          else if (is_in_string(token, "[")) decide = array_op(s, token, full_string);
-                                                       // Passo a linha toda para poder retirar o que quero.
+          else if (is_in_string(token, "[,")) decide = array_op(s, token, full_string); // Passo a linha toda para poder retirar o que quero.
 
           // Handle de variáveis.
           else if (token[0] == ':') pushVar(s, token[1]);
           else if (!pushed) getVar(s, token[0]);
 
-          if (decide == 1)
-               token = strtok(NULL, delim);
-          else
-          {
-               decide = 1;
-               token = getRestToken(full_string);
-          }
+          if (decide == 0) {parser(getRestToken(full_string), s); break;}
+          else token = strtok(NULL, delim);
+          
      }
 
 }

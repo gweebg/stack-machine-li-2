@@ -11,6 +11,7 @@
 #include <math.h>
 
 #include "stack.h"
+#include "array.h"
 
 stack create()
 {
@@ -127,7 +128,6 @@ stack_elem pop(stack *s)
 
 void dumpStack(stack *s)
 {
-
     // printf("Stack Dump: ");
     for (int i = 0; i < s->pointer + 1; i++)
     {
@@ -161,8 +161,7 @@ void dumpStack(stack *s)
             break;
         
         case STACK_ARRAY:
-            printf("array: ");
-            dumpStack(elem.data.array_value);
+            printArray(elem.data.array_value);
             break;
 
         default:
@@ -170,7 +169,8 @@ void dumpStack(stack *s)
             exit(EXIT_FAILURE);
         }
     }
-    printf("\n");
+
+    printf("\n"); // Retirar o "\n" para evitar breaks ao dar print de um array, pois é recursivo.
 }
 
 stack_elem peek(stack *s)
@@ -250,4 +250,15 @@ void getVar(stack *s, char var_letter)
         default: fprintf(stderr, "Erro ao adicionar elemento!\n[function::getVar]"); break;
     }
 
+}
+
+stack_type getSecondType(stack *s)
+{
+    stack_type type;
+
+    // Pop do topo; peek do topo; push do topo.
+    stack_elem elem = s->elems[s->pointer - 1];
+    type = elem.type;
+
+    return type;
 }

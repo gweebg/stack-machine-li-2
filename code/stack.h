@@ -176,4 +176,6 @@ void varStart(stack *stack);
  */
 void getVar(stack *s, char var_letter);
 
+stack_type getSecondType(stack *s);
+
 #endif
