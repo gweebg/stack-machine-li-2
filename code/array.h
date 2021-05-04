@@ -3,6 +3,9 @@
 
 void splitString(stack *s, char *string);
 void multipleLines(stack *s);
-char* parseArray(stack *s, char *line);
+void initArray(stack *s);
+void parseArray(stack *s, char *line);
+char* getInside(char *line);
+char* getRestToken(char *line);
 
 #endif

@@ -193,14 +193,22 @@ void logicPush_op(stack *s, char* token)
      else pushOr(s); // (strcmp(token, "e|") == 0) 
 }
 
-void array_op(stack *s, char* token, char* line)
-{
+int array_op(stack *s, char* token, char* line)
+{    
+     int e = 1;
      // printf("Entrou nas array_op!");
-     if (strcmp(token, "[") == 0) parseArray(s, line);
+     if (strcmp(token, "[") == 0) 
+     {
+          parseArray(s, line);
+          e = 0;
+     }
+
+     return e;
 }
 
 void parser(char *line, stack *s)
-{
+{    
+     int decide = 1;
      char *full_string = (char *)malloc(strlen(line) * sizeof(char));
      strcpy(full_string, line);
 
@@ -209,7 +217,7 @@ void parser(char *line, stack *s)
 
      while (token != NULL)
      {
-          printf("Token atual = %s\n",token);
+          // printf("Token atual = %s\n",token);
 
           // Função que dá push dos diferentes elementos de diferentes tipos para a stack.
           bool pushed = saveValues(s,token);
@@ -228,15 +236,21 @@ void parser(char *line, stack *s)
           else if (is_in_string(token, "=<>!?")) logic_op(s, token);
           else if (check_logic(token)) logicPush_op(s, token);
 
-          // Funções com arrays.
-          else if (is_in_string(token, "[")) array_op(s, token, full_string);
+          // Funções com arrays.             // Guardo um valor inteiro em decide, isto vai indicar ao parser se esta função foi executada ou não.
+          else if (is_in_string(token, "[")) decide = array_op(s, token, full_string);
                                                        // Passo a linha toda para poder retirar o que quero.
 
           // Handle de variáveis.
           else if (token[0] == ':') pushVar(s, token[1]);
           else if (!pushed) getVar(s, token[0]);
-     
-          token = strtok(NULL, delim);
+
+          if (decide == 1)
+               token = strtok(NULL, delim);
+          else
+          {
+               decide = 1;
+               token = getRestToken(full_string);
+          }
      }
 
 }

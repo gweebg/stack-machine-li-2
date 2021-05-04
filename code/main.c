@@ -34,6 +34,7 @@ int main() {
 
     // Chama o parser para fazer o parsing da string.
     parser(input, &s);
+    // char *xd = getRestToken("ola xd [ 1 2 3 ] ola 123");
 
     //Print do estado final da stack.
     dumpStack(&s);
