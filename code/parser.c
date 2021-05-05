@@ -220,7 +220,7 @@ void parser(char *line, stack *s)
      while (token != NULL)
      {
           int decide = 1;
-          printf("Token atual = %s\n",token);
+          // printf("Token atual = %s\n",token);
 
           // Função que dá push dos diferentes elementos de diferentes tipos para a stack.
           bool pushed = saveValues(s,token);

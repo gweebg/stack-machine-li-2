@@ -102,41 +102,46 @@ void initArray(stack *s)
 
 char* getInside(char *line)
 {
-    int end = 0; // Posição onde está o char ']'.
-    int start = 0; // Posição do char '['.
-    // Precisamos de alocar memória para a string.
-    char *string = (char*)malloc(sizeof(char) * strlen(line));
-    int c = 0; // Contador usado mais abaixo.
+    // Contagem de '[' e ']'.
+    int count = 0;
+    // O start indica-nos a primeira posição do char '[' e o end do ']'.
+    int start = 0; int end = 0; int c = 0;
+    // Variável temporária onde vamos guardar partes da linha orginial.
+    char *string = (char *)malloc(strlen(line) * sizeof(char));
 
-    // Loop para calcular o start.
-    for (long unsigned i = 0; i < strlen(line); i++)
+    // Posição do primeiro '['. [start]
+    for (unsigned long i = 0; i < strlen(line); i++)
     {
-        // Definimos os limites da parte que queremos.
-        if (line[i] == '[') 
-        {
-            start = i;
-            break; // Apenas queremos a primeira ocorrência.
+        if (line[i] == '[')
+        { 
+            start = i; 
+            break; // Temos de dar break pois queremos apenas a primeira ocorrência do '['.
         }
     }
 
-    // Loop para calcular o end. É preciso este loop, pois podem existir arrays aninhados, ou seja, se fizessemos a travessia da esquerda para a direita apenas a obter o indice da primeira ocorrência do char ']'.
-    for (long unsigned i = strlen(line); i > 0; i--)
+    // printf("Indice do '[' : %d\n", start);
+
+    // Posição do ']' coorespondente ao '[' definido acima. [end]
+    for (unsigned long j = 0; j < strlen(line); j++)
     {
-        // Definimos os limites da parte que queremos.
-        if (line[i] == ']') 
-        {
-            end = i;
-            break;
+        if (line[j] == '[') count++; // Precisamos de saber a contagem dos '['. 
+        else if (line[j] == ']') 
+        {            
+            if (count % 2 != 0) // Se o numero total de chars '[]' for ímpar significa que o proximo ']' fecha o primeiro '['.
+            {
+                end = j;
+                break;
+            }       
+
+            count++;
         }
     }
-
-    // printf("end %d \n",end);
 
     // Agora que temos a posição dos brackets, queremos extrair o seu conteúdo.
     // Começamos por remover o lixo na esquerda.
-    for (int j = 0; j < end; j++)
+    for (int z = 0; z < end; z++)
     {
-        string[c] = line[j];
+        string[c] = line[z];
         c++;
     }
 
@@ -155,17 +160,22 @@ char* getInside(char *line)
 
 char* getRestToken(char *line)
 {
-    int end = 0;
-    char *result = malloc(strlen(line) * sizeof(char));
+    int count = 0; int end = 0;
 
-    // Loop para calcular o end.
-    for (long unsigned i = strlen(line); i > 0; i--)
+    char *result = (char*)malloc(strlen(line) * sizeof(char));
+
+    for (unsigned long j = 0; j < strlen(line); j++)
     {
-        // Definimos os limites da parte que queremos.
-        if (line[i] == ']') 
-        {
-            end = i;
-            break;
+        if (line[j] == '[') count++; // Precisamos de saber a contagem dos '['. 
+        else if (line[j] == ']') 
+        {            
+            if (count % 2 != 0) // Se o numero total de chars '[]' for ímpar significa que o proximo ']' fecha o primeiro '['.
+            {
+                end = j;
+                break;
+            }       
+
+            count++;
         }
     }
 
@@ -179,36 +189,22 @@ char* getRestToken(char *line)
 void parseArray(stack *s, char *line) // Vai atualizar o token para depois do []
 {
     initArray(s); // Iniciamos o array, pois encontramos o char '['. 
+    // varStart(s); Inicializar as variaveis.
     // printf("\nLinha passada : %s\n",line);
 
     char *parsed = getInside(line); // parsed passa a ser a string com o conteudo do array que vai ser processado pelo parser.
-    // printf("A string é : %s\n", parsed);
+    printf("A string é : %s\n", parsed);
 
     stack_elem array = peek(s); // Isto vai nos dar o array.
     // printf("[Array pointer] : %d\n",array.data.array_value->pointer);
 
     parser(parsed, array.data.array_value);
     // printf("Executou o parser.\n");
-    
 }
 
 // ===============================
 // Operações com arrays.
 // ===============================
-
-/* 
-Tabela de valores da elemType.
-
-+--------+-------+
-|  Tipo  | Valor |
-+--------+-------+
-| Int    |     0 |
-| Float  |     1 |
-| Char   |     2 |
-| String |     3 |
-| Array  |     4 |
-+--------+-------+
-*/
 
 void typePush(stack *s, stack_elem elem)
 {
@@ -278,3 +274,9 @@ void getValueByIndex(stack *s)
 }
 
 
+/**
+""   Criar uma string
++    Concatenar strings ou arrays (ou array/string com elemento)
+*     Concatenar várias vezes strings ou arrays
+#    Procurar substring na string e devolver o índice ou -1 se não encontrar
+**/
