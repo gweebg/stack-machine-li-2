@@ -3,7 +3,6 @@
 
 void printArray(stack *s);
 
-void splitString(stack *s, char *string);
 void multipleLines(stack *s);
 
 void initArray(stack *s);
@@ -29,5 +28,10 @@ void getElemsEnd(stack *s);
 
 void removeInit(stack *s);
 void removeEnd(stack *s);
+
+void stringSearch(stack *s);
+
+void stripString(stack *s, char *delim);
+void splitSub(stack *s);
 
 #endif

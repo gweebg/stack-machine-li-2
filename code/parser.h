@@ -54,6 +54,13 @@ bool is_in_string(char *token, char *chars);
 bool check_logic(char* token);
 
 /**
+ * \brief Esta função verifica se uma dada string (o nosso token) é igual a um dos seguintes operadores: S/ , N/ .
+ * @param[in] token String na qual vamos verificar a existência do operador.
+ * @return Devolve um valor booleano. Sendo este verdadeiro caso seja verdadeiro a pelo menos um.
+ */
+bool check_array(char* token);
+
+/**
  * \brief Esta função tenta dar push a valores inteiros,floats,chars e strings. Caso consiga devolve o true.
  * @param[in] s Stack na qual os elementos vão ser adicionados.
  * @param[in] token String na qual vamos verificar a conversão de string para outro data-type (int,float,char,string).

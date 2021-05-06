@@ -19,7 +19,8 @@
  * @return 0, se o input foi lido e parsed com sucesso.
  * @see parser.c
  */
-int main() {
+int main() 
+{
 
     stack s = create(); // Criação da stack
     varStart(&s); // Inicialização das variáveis default.
@@ -35,7 +36,11 @@ int main() {
     // Chama o parser para fazer o parsing da string.
     parser(input, &s);
 
-    // char *line = " \"Boas pessoal\" 2 2 + [ 1 ] ~ *";
+    // char *line2 = "esta a dar bom parse ? \"sim\".";
+    // char *result2 = getString(line2);
+    // printf("%s\n", result2);
+
+    // char *line = " \"ola adeus\" S/ ,";
     // printf("%s\n", line);
     // char *result = getRestTokenS(line);
     // printf("%s\n", result);

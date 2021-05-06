@@ -37,13 +37,13 @@ bool check_reserved(char c)
 
 bool check_reserved_string(char *s)
 {
-     char reserved[30][6] = {"e&", "e|", "e<", "e>", ":A", ":B", ":C", 
+     char reserved[35][6] = {"e&", "e|", "e<", "e>", ":A", ":B", ":C", 
                              ":D", ":E", ":F",":G", ":H", ":I",":N", 
                              ":S", ":X", ":Y", ":U", ":V", ":W", ":X", 
                              ":J", ":K", ":L", ":M", ":O", ":P", ":Q", 
-                             ":R", ":T"};
+                             ":R", ":T", "S/", "N/"};
 
-     for (int i = 0; i < 30; i++)
+     for (int i = 0; i < 35; i++)
      {
           if (strcmp(s, reserved[i]) == 0) return true;
      }
@@ -75,9 +75,22 @@ bool is_in_string(char *token, char *chars)
 bool check_logic(char* token)
 {    
      // Conjunto de operadores lógico "avançados".
-     char reserved[5][6] = {"e&", "e|", "e<", "e>"};
+     char reserved[6][6] = {"e&", "e|", "e<", "e>"};
 
-     for (int i = 0; i < 5; i++) // Vamos verificar se o token pertence a este grupo.
+     for (int i = 0; i < 6; i++) // Vamos verificar se o token pertence a este grupo.
+     {
+          if (strcmp(token, reserved[i]) == 0) return true; // Devolve true se pertencer.
+
+     }
+     return false; // Devolve false, caso contrário.
+}
+
+bool check_array(char* token)
+{    
+     // Conjunto de operadores lógico "avançados".
+     char reserved[2][6] = {"S/", "N/"};
+
+     for (int i = 0; i < 2; i++) // Vamos verificar se o token pertence a este grupo.
      {
           if (strcmp(token, reserved[i]) == 0) return true; // Devolve true se pertencer.
 
@@ -99,8 +112,8 @@ bool saveValues(stack *s, char* token)
      if (strlen(endptr_int) == 0) push(s, STACK_INT, int_value);
      else if (strlen(endptr_float) == 0) push(s, STACK_FLOAT, float_value);
      else if (strlen(token) == 1 && !check_reserved(token[0])) push(s, STACK_CHAR, token[0]);
-     else if (strlen(token) > 1 && !check_reserved_string(token) && !is_in_string(token,"\"")) push(s, STACK_STRING, token);
-     else pushed = false;
+     else if (strlen(token) > 1 && !check_reserved_string(token) && token[0] != '\"') push(s, STACK_STRING, token);
+     else pushed = false;                                           // Precisamos para não dar push duplicados.
 
      return pushed;
 }
@@ -121,6 +134,8 @@ void other_arit(stack *s, char *token)
 {
      if (strcmp(token,"(") == 0) removeInit(s);
      else if (strcmp(token,")") == 0) removeEnd(s);
+     else if (strcmp(token, "#") == 0) stringSearch(s);
+     else if (strcmp(token, "/") == 0) splitSub(s);
      else exit(EXIT_FAILURE);
 }
 
@@ -129,8 +144,9 @@ void arit_op(stack *s, char* token)
      // Funções dedicadas a operações aritméticas.
 
      // Primeiro precisamos de verificar se o operador se refere a um array ou a um número.
-     if (peek(s).type != STACK_ARRAY) normal_arit(s, token);
-     else other_arit(s, token); // Se o elemento no topo não for um array, então procedemos com as funções ariteméticas.
+     if (peek(s).type == STACK_STRING) other_arit(s,token);
+     else if (peek(s).type == STACK_ARRAY) other_arit(s, token); // Se o elemento no topo não for um array, então procedemos com as funções ariteméticas.
+     else normal_arit(s, token);
 }
 
 void bin_op(stack *s, char* token)
@@ -187,7 +203,7 @@ void logic_op(stack *s, char* token) // CCN 9
 {
      // Funções dedicadas a operações lógicas básicas.
      // O char '=' é comum em duas operações, por isso é preciso verificar com que tipo estamos a trabalhar.
-     if (getSecondType(s) != STACK_ARRAY)
+     if (getSecondType(s) != STACK_ARRAY && getSecondType(s) != STACK_STRING)
      {
           if (strcmp(token, "=") == 0) equal(s);
           else if (strcmp(token, "<") == 0) less(s);
@@ -197,6 +213,7 @@ void logic_op(stack *s, char* token) // CCN 9
      }
      else 
      {
+          // printf("Entrei certo!\n");
           if (strcmp(token, "=") == 0) getValueByIndex(s);
           else if (strcmp(token, "<") == 0) getElemsInit(s); 
           else if (strcmp(token, ">") == 0) getElemsEnd(s);
@@ -217,8 +234,10 @@ int array_op(stack *s, char* token, char* line)
      int e = 1;
      // printf("Entrou nas array_op!");
      if (strcmp(token, "[") == 0) { parseArray(s, line); e = 0; } 
+     else if (token[0] == '\"') { parseString(s, line); e = 2; }
      else if (strcmp(token, ",") == 0) arrayRange(s);
-     else if (token[0] == '\"') { parseString(s, line); e = 1; }
+     else if (strcmp(token, "S/") == 0) stripString(s, " "); // !BUG
+     else if (strcmp(token, "N/") == 0) stripString(s, "\n"); // !BUG
 
      return e;
 }
@@ -254,14 +273,16 @@ void parser(char *line, stack *s)
           else if (check_logic(token)) logicPush_op(s, token);
 
           // Funções com arrays.             // Guardo um valor inteiro em decide, isto vai indicar ao parser se esta função foi executada ou não.
-          else if (is_in_string(token, "[,")) decide = array_op(s, token, full_string); // Passo a linha toda para poder retirar o que quero.
+          else if (is_in_string(token, "[,\"")) decide = array_op(s, token, full_string); // Passo a linha toda para poder retirar o que quero.
+          else if (check_array(token)) array_op(s, token, full_string);
 
           // Handle de variáveis.
           else if (token[0] == ':') pushVar(s, token[1]);
           else if (!pushed) getVar(s, token[0]);
 
-          if (decide == 0) { parser(getRestToken(full_string), s); break; }    
-          else token = strtok(NULL, delim);
+          if (decide == 0) { char *rest = getRestToken(full_string); parser(rest, s); break; }    
+          if (decide == 2) { char *rest_ = getRestTokenS(full_string); parser(rest_, s); break; }    
+          else { token = strtok(NULL, delim); } 
           
      }
 

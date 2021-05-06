@@ -60,19 +60,6 @@ void printArray(stack *s)
     printf("]");
 }
 
-void splitString(stack *s, char *string)
-{
-    char *delim = "\n";
-    char *token = strtok(string, delim);
-
-    while(token != NULL)
-    {
-        push(s, STACK_STRING, token);
-        // printf("Push do %s\n",token);
-        token = strtok(NULL, delim);
-    }
-}
-
 void multipleLines(stack *s)
 {
     char temp[1024]; // String temporária.
@@ -87,7 +74,7 @@ void multipleLines(stack *s)
     }
 
     // Meter na stack a string acumulada.
-    splitString(s, result);
+    push(s, STACK_STRING, result);
 }
 
 void initArray(stack *s)
@@ -332,12 +319,12 @@ void arrayRange(stack *s)
     // Caso seja um array, pushamos para a stack o tamanho do array.
 
     stack_elem elem = pop(s);
-    // printf("Elem: %d\n", elem.data.int_value);
 
     switch(elem.type)
     {
         case STACK_INT: spawnArray(s, elem.data.int_value); break;
-        case STACK_ARRAY: push(s, STACK_INT, elem.data.array_value->pointer + 1); break;
+        case STACK_ARRAY: push(s, STACK_INT, (elem.data.array_value->pointer) + 1); break;
+        case STACK_STRING: push(s, STACK_INT, strlen(elem.data.string_value)); break;
         default: fprintf(stderr, "Erro na funçao [typePush] em array.c : tipo inválido.\n"); exit(EXIT_FAILURE); break;
     } 
 }
@@ -349,8 +336,18 @@ void getValueByIndex(stack *s)
     // Esta função só se aplica a arrays, por isso temos a certeza que ao dar pop(s) vamos obter um array.
     stack_elem array = pop(s);
 
-    if (index.type == STACK_INT && array.type == STACK_ARRAY) // Só para confirmar :D
-        typePush(s, array.data.array_value->elems[index.data.int_value]);
+    switch(array.type)
+    {
+        case STACK_ARRAY:
+            typePush(s, array.data.array_value->elems[index.data.int_value]);
+            break;
+        
+        case STACK_STRING:
+            push(s, STACK_CHAR, array.data.string_value[index.data.int_value]);
+            break;
+
+        default: fprintf(stderr, "Erro na função [getValueByIndex] : data-type inválido!\n"); exit(EXIT_FAILURE); break;
+    }
 }
 
 void getElemsInit(stack *s)
@@ -381,7 +378,7 @@ void getElemsInit(stack *s)
             push(s, STACK_ARRAY, x.data.array_value);
             break;
 
-        case STACK_STRING: // ! Ainda não foi testado.
+        case STACK_STRING: // * Já foi testado.
             // "planetas" 3 < <==> "pla"
 
             // Agora copiamos apenas os primeiros x chars para uma nova string.
@@ -390,9 +387,9 @@ void getElemsInit(stack *s)
                 new_string[j] = x.data.string_value[j];
             }
 
+            printf("O loop deu : %s\n", new_string);
             // Metemos a string alterada na stack.
             push(s, STACK_STRING, new_string);
-            free(new_string);
 
             break;
 
@@ -426,16 +423,19 @@ void getElemsEnd(stack *s)
             push(s, STACK_ARRAY, temp.data.array_value); // Metemos o array atualiazdo na stack.
             break;
             
-        case STACK_STRING:
+        case STACK_STRING:;
             // "kainé" 3 >      "iné"
             // Segue o mesmo raciocínio que o case acima.
             ignore = strlen(elem.data.string_value) - num.data.int_value;
+            int c = 0;
             
             for (unsigned long j = ignore; j < strlen(elem.data.string_value); j++)
             {
-                new_string[j] = elem.data.string_value[j];
+                new_string[c] = elem.data.string_value[j];
+                c++;
             }
 
+            printf("O loop deu : %s\n", new_string);
             push(s, STACK_STRING, new_string); // Push da string para a stack.
             break;
 
@@ -462,8 +462,17 @@ void removeInit(stack *s)
 
             push(s, STACK_ARRAY, array.data.array_value);
             typePush(s, elem.data.array_value->elems[0]);
+            break;
 
-        case STACK_STRING: break; // ! Completar para as strings.
+        case STACK_STRING:;
+            int index = 0; // Queremos remover o primeiro char.
+            char* word = elem.data.string_value; // Está atribuido a word, por questões de legibilidade.
+
+            // Copia o char em 0 para outro sitio qualquer.
+            memmove(&word[index], &word[index + 1], strlen(word) - index);
+            push(s, STACK_STRING, word);
+            break;
+
         default: fprintf(stderr, "Erro na função [removeInit] : data-type inválido.\n"); exit(EXIT_FAILURE); break;
     }
 }
@@ -473,7 +482,7 @@ void removeEnd(stack *s)
 
     // Obter o elemento no topo da stack : string | array.
     stack_elem elem = pop(s);
-    
+
     switch(elem.type)
     {
         case STACK_ARRAY:;
@@ -482,16 +491,82 @@ void removeEnd(stack *s)
             push(s, STACK_ARRAY, elem.data.array_value); // Push da lista sem o ultimo elemento.
             typePush(s, x); // Push do elemento retirado.
 
-        case STACK_STRING: break; // ! Complementar para as strings.
+            break;
+
+        case STACK_STRING:;
+            // Segue exatamente o mesmo método que a função acima.
+            char* word = elem.data.string_value; // Está atribuido a word, por questões de legibilidade.
+            int index = strlen(word) - 1; // Queremos remover o último char.
+
+            // Copia o char em 0 para outro sitio qualquer.
+            memmove(&word[index], &word[index + 1], strlen(word) - index);
+            push(s, STACK_STRING, word);
+
+            break;
+
         default: fprintf(stderr, "Erro na função [removeEnd] : data-type inválido.\n"); exit(EXIT_FAILURE); break;
 
     }
 
 }
 
-/**
-""   Criar uma string
-+    Concatenar strings ou arrays (ou array/string com elemento)
-*     Concatenar várias vezes strings ou arrays
-#    Procurar substring na string e devolver o índice ou -1 se não encontrar
-**/
+void stringSearch(stack *s)
+{
+    // Assumimos que o ambos elementos no topo da stack sejam strings.
+    stack_elem string_in = pop(s);
+    stack_elem string_base = pop(s);
+
+    // Para procurar por substring podemos usar a função strstr.
+    char *sub = strstr(string_base.data.string_value, string_in.data.string_value);
+    // Esta função devolve-nos um pointer para a primeira ocorrência da string.
+
+    // Ao fazer isto obtemos o índice do início da substring (pointer subtraction).
+    if (sub != NULL)
+    {
+        int index = sub - string_base.data.string_value;
+        push(s, STACK_INT, index);
+    }
+    else push(s, STACK_INT, -1);
+}
+
+void stripString(stack *s, char* delim)
+{   
+    //! BUG
+    // Obter a string.
+    stack_elem string = pop(s);
+    // Iniciar um array.
+    initArray(s); 
+    stack_elem array = peek(s);
+
+    char *part = strtok(string.data.string_value, delim);
+
+    while(part != NULL)
+    {
+        // printf("%s ",part);
+        push(array.data.array_value, STACK_STRING, part);
+        part = strtok(NULL, delim);
+    }
+}
+
+void splitSub(stack *s)
+{
+    // Assumimos que o ambos elementos no topo da stack sejam strings.
+    stack_elem string_in = pop(s);
+    stack_elem string_base = pop(s);
+    initArray(s); stack_elem array = peek(s); // Criamos um novo array.
+    char *temp = (char*)malloc(strlen(string_base.data.string_value) * sizeof(char));
+    char *temp_ = (char*)malloc(strlen(string_base.data.string_value) * sizeof(char));
+    
+    // Para procurar por substring podemos usar a função strstr.
+    char *sub = strstr(string_base.data.string_value, string_in.data.string_value);
+
+    int index_start  = sub - string_base.data.string_value; // Dá-nos o índice do primeiro char da substring.
+    int index_end = index_start + strlen(string_in.data.string_value); // Ao somarmos o tamanho da substring obtemos o indice do ultimo char da substring.
+
+    strncpy(temp, &string_base.data.string_value[0], index_start);
+    push(array.data.array_value, STACK_STRING, temp);
+
+    strncpy(temp_, &string_base.data.string_value[index_end], strlen(string_base.data.string_value) - index_end);
+    push(array.data.array_value, STACK_STRING, temp_);
+
+}
