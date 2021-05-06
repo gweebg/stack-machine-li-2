@@ -175,7 +175,7 @@ void io_op(stack *s, char* token)
      else if (strcmp(token, "t") == 0) multipleLines(s); // A adicionar mais funções.
 }
 
-void logic_op(stack *s, char* token)
+void logic_op(stack *s, char* token) // CCN 9
 {
      // Funções dedicadas a operações lógicas básicas.
      // O char '=' é comum em duas operações, por isso é preciso verificar com que tipo estamos a trabalhar.
@@ -187,7 +187,12 @@ void logic_op(stack *s, char* token)
           else if (strcmp(token, "!") == 0) invertBool(s);
           else ifThenElse(s);
      }
-     else getValueByIndex(s);
+     else 
+     {
+          if (strcmp(token, "=") == 0) getValueByIndex(s);
+          else if (strcmp(token, "<") == 0) getElemsInit(s); 
+          else if (strcmp(token, ">") == 0) getElemsEnd(s);
+     }
 }
 
 void logicPush_op(stack *s, char* token)
@@ -240,7 +245,7 @@ void parser(char *line, stack *s)
           else if (check_logic(token)) logicPush_op(s, token);
 
           // Funções com arrays.             // Guardo um valor inteiro em decide, isto vai indicar ao parser se esta função foi executada ou não.
-          else if (is_in_string(token, "[,")) decide = array_op(s, token, full_string); // Passo a linha toda para poder retirar o que quero.
+          else if (is_in_string(token, "[,\"")) decide = array_op(s, token, full_string); // Passo a linha toda para poder retirar o que quero.
 
           // Handle de variáveis.
           else if (token[0] == ':') pushVar(s, token[1]);

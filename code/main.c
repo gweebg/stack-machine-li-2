@@ -35,20 +35,6 @@ int main() {
     // Chama o parser para fazer o parsing da string.
     parser(input, &s);
 
-    // [DEBUG]
-    // char *xd = getRestToken("[ 1 2 3 ] [ 4 5 6 ]");
-    // char *x1 = getRestToken("[ 1 2 3 ] ola adeus");
-    // char *x2 = getInside("[ [ 1 2 3 ] ]");
-    char *x3 = getRestToken("[ 1 2 3 ] [ 4 5 6 ] x3 ");
-    // char *x4 = getRestToken("[ 1 2 3 ] [ 4 5 6 ] [ 4 5 6 ] x4");
-    // char *x5 = getRestToken("[ [ 1 2 3 ]  [ 1 2 3 ]] [ 4 5 6 ] x5");
-
-    // printf("rest : %s\n",x1);
-    // printf("dentro : %s\n",x2);
-    printf("\n\nduas : %s\n",x3);
-    // printf("tres : %s\n",x4);
-    // printf("dentro dentro : %s\n",x5);
-
     //Print do estado final da stack.
     dumpStack(&s);
 

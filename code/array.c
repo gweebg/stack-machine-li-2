@@ -8,6 +8,10 @@
 #include "array.h"
 #include "parser.h"
 
+// ===============================
+// Parsing de arrays/strings.
+// ===============================
+
 void printArray(stack *s)
 {
     printf("[");
@@ -185,8 +189,7 @@ char* getRestToken(char *line)
     return result;
 }
 
-// Tipo int, porque vai devolver o status, 0 se executou esta função, 1 caso contrário. 
-void parseArray(stack *s, char *line) // Vai atualizar o token para depois do []
+void parseArray(stack *s, char *line)
 {
     initArray(s); // Iniciamos o array, pois encontramos o char '['. 
     // varStart(s); Inicializar as variaveis.
@@ -202,8 +205,63 @@ void parseArray(stack *s, char *line) // Vai atualizar o token para depois do []
     // printf("Executou o parser.\n");
 }
 
+char* getString(char *line)
+{
+    // Strings não aparecem aninhadas, daí este algoritmo ser mais simples do que o dos arrays.
+    // Vamos usar o mesmo método da getInside().
+    int start = 0; int end = 0; int c = 0;
+    char *string = (char *)malloc(strlen(line) * sizeof(char));
+
+    // Indice do primeiro char '\"'.
+    for (unsigned long i = 0; i < strlen(line); i++)
+    {
+        if (line[i] == '\"') 
+        {
+            start = i;
+            break;
+        }
+    } // Após este ciclo já temos o indice do primeiro " na variavel start.
+
+     // Indice do segundo char '\"'.
+    for (unsigned long i = start + 1; i < strlen(line); i++)
+    {
+        if (line[i] == '\"') 
+        {
+            end = i;
+            break;
+        }
+    } // Após este ciclo já temos o indice do segundo " na variavel end.
+
+    // Daqui para baixo fazemos o mesmo processo da getInside().
+    for (int z = 0; z < end; z++)
+    {
+        string[c] = line[z];
+        c++;
+    }
+
+    // Agora removemos o lixo da direita.
+    char *final = (char*)malloc(sizeof(char) * strlen(line));
+
+    // Sabemos onde o char '[' está, assim podemos usar o strncpy para copiar para *final, a parte da string que começa do indíce do start+1. 
+    strncpy(final, &string[start + 1], strlen(string) - start);
+    free(string);
+    // printf("[DEBUG]: %s\n", final);
+
+    return final; // Finalmente retornamos a string modificada.
+}
+
+void parseString(stack *s, char *line)
+{
+
+    stack_elem string;
+    string.type = STACK_STRING;
+    string.data.string_value = getString(line);
+
+    push(s, STACK_STRING, string.data.string_value);
+}
+
 // ===============================
-// Operações com arrays.
+// Operações com arrays/strings.
 // ===============================
 
 void typePush(stack *s, stack_elem elem)
@@ -273,6 +331,58 @@ void getValueByIndex(stack *s)
         typePush(s, array.data.array_value->elems[index.data.int_value]);
 }
 
+void getElemsInit(stack *s)
+{
+
+    // printf("Entrou na função certa.\n");
+    // Obter o número de elementos que queremos.
+    stack_elem num = pop(s);
+    // Obter o nosso elemento, se esta função está a ser executada, temos a certeza ou é uma string ou um array.
+    stack_elem x = pop(s);
+    int times;
+    // Nova string que vai levar o output.
+    char *new_string = malloc(sizeof(char) * strlen(x.data.string_value));
+
+    switch(x.type) // Fazemos um caso para cada tipo.
+    {
+        case STACK_ARRAY: // * Já foi testado.
+            // [ 1 2 3 4 ] 3 < <==> [ 1 2 3 ]
+            times = (x.data.array_value->pointer + 1) - num.data.int_value;
+
+            // Vamos retirar times elementos ao array. Apenas podemos fazer desta maneira pois queremos os elementos a contar do início.
+            for (int i = 0; i < times; i++)
+            {
+                pop(x.data.array_value); // Retira o elemento.
+            }
+
+            // Voltamos a introduzir o array (agora alterado) na stack.
+            push(s, STACK_ARRAY, x.data.array_value);
+            break;
+
+        case STACK_STRING: // ! Ainda não foi testado.
+            // "planetas" 3 < <==> "pla"
+
+            // Agora copiamos apenas os primeiros x chars para uma nova string.
+            for (int j = 0; j < num.data.int_value; j++)
+            {
+                new_string[j] = x.data.string_value[j];
+            }
+
+            // Metemos a string alterada na stack.
+            push(s, STACK_STRING, new_string);
+            free(new_string);
+
+            break;
+
+        default: fprintf(stderr, "Erro na função [getElemesInit] em array.c : data-type inválido.\n"); exit(EXIT_FAILURE); break;
+    }
+
+}
+
+void getElemsEnd(stack *s)
+{
+    return;
+}
 
 /**
 ""   Criar uma string
