@@ -99,30 +99,38 @@ bool saveValues(stack *s, char* token)
      if (strlen(endptr_int) == 0) push(s, STACK_INT, int_value);
      else if (strlen(endptr_float) == 0) push(s, STACK_FLOAT, float_value);
      else if (strlen(token) == 1 && !check_reserved(token[0])) push(s, STACK_CHAR, token[0]);
-     else if (strlen(token) > 1 && !check_reserved_string(token)) push(s, STACK_STRING, token);
+     else if (strlen(token) > 1 && !check_reserved_string(token) && !is_in_string(token,"\"")) push(s, STACK_STRING, token);
      else pushed = false;
 
      return pushed;
 }
 
+void normal_arit(stack *s, char *token)
+{
+     if (strcmp(token, "+") == 0) add(s);
+     else if (strcmp(token, "-") == 0) sub(s);
+     else if (strcmp(token, "*") == 0) mult(s);
+     else if (strcmp(token, "/") == 0) division(s);
+     else if (strcmp(token, "#") == 0) power(s);
+     else if (strcmp(token, "%") == 0) modulus(s);
+     else if (strcmp(token, "(") == 0) dec(s);
+     else inc(s);
+}
+
+void other_arit(stack *s, char *token)
+{
+     if (strcmp(token,"(") == 0) removeInit(s);
+     else if (strcmp(token,")") == 0) removeEnd(s);
+     else exit(EXIT_FAILURE);
+}
+
 void arit_op(stack *s, char* token)
 {
      // Funções dedicadas a operações aritméticas.
-     // Primeiro precisamos de verificar se o operador se refere a um array ou a um número.
-     if (peek(s).type != STACK_ARRAY)
-     {
-          // Se o elemento no topo não for um array, então procedemos com as funções ariteméticas.
 
-          if (strcmp(token, "+") == 0) add(s);
-          else if (strcmp(token, "-") == 0) sub(s);
-          else if (strcmp(token, "*") == 0) mult(s);
-          else if (strcmp(token, "/") == 0) division(s);
-          else if (strcmp(token, "#") == 0) power(s);
-          else if (strcmp(token, "%") == 0) modulus(s);
-          else if (strcmp(token, "(") == 0) dec(s);
-          else inc(s);
- 
-     } 
+     // Primeiro precisamos de verificar se o operador se refere a um array ou a um número.
+     if (peek(s).type != STACK_ARRAY) normal_arit(s, token);
+     else other_arit(s, token); // Se o elemento no topo não for um array, então procedemos com as funções ariteméticas.
 }
 
 void bin_op(stack *s, char* token)
@@ -208,8 +216,9 @@ int array_op(stack *s, char* token, char* line)
 {    
      int e = 1;
      // printf("Entrou nas array_op!");
-     if (strcmp(token, "[") == 0) {parseArray(s, line); e = 0;}
+     if (strcmp(token, "[") == 0) { parseArray(s, line); e = 0; } 
      else if (strcmp(token, ",") == 0) arrayRange(s);
+     else if (token[0] == '\"') { parseString(s, line); e = 1; }
 
      return e;
 }
@@ -245,13 +254,13 @@ void parser(char *line, stack *s)
           else if (check_logic(token)) logicPush_op(s, token);
 
           // Funções com arrays.             // Guardo um valor inteiro em decide, isto vai indicar ao parser se esta função foi executada ou não.
-          else if (is_in_string(token, "[,\"")) decide = array_op(s, token, full_string); // Passo a linha toda para poder retirar o que quero.
+          else if (is_in_string(token, "[,")) decide = array_op(s, token, full_string); // Passo a linha toda para poder retirar o que quero.
 
           // Handle de variáveis.
           else if (token[0] == ':') pushVar(s, token[1]);
           else if (!pushed) getVar(s, token[0]);
 
-          if (decide == 0) {parser(getRestToken(full_string), s); break;}
+          if (decide == 0) { parser(getRestToken(full_string), s); break; }    
           else token = strtok(NULL, delim);
           
      }

@@ -10,7 +10,9 @@ void initArray(stack *s);
 
 void parseArray(stack *s, char *line);
 char* getInside(char *line);
+
 char* getRestToken(char *line);
+char* getRestTokenS(char *line);
 
 void dumpArray(stack *s);
 void typePush(stack *s, stack_elem elem);
@@ -24,5 +26,8 @@ char* getString(char *line);
 
 void getElemsInit(stack *s); 
 void getElemsEnd(stack *s);
+
+void removeInit(stack *s);
+void removeEnd(stack *s);
 
 #endif

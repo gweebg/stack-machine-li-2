@@ -189,6 +189,28 @@ char* getRestToken(char *line)
     return result;
 }
 
+char* getRestTokenS(char *line)
+{
+    int count = 0; int end = 0;
+
+    char *result = (char*)malloc(strlen(line) * sizeof(char));
+
+    for (unsigned long i = 0; i < strlen(line); i++) 
+    {
+        if (line[i] == '\"') count++; // Significa que é o primeiro ".
+        if (count == 2) 
+        {
+            end = i;
+            break;
+        }
+    }
+
+    strncpy(result, &line[end + 1], strlen(line) - end);
+    // printf("[DEBUG]: %s\n", result);
+
+    return result;
+}
+
 void parseArray(stack *s, char *line)
 {
     initArray(s); // Iniciamos o array, pois encontramos o char '['. 
@@ -196,7 +218,7 @@ void parseArray(stack *s, char *line)
     // printf("\nLinha passada : %s\n",line);
 
     char *parsed = getInside(line); // parsed passa a ser a string com o conteudo do array que vai ser processado pelo parser.
-    printf("A string é : %s\n", parsed);
+    // printf("A string é : %s\n", parsed);
 
     stack_elem array = peek(s); // Isto vai nos dar o array.
     // printf("[Array pointer] : %d\n",array.data.array_value->pointer);
@@ -381,7 +403,90 @@ void getElemsInit(stack *s)
 
 void getElemsEnd(stack *s)
 {
-    return;
+    stack_elem num = pop(s); // Número de elementos a retirar do fim.
+    stack_elem elem = pop(s); // Ou é um array ou uma string.
+    stack_elem temp; // Vai servir para guardar um array temporário.
+
+    int ignore = 0; // Contador para ver quando elementos foram transpostos.
+    char *new_string = (char*)malloc(strlen(elem.data.string_value) * sizeof(char)); // Nova linha que vai ter as alterações necessárias.
+
+    switch(elem.type)
+    {
+        case STACK_ARRAY: // ? Semi testado.
+            // [ 1 2 3 ] 2 >        [ 2 3 ]
+            initArray(s); // Cria um novo array vazio na stack.
+            temp = pop(s); // Queremos modificar esse array.
+
+            ignore = elem.data.array_value->pointer + 1 - num.data.int_value;
+            for (int i = ignore; i < elem.data.array_value->pointer + 1; i++)
+            {
+                typePush(temp.data.array_value, elem.data.array_value->elems[i]);
+            }
+
+            push(s, STACK_ARRAY, temp.data.array_value); // Metemos o array atualiazdo na stack.
+            break;
+            
+        case STACK_STRING:
+            // "kainé" 3 >      "iné"
+            // Segue o mesmo raciocínio que o case acima.
+            ignore = strlen(elem.data.string_value) - num.data.int_value;
+            
+            for (unsigned long j = ignore; j < strlen(elem.data.string_value); j++)
+            {
+                new_string[j] = elem.data.string_value[j];
+            }
+
+            push(s, STACK_STRING, new_string); // Push da string para a stack.
+            break;
+
+        default: fprintf(stderr, "Erro na função [getElemesEnd] em array.c : data-type inválido.\n"); exit(EXIT_FAILURE); break;
+    }
+
+}
+
+void removeInit(stack *s)
+{
+    // Assumimos que o topo da stack é ou um array ou uma string.
+    stack_elem elem = pop(s);
+
+    switch(elem.type)
+    {
+        case STACK_ARRAY:
+            initArray(s); // Criamos um novo array.
+            stack_elem array = pop(s); // array agora é um stack_elem do tipo STACK_ARRAY.
+
+            for (int i = 1; i < elem.data.array_value->pointer + 1; i++)
+            {
+                typePush(array.data.array_value, elem.data.array_value->elems[i]);
+            }
+
+            push(s, STACK_ARRAY, array.data.array_value);
+            typePush(s, elem.data.array_value->elems[0]);
+
+        case STACK_STRING: break; // ! Completar para as strings.
+        default: fprintf(stderr, "Erro na função [removeInit] : data-type inválido.\n"); exit(EXIT_FAILURE); break;
+    }
+}
+
+void removeEnd(stack *s) 
+{
+
+    // Obter o elemento no topo da stack : string | array.
+    stack_elem elem = pop(s);
+    
+    switch(elem.type)
+    {
+        case STACK_ARRAY:;
+            // Retiramos o último elemento.
+            stack_elem x = pop(elem.data.array_value);
+            push(s, STACK_ARRAY, elem.data.array_value); // Push da lista sem o ultimo elemento.
+            typePush(s, x); // Push do elemento retirado.
+
+        case STACK_STRING: break; // ! Complementar para as strings.
+        default: fprintf(stderr, "Erro na função [removeEnd] : data-type inválido.\n"); exit(EXIT_FAILURE); break;
+
+    }
+
 }
 
 /**

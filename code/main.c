@@ -35,6 +35,11 @@ int main() {
     // Chama o parser para fazer o parsing da string.
     parser(input, &s);
 
+    // char *line = " \"Boas pessoal\" 2 2 + [ 1 ] ~ *";
+    // printf("%s\n", line);
+    // char *result = getRestTokenS(line);
+    // printf("%s\n", result);
+
     //Print do estado final da stack.
     dumpStack(&s);
 
