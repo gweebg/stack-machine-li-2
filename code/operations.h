@@ -187,11 +187,32 @@ void to_char(stack *s);
 void to_string(stack *s);
 
 /**
+ * \brief Verifica se um dado elemento é inteiro.
+ * @param[in] s Stack a ser avaliada.
+ * @param[in] n Número inteiro dado.
+ * @return Devolve um inteiro, que é usado para calculo de condições.
+ */
+int checkNbool(stack *s, int n);
+
+/**
+  * \brief Verifica se duas strings são iguais e dá push a 1 caso sejam.
+  * @param[in] s Stack a ser avaliada.
+  * @return Devolve um inteiro para indicar se a função foi executada para duas strings.
+  */
+int equalString(stack *s, stack_elem x, stack_elem y);
+
+/**
+  * \brief Verifica uma string é menor do que outra e dá push a 1 caso sejam.
+  * @param[in] s Stack a ser avaliada.
+  * @return Devolve um inteiro para indicar se a função foi executada para duas strings.
+  */
+int lessString(stack *s, stack_elem x, stack_elem y);
+
+/**
   * \brief Compara dois elementos da stack.Se forem iguais, retorna 1(Verdadeiro); caso contrário, retorna 0.
   * @param[in] s Stack a ser avaliada.
   * @return Não devolve nada.
   */
-
 void equal(stack *s);
 
 /**
@@ -243,7 +264,6 @@ void invertBool(stack *s);
  * @param[in] s Stack a ser avaliada.
  * @return Não devolve nada.
  */
-
 void ifThenElse(stack *s);
 
 /**
@@ -251,7 +271,6 @@ void ifThenElse(stack *s);
   * @param[in] s Stack a ser avaliada.
   * @return Não devolve nada.
   */
-
 void pushAnd(stack *s);
 
 /**
@@ -259,7 +278,6 @@ void pushAnd(stack *s);
   * @param[in] s Stack a ser avaliada.
   * @return Não devolve nada.
   */
-
 void pushOr(stack *s);
 
 #endif

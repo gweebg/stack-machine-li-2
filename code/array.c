@@ -14,7 +14,7 @@
 
 void printArray(stack *s)
 {
-    printf("[");
+    // printf("[");
     // printf("Stack Dump: ");
     for (int i = 0; i < s->pointer + 1; i++)
     {
@@ -57,13 +57,13 @@ void printArray(stack *s)
         }
   
     }
-    printf("]");
+    // printf("]");
 }
 
 void multipleLines(stack *s)
 {
-    char temp[1024]; // String temporária.
-    char result[10240]; // String final onde tudo vai ser guardada.
+    char temp[10001]; // String temporária.
+    char result[10001]; // String final onde tudo vai ser guardada.
 
     // Vamos ler as linhas enquanto o fgets não for null.
     while (fgets(temp, sizeof(temp), stdin))

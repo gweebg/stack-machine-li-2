@@ -475,12 +475,54 @@ int checkNbool(stack *s, int n)
     return 1;
 }
 
+int equalString(stack *s, stack_elem x, stack_elem y)
+{
+    int e = 0;
+
+    if (x.type == STACK_STRING && y.type == STACK_STRING)
+    {
+        e = 1;
+        if (strcmp(x.data.string_value, y.data.string_value) == 0)
+        {
+            push(s, STACK_INT, 1);
+        }
+        else 
+        {
+            push(s, STACK_INT, 0);
+        }
+    }
+
+    return e;
+}
+
+int lessString(stack *s, stack_elem x, stack_elem y)
+{
+    int e = 0;
+
+    if (x.type == STACK_STRING && y.type == STACK_STRING)
+    {
+        e = 1;
+        if (strcmp(x.data.string_value, y.data.string_value) > 0)
+        {
+            push(s, STACK_INT, 1);
+        }
+        else 
+        {
+            push(s, STACK_INT, 0);
+        }
+    }
+
+    return e;
+}
+
 void equal(stack *s)
 {
     stack_elem x = pop(s);
     stack_elem y = pop(s);
 
     float a, b;
+
+    if(equalString(s,x,y) == 1) return;
 
     switch(x.type)
     {
@@ -494,14 +536,14 @@ void equal(stack *s)
             break;
         case(STACK_CHAR):
 
-        a = x.data.char_value;
-        break;
-
+            a = x.data.char_value;
+            break;
         case(STACK_STRING):
 
-        a = strlen(x.data.string_value);
-        break;
+            a = strlen(x.data.string_value);
+            break;
         default:
+        
             a = 0;
             break;
     }
@@ -519,8 +561,8 @@ void equal(stack *s)
 
         case(STACK_STRING):
 
-        b = strlen(y.data.string_value);
-        break;
+            b = strlen(y.data.string_value);
+            break;
 
         case(STACK_CHAR):
 
@@ -543,6 +585,8 @@ void less(stack *s)
     stack_elem y = pop(s);
 
     float a, b;
+
+    if (lessString(s,x,y) == 1) return;
 
     switch(x.type)
     {

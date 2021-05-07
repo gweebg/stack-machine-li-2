@@ -213,10 +213,12 @@ void logic_op(stack *s, char* token)
      }
      else 
      {
-          // printf("Entrei certo!\n");
-          if (strcmp(token, "=") == 0) getValueByIndex(s);
-          else if (strcmp(token, "<") == 0) getElemsInit(s); 
-          else if (strcmp(token, ">") == 0) getElemsEnd(s);
+          if (strcmp(token, "=") == 0 && peek(s).type == STACK_STRING) equal(s);
+          else if (peek(s).type == STACK_INT && strcmp(token, "=") == 0) getValueByIndex(s);
+          else if (peek(s).type == STACK_STRING && strcmp(token, "<") == 0) less(s);
+          else if (peek(s).type == STACK_INT && strcmp(token, "<") == 0) getElemsInit(s); 
+          else if (strcmp(token, ">") == 0 && peek(s).type == STACK_INT) getElemsEnd(s);
+          else greater(s);
      }
 }
 

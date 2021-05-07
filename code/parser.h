@@ -69,6 +69,22 @@ bool check_array(char* token);
 bool saveValues(stack *s, char* token);
 
 /**
+ * \brief Esta função trata das operações aritméticas direcionadas a inteiros, floats e chars.
+ * @param[in] s Stack na qual os elementos vão ser adicionados.
+ * @param[in] token Indica o tipo de operação que vai ser executada.
+ * @return Função do tipo void, não devolve nada.
+ */
+void normal_arit(stack *s, char *token);
+
+/**
+ * \brief Esta função trata das operações aritméticas direcionadas a strings e inteiros.
+ * @param[in] s Stack na qual os elementos vão ser adicionados.
+ * @param[in] token Indica o tipo de operação que vai ser executada.
+ * @return Função do tipo void, não devolve nada.
+ */
+void other_arit(stack *s, char *token);
+
+/**
  * \brief Esta função é responsável por executar a operação pedida.
  * Executa a operação de uma determinada categoria, neste caso, operações ariteméticas. 
  * @param[in] s Stack dada pelo utilizador.
@@ -119,5 +135,15 @@ void logic_op(stack *s, char* token);
  * @return É uma função do tipo void, daí não devolver nada.
  */
 void logicPush_op(stack *s, char* token);
+
+/**
+ * \brief Esta função é responsável por executar as funções relacionadas com as string e os arrays.
+ * @param[in] s Stack dada pelo utilizador.
+ * @param[in] token Operador a ser utilizado na operação.
+ * @param[in] line Linha dada pelo utilizador ao executar o programa.
+ * @return Devolve um inteiro, indicando ao parser se esta função foi ou não executada.
+ * Caso tenha sido feito o push de uma string devolve 2 ; caso tenha sido feito o push de um array devolve 0 ; caso contrário devolve 1.
+ */
+int array_op(stack *s, char* token, char* line);
 
 #endif

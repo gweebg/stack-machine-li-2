@@ -157,7 +157,7 @@ void dumpStack(stack *s)
             break;
 
         case STACK_STRING:
-            printf("'%s'", elem.data.string_value);
+            printf("%s", elem.data.string_value);
             break;
         
         case STACK_ARRAY:

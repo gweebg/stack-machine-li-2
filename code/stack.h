@@ -40,10 +40,6 @@ typedef enum stack_type
 /**
  * \brief Estrutura dos elementos da stack.
  * @struct stack_elem
- * @var stack::type
- * O type é um objeto do tipo stack_type e é-nos útil para aceder ao tipo do valor da stack.
- * @var stack::data
- * Esta estrura é uma union mostra como os valores serão guardados na stack. Para além disso garante-nos a possibilidade de aceder ao valor guardado.
  * @see stack_type
  */
 typedef struct stack_elem
@@ -70,10 +66,7 @@ typedef struct stack_elem
 /**
  * \brief Estrutura da stack.
  * @struct stack
- * @var stack::pointer
- * O pointer contém o valor de um inteiro, este aponta sempre para o topo da stack.
- * @var stack::elems
- * Esta array é composta por stack_elem e tem um tamanho fixo de 10240 bytes. Server para armazenar os valores na stack.
+ * Este array é composta por stack_elem e tem um tamanho fixo de 10240 bytes. Server para armazenar os valores na stack.
  */
 struct stack
 {
@@ -176,6 +169,11 @@ void varStart(stack *stack);
  */
 void getVar(stack *s, char var_letter);
 
+/**
+ * \brief Esta função verifica o tipo do penúltimo elemento da stack.
+ * @param[in] s Stack a ser avaliada.
+ * @return Devolve o tipo do elemento.
+ */
 stack_type getSecondType(stack *s);
 
 #endif
