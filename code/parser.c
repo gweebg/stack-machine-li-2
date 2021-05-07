@@ -136,6 +136,7 @@ void other_arit(stack *s, char *token)
      else if (strcmp(token,")") == 0) removeEnd(s);
      else if (strcmp(token, "#") == 0) stringSearch(s);
      else if (strcmp(token, "/") == 0) splitSub(s);
+     else if (strcmp(token, "*") == 0) concatSolo(s);
      else exit(EXIT_FAILURE);
 }
 
@@ -146,6 +147,7 @@ void arit_op(stack *s, char* token)
      // Primeiro precisamos de verificar se o operador se refere a um array ou a um número.
      if (peek(s).type == STACK_STRING) other_arit(s,token);
      else if (peek(s).type == STACK_ARRAY) other_arit(s, token); // Se o elemento no topo não for um array, então procedemos com as funções ariteméticas.
+     else if (getSecondType(s) == STACK_ARRAY) other_arit(s, token);
      else normal_arit(s, token);
 }
 

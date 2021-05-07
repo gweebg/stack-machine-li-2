@@ -159,4 +159,11 @@ void stripString(stack *s, char *delim);
  */ 
 void splitSub(stack *s);
 
+/**
+ * \brief Concatena uma string/array com ela própria u determinado número de vezes (topo da stack).  
+ * @param[in] s Stack a ser alterada.
+ * @return Não devolve nada.
+ */ 
+void concatSolo(stack *s);
+
 #endif

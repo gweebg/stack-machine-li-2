@@ -14,7 +14,7 @@
 
 void printArray(stack *s)
 {
-    // printf("[");
+    printf("[");
     // printf("Stack Dump: ");
     for (int i = 0; i < s->pointer + 1; i++)
     {
@@ -57,7 +57,7 @@ void printArray(stack *s)
         }
   
     }
-    // printf("]");
+    printf("]");
 }
 
 void multipleLines(stack *s)
@@ -575,3 +575,30 @@ void splitSub(stack *s)
     push(array.data.array_value, STACK_STRING, temp_);
 
 }
+
+void concatSolo(stack *s)
+{
+    // Obter o elemento do topo da stack : inteiro (número de vezes a concatenar).
+    stack_elem num = pop(s);
+    int i = num.data.int_value;
+    // Obter o array/string da stack.
+    stack_elem elem = pop(s);
+
+    switch(elem.type)
+    {
+        case STACK_ARRAY:;
+            initArray(s);
+            stack_elem array = pop(s);
+            for(; (i>0); i--){
+                for(int j = 0; j< (elem.data.array_value->pointer)+1; j++)
+                    typePush(array.data.array_value,elem.data.array_value->elems[j]);
+            }
+            push(s, STACK_ARRAY, array.data.array_value); 
+            break;   
+        case STACK_STRING:;
+            for(; (i>0); i--){
+                push(s, STACK_STRING, elem.data.string_value);
+            } break;
+        default: fprintf(stderr, "Erro na função [concatSolo] : data-type inválido./n" ); exit(EXIT_FAILURE); break;
+    }
+}   
