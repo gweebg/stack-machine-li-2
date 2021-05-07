@@ -199,7 +199,7 @@ void io_op(stack *s, char* token)
      else if (strcmp(token, "t") == 0) multipleLines(s); // A adicionar mais funções.
 }
 
-void logic_op(stack *s, char* token) // CCN 9
+void logic_op(stack *s, char* token)
 {
      // Funções dedicadas a operações lógicas básicas.
      // O char '=' é comum em duas operações, por isso é preciso verificar com que tipo estamos a trabalhar.
