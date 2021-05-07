@@ -199,6 +199,26 @@ void io_op(stack *s, char* token)
      else if (strcmp(token, "t") == 0) multipleLines(s); // A adicionar mais funções.
 }
 
+void logic_array(stack *s, char* token)
+{
+     switch(peek(s).type)
+     {
+          case STACK_INT:
+               if (strcmp(token, "=") == 0) getValueByIndex(s);
+               else if (strcmp(token, "<") == 0) getElemsInit(s); 
+               else getElemsEnd(s);
+               break;
+
+          case STACK_STRING:
+               if (strcmp(token, "=") == 0) equal(s);
+               else if (strcmp(token, "<") == 0) less(s); 
+               else greater(s);
+               break;
+
+          default: break;
+     }
+}
+
 void logic_op(stack *s, char* token)
 {
      // Funções dedicadas a operações lógicas básicas.
@@ -211,15 +231,7 @@ void logic_op(stack *s, char* token)
           else if (strcmp(token, "!") == 0) invertBool(s);
           else ifThenElse(s);
      }
-     else 
-     {
-          if (strcmp(token, "=") == 0 && peek(s).type == STACK_STRING) equal(s);
-          else if (peek(s).type == STACK_INT && strcmp(token, "=") == 0) getValueByIndex(s);
-          else if (peek(s).type == STACK_STRING && strcmp(token, "<") == 0) less(s);
-          else if (peek(s).type == STACK_INT && strcmp(token, "<") == 0) getElemsInit(s); 
-          else if (strcmp(token, ">") == 0 && peek(s).type == STACK_INT) getElemsEnd(s);
-          else greater(s);
-     }
+     else logic_array(s, token);
 }
 
 void logicPush_op(stack *s, char* token)

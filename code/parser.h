@@ -119,6 +119,14 @@ void stack_op(stack *s, char* token);
 void io_op(stack *s, char* token);
 
 /**
+ * \brief Esta função é responsável por executar as operações lógicas relacionadas aos arrays.
+ * @param[in] s Stack dada pelo utilizador.
+ * @param[in] token Operador a ser utilizado na operação.
+ * @return É uma função do tipo void, daí não devolver nada.
+ */
+void logic_array(stack *s, char* token);
+
+/**
  * \brief Esta função é responsável por executar as operações lógicas simples
  * São consideradas funções lógicas simples as funções que não precisam de adicionar novos elementos na stack.
  * @param[in] s Stack dada pelo utilizador.
