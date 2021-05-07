@@ -701,7 +701,7 @@ void pushOr(stack *s)
 
 }
 
-void smallest(stack *s)
+int smallest(stack *s)
 {
 
     stack_elem x = pop(s);
@@ -725,7 +725,13 @@ void smallest(stack *s)
 
         case(STACK_STRING):
 
-        a = strlen(x.data.string_value);
+        if(strcmp(x.data.string_value, y.data.string_value) < 0)
+            {
+                pop(s);
+                push(s, STACK_STRING, x.data.string_value);
+                return 1;
+            }
+        return 0;
         break;
         default:
             a = 0;
@@ -743,11 +749,6 @@ void smallest(stack *s)
             b = y.data.float_value;
             break;
 
-        case(STACK_STRING):
-
-        b = strlen(y.data.string_value);
-        break;
-
         case(STACK_CHAR):
 
         b = y.data.char_value;
@@ -761,10 +762,12 @@ void smallest(stack *s)
     {
         pop(s);
         push(s, STACK_FLOAT, a);
+        return 1;
     }
+    return 0;
 }
 
-void largest(stack *s)
+int largest(stack *s)
 {
 
         stack_elem x = pop(s);
@@ -788,7 +791,13 @@ void largest(stack *s)
 
             case(STACK_STRING):
 
-            a = strlen(x.data.string_value);
+            if(strcmp(x.data.string_value, y.data.string_value) > 0)
+                {
+                    pop(s);
+                    push(s, STACK_STRING, x.data.string_value);
+                    return 1;
+                }
+            return 0;
             break;
             default:
                 a = 0;
@@ -806,11 +815,6 @@ void largest(stack *s)
                 b = y.data.float_value;
                 break;
 
-            case(STACK_STRING):
-
-            b = strlen(y.data.string_value);
-            break;
-
             case(STACK_CHAR):
 
             b = y.data.char_value;
@@ -824,7 +828,9 @@ void largest(stack *s)
         {
             pop(s);
             push(s, STACK_FLOAT, a);
+            return 1;
         }
+        return 0;
 }
 
 void invertBool(stack *s)

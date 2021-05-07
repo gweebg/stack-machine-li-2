@@ -220,16 +220,16 @@ void no(stack *s);
 /**
  * \brief Retira dois elementos da stack e dá push ao menor dos dois.
  * @param[in] s Stack a ser avaliada.
- * @return Não devolve nada.
+ * @return 0 se o valor da esquerda for o menor, 1 caso contrário.
  */
-void smallest(stack *s);
+int smallest(stack *s);
 
 /**
  * \brief Retira dois elementos da stack e dá push ao maior dos dois.
  * @param[in] s Stack a ser avaliada.
- * @return Não devolve nada.
+ * @return 0 se o valor da direita for o maior, 1 caso contrário.
  */
-void largest(stack *s);
+int largest(stack *s);
 
 /**
  * \brief Inverte o valor lógico do elemento do topo da stack
