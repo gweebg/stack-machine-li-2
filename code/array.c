@@ -88,6 +88,9 @@ void initArray(stack *s)
     array.data.array_value->pointer = -1; // Índice do elemento no topo do array.
     array.data.array_value->elems = (stack_elem *)malloc(s->size * sizeof(stack_elem)); // Alocação de memória para os elementos doa array.
 
+    // Inicializar as variaveis
+    varStart(array.data.array_value);
+
     push(s, STACK_ARRAY, array.data.array_value);
 }
 
@@ -435,7 +438,7 @@ void getElemsEnd(stack *s)
                 c++;
             }
 
-            printf("O loop deu : %s\n", new_string);
+            // printf("O loop deu : %s\n", new_string);
             push(s, STACK_STRING, new_string); // Push da string para a stack.
             break;
 
@@ -467,10 +470,11 @@ void removeInit(stack *s)
         case STACK_STRING:;
             int index = 0; // Queremos remover o primeiro char.
             char* word = elem.data.string_value; // Está atribuido a word, por questões de legibilidade.
-
+            char init = word[0];
             // Copia o char em 0 para outro sitio qualquer.
             memmove(&word[index], &word[index + 1], strlen(word) - index);
             push(s, STACK_STRING, word);
+            push(s, STACK_CHAR, init);
             break;
 
         default: fprintf(stderr, "Erro na função [removeInit] : data-type inválido.\n"); exit(EXIT_FAILURE); break;
@@ -497,11 +501,12 @@ void removeEnd(stack *s)
             // Segue exatamente o mesmo método que a função acima.
             char* word = elem.data.string_value; // Está atribuido a word, por questões de legibilidade.
             int index = strlen(word) - 1; // Queremos remover o último char.
+            char last = word[strlen(word)-1]; // Ultimo char da string.
 
             // Copia o char em 0 para outro sitio qualquer.
             memmove(&word[index], &word[index + 1], strlen(word) - index);
             push(s, STACK_STRING, word);
-
+            push(s, STACK_CHAR, last);
             break;
 
         default: fprintf(stderr, "Erro na função [removeEnd] : data-type inválido.\n"); exit(EXIT_FAILURE); break;
