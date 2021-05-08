@@ -11,6 +11,7 @@
 
 # include "stack.h"
 # include "parser.h"
+# include "array.h"
 
 /**
  * @brief Esta é a função principal, responsável por receber o input do utilizador.
@@ -18,7 +19,8 @@
  * @return 0, se o input foi lido e parsed com sucesso.
  * @see parser.c
  */
-int main() {
+int main() 
+{
 
     stack s = create(); // Criação da stack
     varStart(&s); // Inicialização das variáveis default.
@@ -31,9 +33,6 @@ int main() {
     // Verifica se o tamanho da string não ultrapassa os 10k.
     assert( input[strlen(input) - 1] == '\n' );
 
-    // bool x = (is_in_string("+", "+-/*#()%"));
-    // printf("%d\n",x);
-
     // Chama o parser para fazer o parsing da string.
     parser(input, &s);
 
@@ -41,5 +40,4 @@ int main() {
     dumpStack(&s);
 
     return 0;
-
 }

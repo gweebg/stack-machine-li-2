@@ -12,6 +12,7 @@
 
 #include "stack.h"
 #include "operations.h"
+#include "array.h"
 
 // * Funções auxiliares.
 
@@ -170,7 +171,7 @@ void inc(stack *s)
         case STACK_FLOAT: push(s, STACK_FLOAT, x.data.float_value + 1); break;
         case STACK_DOUBLE: push(s, STACK_FLOAT, x.data.double_value + 1); break;
         case STACK_CHAR: push(s, STACK_CHAR, x.data.char_value + 1); break;
-        default: fprintf(stderr, "Erro na funçao [dec] em operations.c : switch to default."); exit(EXIT_FAILURE); break;
+        default: fprintf(stderr, "Erro na funçao [inc] em operations.c : switch to default."); exit(EXIT_FAILURE); break;
     }
 }
 
@@ -224,24 +225,10 @@ void swap(stack *s)
 {
     stack_elem x = pop(s);
     stack_elem y = pop(s);
+   
+    typePush(s, x);
+    typePush(s, y);
 
-    switch (x.type)
-    {
-        case (STACK_CHAR): push(s, x.type, x.data.char_value); break;
-        case (STACK_INT): push(s, x.type, x.data.int_value); break;
-        case (STACK_FLOAT): push(s, x.type, x.data.float_value); break;
-        case (STACK_STRING): push(s, x.type, x.data.string_value); break;
-        default: push(s, x.type, x.data); break;
-    }
-
-    switch (y.type)
-    {
-        case (STACK_CHAR): push(s, y.type, y.data.char_value); break;
-        case (STACK_INT): push(s, y.type, y.data.int_value); break;
-        case (STACK_FLOAT): push(s, y.type, y.data.float_value); break;
-        case (STACK_STRING): push(s, y.type, y.data.string_value); break;
-        default: push(s, x.type, y.data);
-    }
 }
 
 void swap_three(stack *s)
@@ -475,12 +462,54 @@ int checkNbool(stack *s, int n)
     return 1;
 }
 
+int equalString(stack *s, stack_elem x, stack_elem y)
+{
+    int e = 0;
+
+    if (x.type == STACK_STRING && y.type == STACK_STRING)
+    {
+        e = 1;
+        if (strcmp(x.data.string_value, y.data.string_value) == 0)
+        {
+            push(s, STACK_INT, 1);
+        }
+        else
+        {
+            push(s, STACK_INT, 0);
+        }
+    }
+
+    return e;
+}
+
+int lessString(stack *s, stack_elem x, stack_elem y)
+{
+    int e = 0;
+
+    if (x.type == STACK_STRING && y.type == STACK_STRING)
+    {
+        e = 1;
+        if (strcmp(x.data.string_value, y.data.string_value) > 0)
+        {
+            push(s, STACK_INT, 1);
+        }
+        else
+        {
+            push(s, STACK_INT, 0);
+        }
+    }
+
+    return e;
+}
+
 void equal(stack *s)
 {
     stack_elem x = pop(s);
     stack_elem y = pop(s);
 
     float a, b;
+
+    if(equalString(s,x,y) == 1) return;
 
     switch(x.type)
     {
@@ -494,14 +523,10 @@ void equal(stack *s)
             break;
         case(STACK_CHAR):
 
-        a = x.data.char_value;
-        break;
-
-        case(STACK_STRING):
-
-        a = strlen(x.data.string_value);
-        break;
+            a = x.data.char_value;
+            break;
         default:
+
             a = 0;
             break;
     }
@@ -516,11 +541,6 @@ void equal(stack *s)
 
             b = y.data.float_value;
             break;
-
-        case(STACK_STRING):
-
-        b = strlen(y.data.string_value);
-        break;
 
         case(STACK_CHAR):
 
@@ -544,6 +564,8 @@ void less(stack *s)
 
     float a, b;
 
+    if (lessString(s,x,y) == 1) return;
+
     switch(x.type)
     {
         case(STACK_INT):
@@ -559,9 +581,6 @@ void less(stack *s)
         a = x.data.char_value;
         break;
 
-        case(STACK_STRING):
-
-        a = strlen(x.data.string_value);
         break;
         default:
             a = 0;
@@ -578,10 +597,6 @@ void less(stack *s)
 
             b = y.data.float_value;
             break;
-
-        case(STACK_STRING):
-
-        b = strlen(y.data.string_value);
         break;
 
         case(STACK_CHAR):

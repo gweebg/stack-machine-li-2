@@ -12,9 +12,9 @@
 #define SIZE 100
 
 /**
- * Declaração da struct array.
+ * Vamos usar uma stack auxiliar para simular um array.
  */
-typedef struct array array;
+typedef struct stack stack;
 
 // ===========================================
 // DEFINIÇÃO DA STACK
@@ -33,74 +33,45 @@ typedef enum stack_type
     STACK_FLOAT, /**< Equivale ao tipo float. */
     STACK_DOUBLE, /**< Equivale ao tipo double. */
     STACK_STRING, /**< Equivale ao tipo char* (string). */
-    STACK_ARRAY /**< Equivale ao tipo stack_elem* (array). */
+    STACK_ARRAY /**< Equivale ao tipo stack* (é usada uma stack auxiliar para a simulação de um array). */
 
 }stack_type;
 
 /**
  * \brief Estrutura dos elementos da stack.
  * @struct stack_elem
- * @var stack::type
- * O type é um objeto do tipo stack_type e é-nos útil para aceder ao tipo do valor da stack.
- * @var stack::data
- * Esta estrura é uma union mostra como os valores serão guardados na stack. Para além disso garante-nos a possibilidade de aceder ao valor guardado.
  * @see stack_type
  */
 typedef struct stack_elem
 {
-    /*@{*/
+
     enum stack_type type; /**< Temos de chamar o enum stack_type para podermos associar os elementos no union. Com isto também conseguimos aceder ao tipo do elemento do array. */
-    /*@}*/
     union data
     {
 
-        /*@{*/
         char char_value; /**< STACK_CHAR -> char */
         int int_value; /**< STACK_INT -> int */
         long long_value; /**< STACK_LONG -> long */
         float float_value; /**< STACK_FLOAT -> float */
         double double_value; /**< STACK_DOUBLE -> double */
         char *string_value; /**< STACK_STRING -> char* */
-        array *array_value; /**< STACK_ARRAY -> array* */
-        /*@}*/
+        stack *array_value; /**< STACK_ARRAY -> stack* */
 
     } data; /**< Criamos este parâmetro para poder aceder aos valores dos elementos da stack. */
 }stack_elem;
 
-
-/**
- * \brief Estrutura do array, que vai aceitar stack_elem.
- * @struct array
- * @var array::size
- * O size contém o valor máximo que o array pode ter. Este tamanho poderá ser alterado caso a memória não seja suficiente.
- * @var array::elems 
- * Este array é composta por stack_elem e tem um tamanho dinâmico. Server para armazenar os valores do array.
- * @var array::num
- * Guarda o número de elementos presentes no array.
- */
-struct array
-{
-    stack_elem *elems; /**< Array que vai armazenar os elementos. */
-    int size; /**< Tamanho inicial do array, pode ser mudado com realloc caso seja necessário. */
-    int num; /**< Número total de elementos no array. */
-};
-
 /**
  * \brief Estrutura da stack.
  * @struct stack
- * @var stack::pointer
- * O pointer contém o valor de um inteiro, este aponta sempre para o topo da stack.
- * @var stack::elems
- * Esta array é composta por stack_elem e tem um tamanho fixo de 10240 bytes. Server para armazenar os valores na stack.
+ * Este array é composta por stack_elem e tem um tamanho fixo de 10240 bytes. Server para armazenar os valores na stack.
  */
-typedef struct stack
+struct stack
 {
     int size; /**< Tamanho do array, este tamanho vai variar caso seja necessária re-alocação de memória. */
     int pointer; /**< Número inteiro que nos indica o número de elemntos da stack. */
     stack_elem vars[26]; /**< Este array armazena todas as variáveis possíveis, neste caso são 26 uma para cada letra maiúscula do alfabeto.*/
     stack_elem *elems; /**< Aqui é onde os elementos da stack ficam guardados. Estes podem ser acedidos usando os parâmentros definidos na strutc stack_elem.  */
-
-} stack;
+};
 
 /**
  * \brief Função que inicializa/cria uma stack.
@@ -114,7 +85,7 @@ stack create();
  *
  * Determina o estado verificando o valor do stack pointer.
  * @param s Stack a ser avaliada.
- * @returns
+ * @returns Devolve um valor de acordo com o estado da stack.
  * Devolve :
  * * 0, se a stack estiver vazia;
  * * 1, se a stack estiver cheia;
@@ -129,10 +100,7 @@ int stackStatus(stack *s);
  * A stack rege-se por "last in, first out", daí termos de retirar o primeiro elemento e decrementar o stack pointer.
  * @param[in] s Stack a ser avaliada.
  * @param[in] value Valor a ser adicionado na stack.
- * @returns
- * Devolve :
- * * O elemento retirado se a stack não estiver vazia;
- * * 1, se a stack estiver vazia.
+ * @returns É uma função do tipo void, daí não devolver nada.
  * @see pop()
  */
 void push(stack *s, const enum stack_type type, ...);
@@ -141,17 +109,13 @@ void push(stack *s, const enum stack_type type, ...);
  * \brief Adiciona um elemento no topo da stack.
  *
  * @param[in] s Stack a ser avaliada.
- * @returns
- * Devolve :
- * * 0, se foi possivel adiconar o elemento;
- * * 1, se a stack estiver cheia.
+ * @returns Devole o elemento da stack que foi retirado.
  * @see push()
  */
 stack_elem pop(stack *s);
 
 /**
  * \brief Esta função despeja todos os elementos contidos na stack.
- *
  * @param[in] s Stack a ser avaliada.
  * @returns Escreve a stack no ecrã, porém não devolve nada, sendo que é do tipo void.
  * @see pop() push()
@@ -159,15 +123,14 @@ stack_elem pop(stack *s);
 void dumpStack(stack *s);
 
 /**
- * \brief Esta função é usada para ver quail elemento está no topo da stack.
- *
+ * \brief Esta função é usada para ver qual elemento está no topo da stack.
  * @param[in] s Stack a ser avaliada.
- * @returns Devolve um elemento da stack (stack_elem).
+ * @returns Devolve um elemento da stack no topo.
  */
 stack_elem peek(stack *s);
 
 /**
- * \brief Esta função é usada na recolocação de varoles nas variáveis disponíveis.
+ * \brief Esta função é usada na recolocação de valores nas variáveis disponíveis.
  * Reescreve o valor das variáveis pelo valor do elemento no topo da stack.
  * @param[in] s Stack a ser avaliada.
  * @param[in] var_letter Letra a qual o valor vai estar associado.
@@ -194,5 +157,26 @@ void varStart(stack *stack);
  * @note Qualquer outra variável poderá ser inicializada por qualquer letra maiúscula do alfabeto.
  */
 void getVar(stack *s, char var_letter);
+
+/**
+ * \brief Esta função verifica o tipo do penúltimo elemento da stack.
+ * @param[in] s Stack a ser avaliada.
+ * @return Devolve o tipo do elemento.
+ */
+stack_type getSecondType(stack *s);
+
+/**
+ * \brief Esta função copia o conteúdo das variáveis de uma stack para um array.
+ * @param[in] s Stack a ser avaliada.
+ * @return É uma função do tipo void, daí não devolver nada.
+ */
+void copyVarStack(stack *s);
+
+/**
+ * \brief Esta função copia o conteúdo das variáveis de um array para uma stack.
+ * @param[in] s Stack a ser avaliada.
+ * @return É uma função do tipo void, daí não devolver nada.
+ */
+void copyVarArray(stack *s);
 
 #endif

@@ -10,6 +10,7 @@
  * \brief Esta função é responsável por tanto analisar o input como realizar as operações necessárias.
  * 
  * @param[in] line Input dado pelo utilizador em main.c
+ * @param[in] s Stack onde são ser postos os elementos. 
  * @return Não devolve nada.
  * @see main.c
  */
@@ -54,12 +55,35 @@ bool is_in_string(char *token, char *chars);
 bool check_logic(char* token);
 
 /**
+ * \brief Esta função verifica se uma dada string (o nosso token) é igual a um dos seguintes operadores: S/ , N/ .
+ * @param[in] token String na qual vamos verificar a existência do operador.
+ * @return Devolve um valor booleano. Sendo este verdadeiro caso seja verdadeiro a pelo menos um.
+ */
+bool check_array(char* token);
+
+/**
  * \brief Esta função tenta dar push a valores inteiros,floats,chars e strings. Caso consiga devolve o true.
  * @param[in] s Stack na qual os elementos vão ser adicionados.
  * @param[in] token String na qual vamos verificar a conversão de string para outro data-type (int,float,char,string).
  * @return Devolve um valor booleano. Sendo este verdadeiro caso consiga adicionar o valor na stack.
  */
 bool saveValues(stack *s, char* token);
+
+/**
+ * \brief Esta função trata das operações aritméticas direcionadas a inteiros, floats e chars.
+ * @param[in] s Stack na qual os elementos vão ser adicionados.
+ * @param[in] token Indica o tipo de operação que vai ser executada.
+ * @return Função do tipo void, não devolve nada.
+ */
+void normal_arit(stack *s, char *token);
+
+/**
+ * \brief Esta função trata das operações aritméticas direcionadas a strings e inteiros.
+ * @param[in] s Stack na qual os elementos vão ser adicionados.
+ * @param[in] token Indica o tipo de operação que vai ser executada.
+ * @return Função do tipo void, não devolve nada.
+ */
+void other_arit(stack *s, char *token);
 
 /**
  * \brief Esta função é responsável por executar a operação pedida.
@@ -96,6 +120,14 @@ void stack_op(stack *s, char* token);
 void io_op(stack *s, char* token);
 
 /**
+ * \brief Esta função é responsável por executar as operações lógicas relacionadas aos arrays.
+ * @param[in] s Stack dada pelo utilizador.
+ * @param[in] token Operador a ser utilizado na operação.
+ * @return É uma função do tipo void, daí não devolver nada.
+ */
+void logic_array(stack *s, char* token);
+
+/**
  * \brief Esta função é responsável por executar as operações lógicas simples
  * São consideradas funções lógicas simples as funções que não precisam de adicionar novos elementos na stack.
  * @param[in] s Stack dada pelo utilizador.
@@ -112,5 +144,15 @@ void logic_op(stack *s, char* token);
  * @return É uma função do tipo void, daí não devolver nada.
  */
 void logicPush_op(stack *s, char* token);
+
+/**
+ * \brief Esta função é responsável por executar as funções relacionadas com as string e os arrays.
+ * @param[in] s Stack dada pelo utilizador.
+ * @param[in] token Operador a ser utilizado na operação.
+ * @param[in] line Linha dada pelo utilizador ao executar o programa.
+ * @return Devolve um inteiro, indicando ao parser se esta função foi ou não executada.
+ * Caso tenha sido feito o push de uma string devolve 2 ; caso tenha sido feito o push de um array devolve 0 ; caso contrário devolve 1.
+ */
+int array_op(stack *s, char* token, char* line);
 
 #endif

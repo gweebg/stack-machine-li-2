@@ -11,6 +11,7 @@
 #include <math.h>
 
 #include "stack.h"
+#include "array.h"
 
 stack create()
 {
@@ -64,15 +65,9 @@ void push(stack *s, const enum stack_type type, ...)
         s->elems[s->pointer].type = type;
         break;
 
-    case STACK_INT:
+    case STACK_INT:;
         s->pointer++;
         s->elems[s->pointer].data.int_value = va_arg(ap, int);
-        s->elems[s->pointer].type = type;
-        break;
-
-    case STACK_LONG:
-        s->pointer++;
-        s->elems[s->pointer].data.long_value = va_arg(ap, long);
         s->elems[s->pointer].type = type;
         break;
 
@@ -82,15 +77,15 @@ void push(stack *s, const enum stack_type type, ...)
         s->elems[s->pointer].type = type;
         break;
 
-    case STACK_DOUBLE:
-        s->pointer++;
-        s->elems[s->pointer].data.double_value = va_arg(ap, double);
-        s->elems[s->pointer].type = type;
-        break;
-
     case STACK_STRING:
         s->pointer++;
         s->elems[s->pointer].data.string_value = va_arg(ap, char *);
+        s->elems[s->pointer].type = type;
+        break;
+    
+    case STACK_ARRAY:
+        s->pointer++;
+        s->elems[s->pointer].data.array_value = va_arg(ap, stack *);
         s->elems[s->pointer].type = type;
         break;
 
@@ -121,7 +116,6 @@ stack_elem pop(stack *s)
 
 void dumpStack(stack *s)
 {
-
     // printf("Stack Dump: ");
     for (int i = 0; i < s->pointer + 1; i++)
     {
@@ -153,13 +147,18 @@ void dumpStack(stack *s)
         case STACK_STRING:
             printf("%s", elem.data.string_value);
             break;
+        
+        case STACK_ARRAY:
+            printArray(elem.data.array_value);
+            break;
 
         default:
             fprintf(stderr, "unknown");
             exit(EXIT_FAILURE);
         }
     }
-    printf("\n");
+
+    printf("\n"); // Retirar o "\n" para evitar breaks ao dar print de um array, pois é recursivo.
 }
 
 stack_elem peek(stack *s)
@@ -239,4 +238,38 @@ void getVar(stack *s, char var_letter)
         default: fprintf(stderr, "Erro ao adicionar elemento!\n[function::getVar]"); break;
     }
 
+}
+
+stack_type getSecondType(stack *s)
+{
+    stack_type type;
+
+    // Pop do topo; peek do topo; push do topo.
+    stack_elem elem = s->elems[s->pointer - 1];
+    type = elem.type;
+
+    return type;
+}
+
+void copyVarStack(stack *s)
+{
+    // Copiar as variáveis da stack para o array.
+    stack_elem array = peek(s);
+
+    for (int i = 0; i < 26; i++)
+    {
+        array.data.array_value->vars[i] = s->vars[i];
+    }
+
+}
+
+void copyVarArray(stack *s)
+{
+    // Fazer o inverso da função de cima, queremos passar as variaveis do Array para as da stack.
+    stack_elem array = peek(s);
+
+    for (int i = 0; i < 26; i++)
+    {
+        s->vars[i] = array.data.array_value->vars[i];
+    }
 }
