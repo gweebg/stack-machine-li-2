@@ -166,4 +166,25 @@ void splitSub(stack *s);
  */ 
 void concatSolo(stack *s);
 
+/**
+ * \brief Concatena dois elementos, destes um deles tem de ser obrigatóriamente uma string ou um array. 
+ * Dá push do resultado para a stack.
+ * @param[in] s Stack a ser alterada.
+ * @return Não devolve nada.
+ */ 
+void concat(stack *s);
+
+/**
+ * \brief Esta função adicona um char ao início de uma string.
+ * @param[in] s Stack a ser alterada.
+ * @return Devolve o caracter após a conversão.
+ */ 
+char* append(char antes, char *string);
+
+void concatXArray(stack *s, stack_elem x, stack_elem y);
+void concatXString(stack *s, stack_elem x, stack_elem y);
+void concatYArray(stack *s, stack_elem x, stack_elem y);
+void concatYString(stack *s, stack_elem x, stack_elem y);
+char* concatString(const char *s1, const char *s2);
+
 #endif
