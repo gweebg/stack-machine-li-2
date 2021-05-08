@@ -266,8 +266,8 @@ int array_op(stack *s, char* token, char* line)
 }
 
 void parser(char *line, stack *s)
-{    
-     char *full_string = (char *)malloc(strlen(line) * sizeof(char));
+{       
+     char *full_string = malloc(strlen(line) * sizeof(char));
      strcpy(full_string, line);
 
      char *delim = " \t\n";
@@ -303,11 +303,12 @@ void parser(char *line, stack *s)
           else if (token[0] == ':') pushVar(s, token[1]);
           else if (!pushed) getVar(s, token[0]);
 
-          if (decide == 0) { char *rest = getRestToken(full_string); parser(rest, s); break; }    
-          if (decide == 2) { char *rest_ = getRestTokenS(full_string); parser(rest_, s); break; }    
-          else { token = strtok(NULL, delim); } 
+          // Skip de tokens.
+          if (decide == 0) { parser(getRestToken(full_string), s); free(full_string); break; }    
+          if (decide == 2) { parser(getRestTokenS(full_string), s); free(full_string); break; }    
+          else token = strtok(NULL, delim); 
           
      }
 
-     free(full_string);
 }
+

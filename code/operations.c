@@ -12,6 +12,7 @@
 
 #include "stack.h"
 #include "operations.h"
+#include "array.h"
 
 // * Funções auxiliares.
 
@@ -225,25 +226,9 @@ void swap(stack *s)
     stack_elem x = pop(s);
     stack_elem y = pop(s);
    
-    switch (x.type)
-    {
-        case (STACK_CHAR): push(s, x.type, x.data.char_value); break;
-        case (STACK_INT): push(s, x.type, x.data.int_value); break;
-        case (STACK_FLOAT): push(s, x.type, x.data.float_value); break;
-        case (STACK_STRING): push(s, STACK_STRING, x.data.string_value); break;
-        case (STACK_ARRAY): push(s, STACK_ARRAY, x.data.array_value); break;
-        default: push(s, x.type, x.data); break;
-    }
+    typePush(s, x);
+    typePush(s, y);
 
-    switch (y.type)
-    {
-        case (STACK_CHAR): push(s, y.type, y.data.char_value); break;
-        case (STACK_INT): push(s, y.type, y.data.int_value); break;
-        case (STACK_FLOAT): push(s, y.type, y.data.float_value); break;
-        case (STACK_STRING): push(s, STACK_STRING, y.data.string_value); break;
-        case (STACK_ARRAY): push(s, STACK_ARRAY, y.data.array_value); break;
-        default: push(s, x.type, y.data);
-    }
 }
 
 void swap_three(stack *s)
@@ -540,10 +525,6 @@ void equal(stack *s)
 
             a = x.data.char_value;
             break;
-        case(STACK_STRING):
-
-            a = strlen(x.data.string_value);
-            break;
         default:
 
             a = 0;
@@ -559,11 +540,6 @@ void equal(stack *s)
         case(STACK_FLOAT):
 
             b = y.data.float_value;
-            break;
-
-        case(STACK_STRING):
-
-            b = strlen(y.data.string_value);
             break;
 
         case(STACK_CHAR):
@@ -605,9 +581,6 @@ void less(stack *s)
         a = x.data.char_value;
         break;
 
-        case(STACK_STRING):
-
-        a = strlen(x.data.string_value);
         break;
         default:
             a = 0;
@@ -624,10 +597,6 @@ void less(stack *s)
 
             b = y.data.float_value;
             break;
-
-        case(STACK_STRING):
-
-        b = strlen(y.data.string_value);
         break;
 
         case(STACK_CHAR):

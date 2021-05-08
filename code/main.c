@@ -36,18 +36,8 @@ int main()
     // Chama o parser para fazer o parsing da string.
     parser(input, &s);
 
-    // char *line2 = "esta a dar bom parse ? \"sim\".";
-    // char *result2 = getString(line2);
-    // printf("%s\n", result2);
-
-    // char *line = " \"ola adeus\" S/ ,";
-    // printf("%s\n", line);
-    // char *result = getRestTokenS(line);
-    // printf("%s\n", result);
-
     //Print do estado final da stack.
     dumpStack(&s);
 
     return 0;
-
 }

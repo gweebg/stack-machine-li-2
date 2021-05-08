@@ -44,13 +44,11 @@ typedef enum stack_type
  */
 typedef struct stack_elem
 {
-    /*@{*/
+
     enum stack_type type; /**< Temos de chamar o enum stack_type para podermos associar os elementos no union. Com isto também conseguimos aceder ao tipo do elemento do array. */
-    /*@}*/
     union data
     {
 
-        /*@{*/
         char char_value; /**< STACK_CHAR -> char */
         int int_value; /**< STACK_INT -> int */
         long long_value; /**< STACK_LONG -> long */
@@ -58,7 +56,6 @@ typedef struct stack_elem
         double double_value; /**< STACK_DOUBLE -> double */
         char *string_value; /**< STACK_STRING -> char* */
         stack *array_value; /**< STACK_ARRAY -> stack* */
-        /*@}*/
 
     } data; /**< Criamos este parâmetro para poder aceder aos valores dos elementos da stack. */
 }stack_elem;

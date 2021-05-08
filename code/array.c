@@ -181,7 +181,7 @@ char *getRestToken(char *line)
     int count = 0;
     int end = 0;
 
-    char *result = (char *)malloc(strlen(line) * sizeof(char));
+    char *result = (char *)malloc(strlen(line) * sizeof(char) + 1);
 
     for (unsigned long j = 0; j < strlen(line); j++)
     {
@@ -210,7 +210,7 @@ char *getRestTokenS(char *line)
     int count = 0;
     int end = 0;
 
-    char *result = (char *)malloc(strlen(line) * sizeof(char));
+    char *result = (char *)malloc(strlen(line) * sizeof(char) + 1);
 
     for (unsigned long i = 0; i < strlen(line); i++)
     {
@@ -232,7 +232,6 @@ char *getRestTokenS(char *line)
 void parseArray(stack *s, char *line)
 {
     initArray(s); // Iniciamos o array, pois encontramos o char '['.
-    // varStart(s); Inicializar as variaveis.
     // printf("\nLinha passada : %s\n",line);
 
     char *parsed = getInside(line); // parsed passa a ser a string com o conteudo do array que vai ser processado pelo parser.
@@ -295,7 +294,6 @@ char *getString(char *line)
 
 void parseString(stack *s, char *line)
 {
-
     stack_elem string;
     string.type = STACK_STRING;
     string.data.string_value = getString(line);
