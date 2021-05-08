@@ -109,8 +109,16 @@ bool saveValues(stack *s, char* token)
      float_value = strtof(token, &endptr_float);
 
      // Push dos diferentes tipos para a stack.
-     if (strlen(endptr_int) == 0) push(s, STACK_INT, int_value);
-     else if (strlen(endptr_float) == 0) push(s, STACK_FLOAT, float_value);
+     if (strlen(endptr_int) == 0)
+     {
+          if (int_value < 0) push(s, STACK_INT, int_value - 1);
+          else push(s, STACK_INT, int_value);
+     }
+     else if (strlen(endptr_float) == 0) 
+     {
+          if (float_value < 0) push(s, STACK_FLOAT, float_value - 1);
+          else push(s, STACK_FLOAT, float_value);
+     }
      else if (strlen(token) == 1 && !check_reserved(token[0])) push(s, STACK_CHAR, token[0]);
      else if (strlen(token) > 1 && !check_reserved_string(token) && token[0] != '\"') push(s, STACK_STRING, token);
      else pushed = false;                                           // Precisamos para não dar push duplicados.
@@ -180,15 +188,12 @@ void stack_op(stack *s, char* token)
 {
      // Funções dedicadas à manipulação da stack.
      // Acontece a mesma coisa nesta função.
-     if (peek(s).type != STACK_ARRAY)
-     {
-          if (strcmp(token, "_") == 0) duplicate(s);
-          else if (strcmp(token, ";") == 0) pop(s);
-          else if (strcmp(token, "\\") == 0) swap(s);
-          else if (strcmp(token, "$") == 0) bring_top(s);
-          else swap_three(s);
-     }
-
+     if (strcmp(token, "_") == 0) duplicate(s);
+     else if (strcmp(token, ";") == 0) pop(s);
+     else if (strcmp(token, "\\") == 0) swap(s);
+     else if (strcmp(token, "$") == 0) bring_top(s);
+     else swap_three(s);
+     
 }
 
 void io_op(stack *s, char* token)
@@ -304,4 +309,5 @@ void parser(char *line, stack *s)
           
      }
 
+     free(full_string);
 }

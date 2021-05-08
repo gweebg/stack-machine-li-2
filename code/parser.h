@@ -10,6 +10,7 @@
  * \brief Esta função é responsável por tanto analisar o input como realizar as operações necessárias.
  * 
  * @param[in] line Input dado pelo utilizador em main.c
+ * @param[in] s Stack onde são ser postos os elementos. 
  * @return Não devolve nada.
  * @see main.c
  */

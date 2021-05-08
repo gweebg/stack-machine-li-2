@@ -83,14 +83,36 @@ void initArray(stack *s)
     array.type = STACK_ARRAY;                                          // Tipo do elemento.
     array.data.array_value = (stack *)malloc(s->size * sizeof(stack)); // Alocação de memória para o array.
 
+    if (array.data.array_value == NULL) // Se não houver espaço.
+    {
+        // Realocar a memória para ser possivel meter todos os valores.
+        stack *tmp = (stack *)realloc(array.data.array_value,(2 * s->size * sizeof(stack)));
+
+        // Verificamos se foi possível realocar mais memória.
+        if (tmp == NULL) fprintf(stderr, "Limite de memória excedido.\n"); 
+        else array.data.array_value = tmp; 
+    }
+
     array.data.array_value->size = s->size;                                             // Tamanho do array
     array.data.array_value->pointer = -1;                                               // Índice do elemento no topo do array.
     array.data.array_value->elems = (stack_elem *)malloc(s->size * sizeof(stack_elem)); // Alocação de memória para os elementos doa array.
 
-    // Inicializar as variaveis
-    varStart(array.data.array_value);
+    if (array.data.array_value->elems == NULL) // Se não houver espaço.
+    {
+        // Realocar a memória para ser possivel meter todos os valores.
+        stack_elem *tmp = (stack_elem *)realloc(array.data.array_value->elems, (2 * s->size * sizeof(stack_elem)));
 
+        // Verificamos se foi possível realocar mais memória.
+        if (tmp == NULL) fprintf(stderr, "Limite de memória excedido.\n"); 
+        else array.data.array_value->elems = tmp; 
+    }
+
+    // Inicializar as variaveis
+    // varStart(array.data.array_value);
     push(s, STACK_ARRAY, array.data.array_value);
+
+    // Inicializar as variaveis
+    copyVarStack(s);
 }
 
 char *getInside(char *line)
@@ -220,6 +242,7 @@ void parseArray(stack *s, char *line)
     // printf("[Array pointer] : %d\n",array.data.array_value->pointer);
 
     parser(parsed, array.data.array_value);
+    copyVarArray(s);
     // printf("Executou o parser.\n");
 }
 

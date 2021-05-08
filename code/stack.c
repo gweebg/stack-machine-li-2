@@ -65,27 +65,15 @@ void push(stack *s, const enum stack_type type, ...)
         s->elems[s->pointer].type = type;
         break;
 
-    case STACK_INT:
+    case STACK_INT:;
         s->pointer++;
         s->elems[s->pointer].data.int_value = va_arg(ap, int);
-        s->elems[s->pointer].type = type;
-        break;
-
-    case STACK_LONG:
-        s->pointer++;
-        s->elems[s->pointer].data.long_value = va_arg(ap, long);
         s->elems[s->pointer].type = type;
         break;
 
     case STACK_FLOAT:
         s->pointer++;
         s->elems[s->pointer].data.float_value = (float)va_arg(ap, double);
-        s->elems[s->pointer].type = type;
-        break;
-
-    case STACK_DOUBLE:
-        s->pointer++;
-        s->elems[s->pointer].data.double_value = va_arg(ap, double);
         s->elems[s->pointer].type = type;
         break;
 
@@ -261,4 +249,27 @@ stack_type getSecondType(stack *s)
     type = elem.type;
 
     return type;
+}
+
+void copyVarStack(stack *s)
+{
+    // Copiar as variáveis da stack para o array.
+    stack_elem array = peek(s);
+
+    for (int i = 0; i < 26; i++)
+    {
+        array.data.array_value->vars[i] = s->vars[i];
+    }
+
+}
+
+void copyVarArray(stack *s)
+{
+    // Fazer o inverso da função de cima, queremos passar as variaveis do Array para as da stack.
+    stack_elem array = peek(s);
+
+    for (int i = 0; i < 26; i++)
+    {
+        s->vars[i] = array.data.array_value->vars[i];
+    }
 }

@@ -224,7 +224,7 @@ void swap(stack *s)
 {
     stack_elem x = pop(s);
     stack_elem y = pop(s);
-
+   
     switch (x.type)
     {
         case (STACK_CHAR): push(s, x.type, x.data.char_value); break;
@@ -241,7 +241,7 @@ void swap(stack *s)
         case (STACK_INT): push(s, y.type, y.data.int_value); break;
         case (STACK_FLOAT): push(s, y.type, y.data.float_value); break;
         case (STACK_STRING): push(s, STACK_STRING, y.data.string_value); break;
-        case (STACK_ARRAY): push(s, STACK_ARRAY, x.data.array_value); break;
+        case (STACK_ARRAY): push(s, STACK_ARRAY, y.data.array_value); break;
         default: push(s, x.type, y.data);
     }
 }
@@ -878,7 +878,6 @@ int largest(stack *s)
         }
         return 0;
 }
-
 
 void invertBool(stack *s)
 {

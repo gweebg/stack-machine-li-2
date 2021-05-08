@@ -181,10 +181,48 @@ void concat(stack *s);
  */ 
 char* append(char antes, char *string);
 
+/**
+ * \brief Esta função concatena um array com outro elemento de qualquer tipo quando o elemento da direita é um array.
+ * @param[in] s Stack dada pelo utilizador.
+ * @param[in] x Elemento da stack - obrigatóriamente um array.
+ * @param[in] y Elemento da stack - pode ser de qualquer tipo.
+ * @return É uma função do tipo void, daí não devolver nada.
+ */
 void concatXArray(stack *s, stack_elem x, stack_elem y);
+
+/**
+ * \brief Esta função concatena uma string com outro elemento de qualquer tipo quando o elemento da direita é uma string.
+ * @param[in] s Stack dada pelo utilizador.
+ * @param[in] x Elemento da stack - obrigatóriamente uma string.
+ * @param[in] y Elemento da stack - pode ser de qualquer tipo.
+ * @return É uma função do tipo void, daí não devolver nada.
+ */
 void concatXString(stack *s, stack_elem x, stack_elem y);
+
+/**
+ * \brief Esta função concatena um array com outro elemento de qualquer tipo quando o elemento da esquerda é um array.
+ * @param[in] s Stack dada pelo utilizador.
+ * @param[in] y Elemento da stack - pode ser de qualquer tipo.
+ * @param[in] x Elemento da stack - obrigatóriamente um array.
+ * @return É uma função do tipo void, daí não devolver nada.
+ */
 void concatYArray(stack *s, stack_elem x, stack_elem y);
+
+/**
+ * \brief Esta função concatena um array com outro elemento de qualquer tipo quando o elemento da direita é uma string.
+ * @param[in] s Stack dada pelo utilizador.
+ * @param[in] y Elemento da stack - pode ser de qualquer tipo.
+ * @param[in] x Elemento da stack - obrigatóriamente uma string.
+ * @return É uma função do tipo void, daí não devolver nada.
+ */
 void concatYString(stack *s, stack_elem x, stack_elem y);
+
+/**
+ * \brief Função auxiliar que concatena duas strings.
+ * @param[in] s1 String original.
+ * @param[in] s2 String a concatenar.
+ * @return Devolve uma nova string, resultado a concatenação das duas passadas nos argumentos.
+ */
 char* concatString(const char *s1, const char *s2);
 
 #endif

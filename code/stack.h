@@ -88,7 +88,7 @@ stack create();
  *
  * Determina o estado verificando o valor do stack pointer.
  * @param s Stack a ser avaliada.
- * @returns
+ * @returns Devolve um valor de acordo com o estado da stack.
  * Devolve :
  * * 0, se a stack estiver vazia;
  * * 1, se a stack estiver cheia;
@@ -103,10 +103,7 @@ int stackStatus(stack *s);
  * A stack rege-se por "last in, first out", daí termos de retirar o primeiro elemento e decrementar o stack pointer.
  * @param[in] s Stack a ser avaliada.
  * @param[in] value Valor a ser adicionado na stack.
- * @returns
- * Devolve :
- * * O elemento retirado se a stack não estiver vazia;
- * * 1, se a stack estiver vazia.
+ * @returns É uma função do tipo void, daí não devolver nada.
  * @see pop()
  */
 void push(stack *s, const enum stack_type type, ...);
@@ -115,17 +112,13 @@ void push(stack *s, const enum stack_type type, ...);
  * \brief Adiciona um elemento no topo da stack.
  *
  * @param[in] s Stack a ser avaliada.
- * @returns
- * Devolve :
- * * 0, se foi possivel adiconar o elemento;
- * * 1, se a stack estiver cheia.
+ * @returns Devole o elemento da stack que foi retirado.
  * @see push()
  */
 stack_elem pop(stack *s);
 
 /**
  * \brief Esta função despeja todos os elementos contidos na stack.
- *
  * @param[in] s Stack a ser avaliada.
  * @returns Escreve a stack no ecrã, porém não devolve nada, sendo que é do tipo void.
  * @see pop() push()
@@ -133,15 +126,14 @@ stack_elem pop(stack *s);
 void dumpStack(stack *s);
 
 /**
- * \brief Esta função é usada para ver quail elemento está no topo da stack.
- *
+ * \brief Esta função é usada para ver qual elemento está no topo da stack.
  * @param[in] s Stack a ser avaliada.
- * @returns Devolve um elemento da stack (stack_elem).
+ * @returns Devolve um elemento da stack no topo.
  */
 stack_elem peek(stack *s);
 
 /**
- * \brief Esta função é usada na recolocação de varoles nas variáveis disponíveis.
+ * \brief Esta função é usada na recolocação de valores nas variáveis disponíveis.
  * Reescreve o valor das variáveis pelo valor do elemento no topo da stack.
  * @param[in] s Stack a ser avaliada.
  * @param[in] var_letter Letra a qual o valor vai estar associado.
@@ -175,5 +167,19 @@ void getVar(stack *s, char var_letter);
  * @return Devolve o tipo do elemento.
  */
 stack_type getSecondType(stack *s);
+
+/**
+ * \brief Esta função copia o conteúdo das variáveis de uma stack para um array.
+ * @param[in] s Stack a ser avaliada.
+ * @return É uma função do tipo void, daí não devolver nada.
+ */
+void copyVarStack(stack *s);
+
+/**
+ * \brief Esta função copia o conteúdo das variáveis de um array para uma stack.
+ * @param[in] s Stack a ser avaliada.
+ * @return É uma função do tipo void, daí não devolver nada.
+ */
+void copyVarArray(stack *s);
 
 #endif
