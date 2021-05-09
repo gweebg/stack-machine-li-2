@@ -277,6 +277,24 @@ int block_op(stack *s, char* token, char* line)
      return e;
 }
 
+int executeOperations(char *token, stack *s)
+{
+     int x = 0;
+     if (is_in_string(token, "+-*/#%()")) arit_op(s, token);
+     else if (is_in_string(token, "&|^~")) bin_op(s,token); // Operações com a stack.
+     else if (is_in_string(token, "_;\\$@")) stack_op(s, token);
+
+     // Operações de IO + conversão de tipos.
+     else if (is_in_string(token, "lptifcs")) io_op(s, token);
+
+     // Funções lógicas.
+     else if (is_in_string(token, "=<>!?")) logic_op(s, token);
+     else if (check_logic(token)) logicPush_op(s, token);
+     else x = 1;
+
+     return x;
+}
+
 void parser(char *line, stack *s)
 {       
      char *full_string = malloc(strlen(line) * sizeof(char));
@@ -293,30 +311,20 @@ void parser(char *line, stack *s)
           // Função que dá push dos diferentes elementos de diferentes tipos para a stack.
           bool pushed = saveValues(s,token);
           
-          // Operações com números.
-          if (is_in_string(token, "+-*/#%()")) arit_op(s, token);
-          else if (is_in_string(token, "&|^~")) bin_op(s,token);
-
-          // Operações com a stack.
-          else if (is_in_string(token, "_;\\$@")) stack_op(s, token);
-          
-          // Operações de IO + conversão de tipos.
-          else if (is_in_string(token, "lptifcs")) io_op(s, token);
-          
-          // Funções lógicas.
-          else if (is_in_string(token, "=<>!?")) logic_op(s, token);
-          else if (check_logic(token)) logicPush_op(s, token);
+          // Executa todas as operações básicas com números.
+          // Guardamos o seu valor, pois se esta função for executada não podemos executar a ultima parte do seguinte if.
+          int x = executeOperations(token, s);
 
           // Funções com arrays.             // Guardo um valor inteiro em decide, isto vai indicar ao parser se esta função foi executada ou não.
-          else if (is_in_string(token, "[,\"")) decide = array_op(s, token, full_string); // Passo a linha toda para poder retirar o que quero.
+          if (is_in_string(token, "[,\"")) decide = array_op(s, token, full_string); // Passo a linha toda para poder retirar o que quero.
           else if (check_array(token)) array_op(s, token, full_string);
 
           // Funções com blocos.
-          else if (is_in_string(token, "{")) decide = block_op(s, token, full_string);
+          // else if (is_in_string(token, "{")) decide = block_op(s, token, full_string);
 
           // Handle de variáveis.
           else if (token[0] == ':') pushVar(s, token[1]);
-          else if (!pushed) getVar(s, token[0]);
+          else if (!pushed && x) getVar(s, token[0]);
 
           // Skip de tokens.
           if (decide == 1) { parser(getRestToken(full_string), s); free(full_string); break; }    

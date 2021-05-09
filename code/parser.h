@@ -155,4 +155,22 @@ void logicPush_op(stack *s, char* token);
  */
 int array_op(stack *s, char* token, char* line);
 
+/**
+ * \brief Esta função é responsável por executar as funções relacionadas com os blocos.
+ * @param[in] s Stack dada pelo utilizador.
+ * @param[in] token Operador a ser utilizado na operação.
+ * @param[in] line Linha dada pelo utilizador ao executar o programa.
+ * @return Devolve um inteiro, indicando ao parser se esta função foi ou não executada.
+ * Caso tenha sido feito o push de uma string devolve 3 ; caso tenha sido feito o push de um array devolve 2 ; caso contrário devolve 1.
+ */
+int block_op(stack *s, char* token, char* line);
+
+/**
+ * \brief Esta função é responsável por executar as funções relacionadas com operações numéricas ou com a stack.
+ * @param[in] s Stack dada pelo utilizador.
+ * @param[in] token Operador a ser utilizado na operação.
+ * @return Devolve um inteiro, indicando ao parser se esta função foi ou não executada.
+ */
+int executeOperations(char *token, stack *s);
+
 #endif

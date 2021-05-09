@@ -197,6 +197,8 @@ int checkNbool(stack *s, int n);
 /**
   * \brief Verifica se duas strings são iguais e dá push a 1 caso sejam.
   * @param[in] s Stack a ser avaliada.
+  * @param[in] x Elemento 1.
+  * @param[in] y Elemento 2.
   * @return Devolve um inteiro para indicar se a função foi executada para duas strings.
   */
 int equalString(stack *s, stack_elem x, stack_elem y);
@@ -204,6 +206,8 @@ int equalString(stack *s, stack_elem x, stack_elem y);
 /**
   * \brief Verifica uma string é menor do que outra e dá push a 1 caso sejam.
   * @param[in] s Stack a ser avaliada.
+  * @param[in] x Elemento 1.
+  * @param[in] y Elemento 2.
   * @return Devolve um inteiro para indicar se a função foi executada para duas strings.
   */
 int lessString(stack *s, stack_elem x, stack_elem y);
