@@ -1,3 +1,8 @@
+/**
+ * @file array.c - Módulo responsável por executar todas as funções relacionadas com arrays/strings.
+ * @copyright Copyright (c) 2021
+ */
+
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>

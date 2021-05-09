@@ -88,6 +88,12 @@ void push(stack *s, const enum stack_type type, ...)
         s->elems[s->pointer].data.array_value = va_arg(ap, stack *);
         s->elems[s->pointer].type = type;
         break;
+    
+    case STACK_BLOCK:
+        s->pointer++;
+        s->elems[s->pointer].data.string_value = va_arg(ap, char *);
+        s->elems[s->pointer].type = type;
+        break;
 
     default:
         fprintf(stderr, "O tipo não existe!\n"); // Erro caso o tipo não exista.
@@ -150,6 +156,10 @@ void dumpStack(stack *s)
         
         case STACK_ARRAY:
             printArray(elem.data.array_value);
+            break;
+        
+        case STACK_BLOCK:
+            printf("%s", elem.data.block_value);
             break;
 
         default:

@@ -33,7 +33,8 @@ typedef enum stack_type
     STACK_FLOAT, /**< Equivale ao tipo float. */
     STACK_DOUBLE, /**< Equivale ao tipo double. */
     STACK_STRING, /**< Equivale ao tipo char* (string). */
-    STACK_ARRAY /**< Equivale ao tipo stack* (é usada uma stack auxiliar para a simulação de um array). */
+    STACK_ARRAY, /**< Equivale ao tipo stack* (é usada uma stack auxiliar para a simulação de um array). */
+    STACK_BLOCK /**< No fundo é uma string, apenas dizemos que é um block para poder destinguir */
 
 }stack_type;
 
@@ -56,6 +57,7 @@ typedef struct stack_elem
         double double_value; /**< STACK_DOUBLE -> double */
         char *string_value; /**< STACK_STRING -> char* */
         stack *array_value; /**< STACK_ARRAY -> stack* */
+        char *block_value; /**< STACK_BLOCK -> char* */
 
     } data; /**< Criamos este parâmetro para poder aceder aos valores dos elementos da stack. */
 }stack_elem;

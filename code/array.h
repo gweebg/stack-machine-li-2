@@ -1,3 +1,8 @@
+/**
+ * @file array.h - Contém os prótotipos do módulo array.c
+ * @copyright Copyright (c) 2021
+ */
+
 #ifndef ARRAY_H
 #define ARRAY_H
 
