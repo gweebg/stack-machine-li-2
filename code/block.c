@@ -74,7 +74,7 @@ char* readBlock(char *line)
     // Sabemos onde o char '[' está, assim podemos usar o strncpy para copiar para *final, a parte da string que começa do indíce do start+1.
     strncpy(final, &string[start], strlen(string) - start);
     free(string);
-    printf("[DEBUG]: %s\n", final);
+    // printf("[DEBUG]: %s\n", final);
 
     return final; // Finalmente retornamos a string modificada.
 }
@@ -83,20 +83,19 @@ void pushBlock(stack *s, char *full_string)
 {
     // Obter o input parsed.
     char *string = readBlock(full_string);
-
     // Mandar o bloco para a stack.
     push(s, STACK_BLOCK, string);
-
-    return; 
 }
 
 char* parseBlock(char *full_block)
 {
+    // Retira o primeiro e último char de uma string.
     int len = strlen(full_block); 
 
-    if(len > 0) full_block++;
-    if(len > 1) full_block[len - 2] = '\0';
-
+    if(len > 0) full_block++; // Retira full_block[0]
+    if(len > 1) full_block[len - 2] = '\0'; // Substitui full_block[size-2] por '\0' para retirar o último char.
+    
+    // Devolve a string modificada.
     return full_block;
 }
 
@@ -105,8 +104,36 @@ void executeBlock(stack *s)
     // Obter o bloco.
     char *block = parseBlock(pop(s).data.block_value);
     // printf("%s\n", block);
-
-    parser(block, s);
+    parser(block, s); // Chama-se o parser para tratar do que está dentro do bloco.
 
     return;
+}
+
+char* getRestTokenB(char *full_string)
+{
+    int count = 0;
+    int end = 0;
+
+    char *result = (char *)malloc(strlen(full_string) * sizeof(char) + 1);
+
+    for (unsigned long j = 0; j < strlen(full_string); j++)
+    {
+        if (full_string[j] == '{')
+            count++; // Precisamos de saber a contagem dos '{'.
+        else if (full_string[j] == '}')
+        {
+            if (count % 2 != 0) // Se o numero total de chars '{}' for ímpar significa que o proximo '}' fecha o primeiro '{'.
+            {
+                end = j;
+                break;
+            }
+
+            count++;
+        }
+    }
+
+    strncpy(result, &full_string[end + 1], strlen(full_string) - end);
+    // printf("[DEBUG]: %s\n", result);
+
+    return result;
 }

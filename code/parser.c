@@ -14,11 +14,12 @@
 #include "parser.h"
 #include "operations.h"
 #include "array.h"
+#include "block.h"
 
 bool check_reserved(char c)
 {
 
-     char reserved[60] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ:+-*/()%#&|^~_;\\@$ltpifcs=<>!?[\",";
+     char reserved[60] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ:+-*/()%#&|^~_;\\@$ltpifcs=<>!?[\",{";
      int i = 0;
 
      while (reserved[i] != '\0')
@@ -166,20 +167,22 @@ void bin_op(stack *s, char* token)
      // Funções dedicadas a operações binárias.
      // Mais uma vez existem chars coicidentes com as operações dedicadas às arrays. O char ~.
      // Assim, é preciso verificar que o elemento no topo da stack não é um array.
-     if (peek(s).type != STACK_ARRAY)
+     if (peek(s).type == STACK_ARRAY)
+     {
+
+          // Se entrou neste else, temos a certeza que o char pertence a "&|^~" e como o '~' é a única operação válida, não precisamos de fazer a verificação.
+          // ~ Colocar na stack todos os elementos do array.
+          // printf("Entrei no else.");
+          dumpArray(s);
+     }
+     else if (peek(s).type == STACK_BLOCK) executeBlock(s);
+     else // Significa que o elemento no topo da stack é um array.
      {
           // printf("Entrei no if.");
           if (strcmp(token, "&") == 0) and(s);
           else if (strcmp(token, "|") == 0) or(s);
           else if (strcmp(token, "^") == 0) xor(s);
           else not(s);
-     }
-     else // Significa que o elemento no topo da stack é um array.
-     {
-          // Se entrou neste else, temos a certeza que o char pertence a "&|^~" e como o '~' é a única operação válida, não precisamos de fazer a verificação.
-          // ~ Colocar na stack todos os elementos do array.
-          // printf("Entrei no else.");
-          dumpArray(s);
      }
 
 }
@@ -254,14 +257,23 @@ void logicPush_op(stack *s, char* token)
 
 int array_op(stack *s, char* token, char* line)
 {    
-     int e = 1;
+     int e = 0;
      // printf("Entrou nas array_op!");
-     if (strcmp(token, "[") == 0) { parseArray(s, line); e = 0; } 
+     if (strcmp(token, "[") == 0) { parseArray(s, line); e = 1; } 
      else if (token[0] == '\"') { parseString(s, line); e = 2; }
      else if (strcmp(token, ",") == 0) arrayRange(s);
      else if (strcmp(token, "S/") == 0) stripString(s, " "); // !BUG
      else if (strcmp(token, "N/") == 0) stripString(s, "\n"); // !BUG
 
+     return e;
+}
+
+int block_op(stack *s, char* token, char* line)
+{    
+     int e = 0;
+     // printf("Entrou nas array_op!");
+     if (strcmp(token, "{") == 0) { pushBlock(s, line); e = 3; } 
+     
      return e;
 }
 
@@ -275,7 +287,7 @@ void parser(char *line, stack *s)
 
      while (token != NULL)
      {
-          int decide = 1;
+          int decide = 0;
           // printf("Token atual = %s\n",token);
 
           // Função que dá push dos diferentes elementos de diferentes tipos para a stack.
@@ -299,13 +311,17 @@ void parser(char *line, stack *s)
           else if (is_in_string(token, "[,\"")) decide = array_op(s, token, full_string); // Passo a linha toda para poder retirar o que quero.
           else if (check_array(token)) array_op(s, token, full_string);
 
+          // Funções com blocos.
+          else if (is_in_string(token, "{")) decide = block_op(s, token, full_string);
+
           // Handle de variáveis.
           else if (token[0] == ':') pushVar(s, token[1]);
           else if (!pushed) getVar(s, token[0]);
 
           // Skip de tokens.
-          if (decide == 0) { parser(getRestToken(full_string), s); free(full_string); break; }    
-          if (decide == 2) { parser(getRestTokenS(full_string), s); free(full_string); break; }    
+          if (decide == 1) { parser(getRestToken(full_string), s); free(full_string); break; }    
+          else if (decide == 2) { parser(getRestTokenS(full_string), s); free(full_string); break; }    
+          else if (decide == 3) { parser(getRestTokenB(full_string), s); free(full_string); break; }    
           else token = strtok(NULL, delim); 
           
      }

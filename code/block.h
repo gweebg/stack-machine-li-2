@@ -14,4 +14,6 @@ void pushBlock(stack *s, char *full_string);
 char* parseBlock(char *full_block);
 void executeBlock(stack *s);
 
+char* getRestTokenB(char *full_string);
+
 #endif

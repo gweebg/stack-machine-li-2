@@ -37,8 +37,8 @@ int main()
     parser(input, &s);
 
     // readBlock("{ Boas pessoas { 1 2 3 } } { ola adeus }");
-    pushBlock(&s, "{ 2 + } { ola adeus }");
-    executeBlock(&s);
+    // pushBlock(&s, "{ 2 + } { ola adeus }");
+    // executeBlock(&s);
 
     //Print do estado final da stack.
     dumpStack(&s);
